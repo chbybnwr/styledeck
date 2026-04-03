@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "@txee/tsconfig/tsconfig.base.json",
+    "@txee/tsconfig/tsconfig.node24.json"
+  ],
+
+  "include": ["./*"],
+
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": true,
+    "resolveJsonModule": true
+  }
+}

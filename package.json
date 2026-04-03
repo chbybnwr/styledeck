@@ -1,0 +1,69 @@
+{
+  "name": "stylexin",
+  "version": "0.0.0",
+  "description": "StylexIn",
+  "license": "UNLICENSED",
+  "keywords": [
+    "css",
+    "inline",
+    "style",
+    "stylex"
+  ],
+  "type": "module",
+  "exports": "./dist/index.js",
+  "scripts": {
+    "check": "run-s \"test -- --coverage --reporter=verbose\" lint \"format -- --check\" spellcheck",
+    "prepack": "shx cp package.json package.json.backup && npm pkg delete scripts devDependencies",
+    "postpack": "shx rm package.json && shx mv package.json.backup package.json",
+    "build": "vite build",
+    "compile": "tsc --project tsconfig.build.json",
+    "extract": "shx rm -rf ./lib/ && npm run compile && api-extractor run --local",
+    "test": "vitest run",
+    "lint": "eslint ./ --cache",
+    "format": "prettier ./",
+    "spellcheck": "cspell ./",
+    "local-pack": "run-s build extract && npm pack"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "overrides": {
+      "lodash": "4.x"
+    }
+  },
+  "dependencies": {
+    "@stylexjs/stylex": "0.18.x",
+    "csstype": "^3.2.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.x",
+    "@eslint/json": "1.x",
+    "@eslint/markdown": "8.x",
+    "@microsoft/api-extractor": "7.x",
+    "@stylistic/eslint-plugin": "5.x",
+    "@txe/eslint-plugin-x": "0.2.x",
+    "@txee/tsconfig": "file:../tsconfig",
+    "@types/babel__traverse": "7.x",
+    "@types/jsdom": "^28.0.1",
+    "@types/node": "25.x",
+    "@typescript-eslint/parser": "8.x",
+    "@typescript/native-preview": ">=7.0.0-dev <8",
+    "@vitest/coverage-v8": "^4.1.2",
+    "@vitest/eslint-plugin": "1.x",
+    "cspell": "9.x",
+    "eslint": "10.x",
+    "eslint-config-prettier": "10.x",
+    "eslint-import-resolver-typescript": "4.x",
+    "eslint-plugin-import-x": "4.x",
+    "eslint-plugin-n": "17.x",
+    "eslint-plugin-unicorn": "64.x",
+    "globals": "17.x",
+    "jsdom": "^29.0.1",
+    "npm-run-all2": "8.x",
+    "prettier": "3.x",
+    "shx": "0.4.x",
+    "typescript": "5.x",
+    "typescript-eslint": "8.x",
+    "vite": "8.x",
+    "vitest": "4.x"
+  }
+}

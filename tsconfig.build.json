@@ -1,0 +1,23 @@
+{
+  "extends": [
+    "@txee/tsconfig/tsconfig.base.json",
+    "@txee/tsconfig/tsconfig.library.json",
+    "@txee/tsconfig/tsconfig.vite.json"
+  ],
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec*.*", "src/test/**/*"],
+
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.build.tsbuildinfo",
+
+    "rootDir": "./src/",
+    "outDir": "./dist/",
+
+    "emitDeclarationOnly": true,
+    "declarationDir": "./lib/",
+
+    "paths": {
+      "#/*": ["./src/*"]
+    }
+  }
+}
