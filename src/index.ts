@@ -1,7 +1,7 @@
-export type { AuthoredProtoStyle }
-export type { ProtoStyleProperties }
-export type { ProtoStylePropertiesWithExtras }
-export type { ProtoStylePropertyValue }
+export type { AuthoredStyle }
+export type { StyleProperties }
+export type { StylePropertiesWithExtras }
+export type { StylePropertyValue }
 export type { PseudoClasses }
 export type { PseudoElements }
 export { style }
@@ -11,59 +11,57 @@ export { styler }
  * @public
  */
 declare function styler(
-  ...styles: (AuthoredProtoStyle | StyleXStyles)[]
+  ...styles: (AuthoredStyle | StyleXStyles)[]
 ): ReturnType<typeof props>
 
 /**
  * @public
  */
 declare function style(
-  ...styles: (AuthoredProtoStyle | StyleXStyles)[]
+  ...styles: (AuthoredStyle | StyleXStyles)[]
 ): StyleXStyles
 
 /**
  * @public
  */
-type AuthoredProtoStyle = {
-  [Key in keyof ProtoStylePropertiesWithExtras]:
-    | ProtoStylePropertiesWithExtras[Key]
-    | (() => ProtoStylePropertiesWithExtras[Key])
+type AuthoredStyle = {
+  [Key in keyof StylePropertiesWithExtras]:
+    | StylePropertiesWithExtras[Key]
+    | (() => StylePropertiesWithExtras[Key])
 }
 
 /**
  * @public
  */
-type ProtoStylePropertiesWithExtras = ProtoStyleProperties &
+type StylePropertiesWithExtras = StyleProperties &
   Partial<
-    Record<PseudoElements, ProtoStyleProperties> &
-      Record<string, ProtoStylePropertyValue<string | null>>
+    Record<PseudoElements, StyleProperties> &
+      Record<string, StylePropertyValue<string | null>>
   >
 
 /**
  * @public
  */
-type ProtoStyleProperties = {
-  [P in keyof StyleProperties]?: ProtoStylePropertyValue<
-    StyleProperties[P] | null
-  >
+type StyleProperties = {
+  [P in keyof CSSProperties]?: StylePropertyValue<CSSProperties[P] | null>
 } & {
   [P in Exclude<
     keyof CSSPropertiesWithExtras,
-    keyof StyleProperties | PseudoElements
-  >]?: ProtoStylePropertyValue<CSSPropertiesWithExtras[P]>
+    keyof CSSProperties | PseudoElements
+  >]?: StylePropertyValue<CSSPropertiesWithExtras[P]>
 }
 
 /**
  * @public
  */
-type ProtoStylePropertyValue<T> =
+type StylePropertyValue<T> =
   | T
   | {
       [Key in
         | 'default'
         | PseudoClasses
         | AtRules
-        | (string & {})]?: ProtoStylePropertyValue<T>
+        | (string & {})]?: StylePropertyValue<T>
     }
   // push non-applicable properties down on suggestions
   | {
@@ -169,9 +167,9 @@ type PseudoElements =
   | ':-ms-input-placeholder'
 
 import type { AtRules } from 'csstype'
+import type { Properties as CSSProperties } from 'csstype'
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
 import type { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
-import type { Properties as StyleProperties } from 'csstype'
 import type { StyleXStyles } from '@stylexjs/stylex'
 //
