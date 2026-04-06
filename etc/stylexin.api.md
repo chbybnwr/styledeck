@@ -4,55 +4,132 @@
 
 ```ts
 
-import type * as CSS_2 from 'csstype';
+import type { AtRules } from 'csstype';
+import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes';
+import type { Properties } from 'csstype';
 import type { props } from '@stylexjs/stylex';
-import type * as StyleX from '@stylexjs/stylex/lib/types/StyleXTypes';
-import type { StyleXStyles } from '@stylexjs/stylex';
+import type { Pseudos } from 'csstype';
+import type { StyleXClassNameFor } from '@stylexjs/stylex/lib/types/StyleXTypes';
+import type { StyleXVar } from '@stylexjs/stylex/lib/types/StyleXTypes';
 
-// Warning: (ae-forgotten-export) The symbol "Thunkable" needs to be exported by the entry point index.d.ts
-//
 // @public (undocumented)
 export type AuthoredStyle = {
-    [P in keyof StylePropertiesWithExtras]?: Thunkable<StylePropertiesWithExtras[P]>;
-} | Partial<Record<string, Thunkable<StylePropertyValue<{} | null>>>>;
+    [Key in keyof StylePropertiesWithExtras]?: Thunkable<StylePropertiesWithExtras[Key]>;
+} | Record<StyleXVar<unknown>, Thunkable<StylePropertyValue>>;
 
 // @public (undocumented)
-export type Bar = StylePropertiesWithExtras['color'];
+export type LegacyPseudoElements = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
 
 // @public (undocumented)
-export type Foo = StyleProperties['color'];
+export interface NonApplicableStringProperties {
+    // @deprecated (undocumented)
+    charAt?: unknown;
+    // @deprecated (undocumented)
+    charCodeAt?: unknown;
+    // @deprecated (undocumented)
+    codePointAt?: unknown;
+    // @deprecated (undocumented)
+    concat?: unknown;
+    // @deprecated (undocumented)
+    endsWith?: unknown;
+    // @deprecated (undocumented)
+    includes?: unknown;
+    // @deprecated (undocumented)
+    indexOf?: unknown;
+    // @deprecated (undocumented)
+    lastIndexOf?: unknown;
+    // @deprecated (undocumented)
+    length?: unknown;
+    // @deprecated (undocumented)
+    localeCompare?: unknown;
+    // @deprecated (undocumented)
+    match?: unknown;
+    // @deprecated (undocumented)
+    matchAll?: unknown;
+    // @deprecated (undocumented)
+    normalize?: unknown;
+    // @deprecated (undocumented)
+    padEnd?: unknown;
+    // @deprecated (undocumented)
+    padStart?: unknown;
+    // @deprecated (undocumented)
+    repeat?: unknown;
+    // @deprecated (undocumented)
+    replace?: unknown;
+    // @deprecated (undocumented)
+    search?: unknown;
+    // @deprecated (undocumented)
+    slice?: unknown;
+    // @deprecated (undocumented)
+    split?: unknown;
+    // @deprecated (undocumented)
+    startsWith?: unknown;
+    // @deprecated (undocumented)
+    substring?: unknown;
+    // @deprecated (undocumented)
+    toLocaleLowerCase?: unknown;
+    // @deprecated (undocumented)
+    toLocaleUpperCase?: unknown;
+    // @deprecated (undocumented)
+    toLowerCase?: unknown;
+    // @deprecated (undocumented)
+    toString?: unknown;
+    // @deprecated (undocumented)
+    toUpperCase?: unknown;
+    // @deprecated (undocumented)
+    trim?: unknown;
+    // @deprecated (undocumented)
+    trimEnd?: unknown;
+    // @deprecated (undocumented)
+    trimStart?: unknown;
+    // @deprecated (undocumented)
+    valueOf?: unknown;
+}
 
 // @public (undocumented)
-export type PseudoClasses = Exclude<CSS_2.Pseudos, PseudoElements>;
+export type PseudoClasses = Exclude<Pseudos, PseudoElements>;
 
 // @public (undocumented)
-export type PseudoElements = Extract<CSS_2.Pseudos, `::${string}`> | Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`> | (`::${string}` & {}) | ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
+export type PseudoElements = Extract<Pseudos, `::${string}`> | Extract<keyof CSSPropertiesWithExtras, `::${string}`> | (`::${string}` & {}) | LegacyPseudoElements;
 
 // @public (undocumented)
-export type Quux = AuthoredStyle['color'];
-
-// @public (undocumented)
-export const style: (...args: (AuthoredStyle | StyleXStyles)[]) => StyleXStyles;
-
-// @public (undocumented)
-export type StyleProperties = Omit<{
-    [P in keyof CSS_2.Properties]?: StylePropertyValue<CSS_2.Properties[P] | null>;
-}, keyof StyleX.CSSPropertiesWithExtras> & Pick<{
-    [P in keyof CSS_2.Properties]?: StylePropertyValue<CSS_2.Properties[P] | null>;
-}, Extract<keyof CSS_2.Properties, keyof StyleX.CSSPropertiesWithExtras>> & Omit<{
-    [P in keyof StyleX.CSSPropertiesWithExtras]?: StylePropertyValue<StyleX.CSSPropertiesWithExtras[P]>;
-}, keyof CSS_2.Properties | PseudoElements>;
-
-// @public (undocumented)
-export type StylePropertiesWithExtras = StyleProperties & Partial<Record<Exclude<PseudoElements, Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`>>, StyleProperties & Partial<Record<string, StylePropertyValue<{} | null>>>>> & Partial<Record<Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`>, StyleProperties & Partial<Record<string, StylePropertyValue<{} | null>>>>>;
-
-// @public (undocumented)
-export type StylePropertyValue<T> = T | {
-    [Key in 'default' | PseudoClasses | CSS_2.AtRules | (string & {})]?: StylePropertyValue<T>;
+export const style: <StyleList extends AuthoredStyle[]>(...args: {
+    [Index in keyof StyleList]: StyleList[Index] & AuthoredStyle;
+}) => {
+    [Index in keyof StyleList]: StyleList[Index] extends infer Style ? {
+        readonly [Key in keyof Style]: Style[Key] extends infer Value ? Value extends StyleXClassNameFor<unknown, unknown> ? Value : StyleXClassNameFor<Key, Value extends object ? Value extends unknown[] | ((...args: unknown[]) => unknown) ? Value extends (...args: never[]) => infer Result ? Result : Value : string extends keyof Value ? Value : unknown : Value> : never;
+    } : never;
 };
 
 // @public (undocumented)
-export const styler: (...args: (AuthoredStyle | StyleXStyles)[]) => ReturnType<typeof props>;
+export type StyleProperties = Omit<{
+    [Key in keyof Properties]?: StylePropertyValue<Properties[Key] | null | NonApplicableStringProperties>;
+}, keyof CSSPropertiesWithExtras> & Pick<{
+    [Key in keyof Properties]?: StylePropertyValue<Properties[Key] | null | NonApplicableStringProperties>;
+}, Extract<keyof Properties, keyof CSSPropertiesWithExtras>> & Omit<{
+    [Key in keyof CSSPropertiesWithExtras]?: StylePropertyValue<CSSPropertiesWithExtras[Key]>;
+}, keyof Properties | PseudoElements> & Record<string, StylePropertyValue>;
+
+// @public (undocumented)
+export type StylePropertiesWithExtras = StyleProperties & Omit<Record<PseudoElements, StyleProperties>, Extract<keyof CSSPropertiesWithExtras, `::${string}`> | LegacyPseudoElements> & Record<Extract<keyof CSSPropertiesWithExtras, `::${string}`>, StyleProperties> & {
+    ':after'?: unknown;
+    ':before'?: unknown;
+    ':first-letter'?: unknown;
+    ':first-line'?: unknown;
+    ':-moz-placeholder'?: unknown;
+    ':-ms-input-placeholder'?: unknown;
+};
+
+// @public (undocumented)
+export type StylePropertyValue<T = {} | null> = T | {
+    [Key in 'default' | PseudoClasses | AtRules | (string & {})]?: StylePropertyValue<T>;
+};
+
+// @public (undocumented)
+export const styler: (...args: AuthoredStyle[]) => ReturnType<typeof props>;
+
+// @public (undocumented)
+export type Thunkable<T> = T | (() => T);
 
 // (No @packageDocumentation comment for this package)
 

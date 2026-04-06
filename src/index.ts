@@ -1,4 +1,6 @@
 export type { AuthoredStyle }
+export type { LegacyPseudoElements }
+export type { NonApplicableStringProperties }
 export type { PseudoClasses }
 export type { PseudoElements }
 export { style }
@@ -6,132 +8,150 @@ export type { StyleProperties }
 export type { StylePropertiesWithExtras }
 export type { StylePropertyValue }
 export { styler }
+export type { Thunkable }
 
 /**
  * @public
  */
-const styler: (
-  ...args: (AuthoredStyle | StyleXStyles)[]
-) => ReturnType<typeof props> = macro
+const styler: (...args: AuthoredStyle[]) => ReturnType<typeof props> = macro
 
 /**
  * @public
  */
-const style: (...args: (AuthoredStyle | StyleXStyles)[]) => StyleXStyles = macro
+const style: <StyleList extends AuthoredStyle[]>(
+  ...args: {
+    [Index in keyof StyleList]: StyleList[Index] & AuthoredStyle
+  }
+) => {
+  [Index in keyof StyleList]: StyleList[Index] extends infer Style
+    ? {
+        readonly [Key in keyof Style]: Style[Key] extends infer Value
+          ? Value extends StyleXClassNameFor<unknown, unknown>
+            ? Value
+            : StyleXClassNameFor<
+                Key,
+                Value extends object
+                  ? Value extends unknown[] | ((...args: unknown[]) => unknown)
+                    ? Value extends (...args: never[]) => infer Result
+                      ? Result
+                      : Value
+                    : string extends keyof Value
+                      ? Value
+                      : unknown
+                  : Value
+              >
+          : never
+      }
+    : never
+} = macro
 
 function macro(): never {
   throw new Error('macro was called at runtime')
 }
-
-export type Foo = StyleProperties['color']
-export type Bar = StylePropertiesWithExtras['color']
-export type Quux = AuthoredStyle['color']
 
 /**
  * @public
  */
 type AuthoredStyle =
   | {
-      [P in keyof StylePropertiesWithExtras]?: Thunkable<
-        StylePropertiesWithExtras[P]
+      [Key in keyof StylePropertiesWithExtras]?: Thunkable<
+        StylePropertiesWithExtras[Key]
       >
     }
-  | Partial<
-      Record<
-        string,
-        Thunkable<
-          // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-          StylePropertyValue<{} | null>
-        >
-      >
-    >
+  | Record<StyleXVar<unknown>, Thunkable<StylePropertyValue>>
 
+/**
+ * @public
+ */
 type Thunkable<T> = T | (() => T)
 
 /**
  * @public
  */
 type StylePropertiesWithExtras = StyleProperties &
-  Partial<
-    Record<
-      Exclude<
-        PseudoElements,
-        Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`>
-      >,
-      StyleProperties &
-        Partial<
-          Record<
-            string,
-            // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-            StylePropertyValue<{} | null>
-          >
-        >
-    >
+  Omit<
+    Record<PseudoElements, StyleProperties>,
+    Extract<keyof CSSPropertiesWithExtras, `::${string}`> | LegacyPseudoElements
   > &
-  Partial<
-    Record<
-      Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`>,
-      StyleProperties &
-        Partial<
-          Record<
-            string,
-            // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-            StylePropertyValue<{} | null>
-          >
-        >
-    >
-  >
+  Record<
+    Extract<keyof CSSPropertiesWithExtras, `::${string}`>,
+    StyleProperties
+  > & {
+    /** @deprecated legacy */
+    ':after'?: unknown
+    /** @deprecated legacy */
+    ':before'?: unknown
+    /** @deprecated legacy */
+    ':first-letter'?: unknown
+    /** @deprecated legacy */
+    ':first-line'?: unknown
+    /** @deprecated legacy */
+    ':-moz-placeholder'?: unknown
+    /** @deprecated legacy */
+    ':-ms-input-placeholder'?: unknown
+  }
 
 /**
  * @public
  */
 type StyleProperties = Omit<
   {
-    [P in keyof CSS.Properties]?: StylePropertyValue<CSS.Properties[P] | null>
+    [Key in keyof Properties]?: StylePropertyValue<
+      Properties[Key] | null | NonApplicableStringProperties
+    >
   },
-  keyof StyleX.CSSPropertiesWithExtras
+  keyof CSSPropertiesWithExtras
 > &
   Pick<
     {
-      [P in keyof CSS.Properties]?: StylePropertyValue<CSS.Properties[P] | null>
+      [Key in keyof Properties]?: StylePropertyValue<
+        Properties[Key] | null | NonApplicableStringProperties
+      >
     },
-    Extract<keyof CSS.Properties, keyof StyleX.CSSPropertiesWithExtras>
+    Extract<keyof Properties, keyof CSSPropertiesWithExtras>
   > &
   Omit<
     {
-      [P in keyof StyleX.CSSPropertiesWithExtras]?: StylePropertyValue<
-        StyleX.CSSPropertiesWithExtras[P]
+      [Key in keyof CSSPropertiesWithExtras]?: StylePropertyValue<
+        CSSPropertiesWithExtras[Key]
       >
     },
-    keyof CSS.Properties | PseudoElements
-  >
+    keyof Properties | PseudoElements
+  > &
+  Record<string, StylePropertyValue>
 
 /**
  * @public
  */
-type StylePropertyValue<T> =
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+type StylePropertyValue<T = {} | null> =
   | T
   | {
       [Key in
         | 'default'
         | PseudoClasses
-        | CSS.AtRules
+        | AtRules
         | (string & {})]?: StylePropertyValue<T>
     }
 
 /**
  * @public
  */
-type PseudoClasses = Exclude<CSS.Pseudos, PseudoElements>
+type PseudoClasses = Exclude<Pseudos, PseudoElements>
 
 /**
  * @public
  */
 type PseudoElements =
-  | Extract<CSS.Pseudos, `::${string}`>
-  | Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`>
+  | Extract<Pseudos, `::${string}`>
+  | Extract<keyof CSSPropertiesWithExtras, `::${string}`>
   | (`::${string}` & {})
-  // legacy
+  | LegacyPseudoElements
+
+/**
+ * @public
+ */
+type LegacyPseudoElements =
   | ':after'
   | ':before'
   | ':first-letter'
@@ -139,86 +159,79 @@ type PseudoElements =
   | ':-moz-placeholder'
   | ':-ms-input-placeholder'
 
-type DemotedClassNameForProperties = StyleX.StyleXClassNameFor<never, never> & {
-  /** @deprecated not-applicable */
-  _key?: never
-  /** @deprecated not-applicable */
-  _opaque?: never
-  /** @deprecated not-applicable */
-  _value?: never
+/**
+ * @public
+ */
+interface NonApplicableStringProperties {
+  /** @deprecated non-applicable */
+  toString?: unknown
+  /** @deprecated non-applicable */
+  charAt?: unknown
+  /** @deprecated non-applicable */
+  charCodeAt?: unknown
+  /** @deprecated non-applicable */
+  concat?: unknown
+  /** @deprecated non-applicable */
+  indexOf?: unknown
+  /** @deprecated non-applicable */
+  lastIndexOf?: unknown
+  /** @deprecated non-applicable */
+  localeCompare?: unknown
+  /** @deprecated non-applicable */
+  match?: unknown
+  /** @deprecated non-applicable */
+  replace?: unknown
+  /** @deprecated non-applicable */
+  search?: unknown
+  /** @deprecated non-applicable */
+  slice?: unknown
+  /** @deprecated non-applicable */
+  split?: unknown
+  /** @deprecated non-applicable */
+  substring?: unknown
+  /** @deprecated non-applicable */
+  toLowerCase?: unknown
+  /** @deprecated non-applicable */
+  toLocaleLowerCase?: unknown
+  /** @deprecated non-applicable */
+  toUpperCase?: unknown
+  /** @deprecated non-applicable */
+  toLocaleUpperCase?: unknown
+  /** @deprecated non-applicable */
+  trim?: unknown
+  /** @deprecated non-applicable */
+  length?: unknown
+  /** @deprecated non-applicable */
+  valueOf?: unknown
+  /** @deprecated non-applicable */
+  codePointAt?: unknown
+  /** @deprecated non-applicable */
+  includes?: unknown
+  /** @deprecated non-applicable */
+  endsWith?: unknown
+  /** @deprecated non-applicable */
+  normalize?: unknown
+  /** @deprecated non-applicable */
+  repeat?: unknown
+  /** @deprecated non-applicable */
+  startsWith?: unknown
+  /** @deprecated non-applicable */
+  matchAll?: unknown
+  /** @deprecated non-applicable */
+  padStart?: unknown
+  /** @deprecated non-applicable */
+  padEnd?: unknown
+  /** @deprecated non-applicable */
+  trimEnd?: unknown
+  /** @deprecated non-applicable */
+  trimStart?: unknown
 }
 
-// eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
-interface DemotedStringProperties extends Partial<String> {
-  // /** @deprecated not-applicable */
-  at?: never
-  /** @deprecated not-applicable */
-  toString?: never
-  /** @deprecated not-applicable */
-  charAt?: never
-  /** @deprecated not-applicable */
-  charCodeAt?: never
-  /** @deprecated not-applicable */
-  concat?: never
-  /** @deprecated not-applicable */
-  indexOf?: never
-  /** @deprecated not-applicable */
-  lastIndexOf?: never
-  /** @deprecated not-applicable */
-  localeCompare?: never
-  /** @deprecated not-applicable */
-  match?: never
-  /** @deprecated not-applicable */
-  replace?: never
-  /** @deprecated not-applicable */
-  search?: never
-  /** @deprecated not-applicable */
-  slice?: never
-  /** @deprecated not-applicable */
-  split?: never
-  /** @deprecated not-applicable */
-  substring?: never
-  /** @deprecated not-applicable */
-  toLowerCase?: never
-  /** @deprecated not-applicable */
-  toLocaleLowerCase?: never
-  /** @deprecated not-applicable */
-  toUpperCase?: never
-  /** @deprecated not-applicable */
-  toLocaleUpperCase?: never
-  /** @deprecated not-applicable */
-  trim?: never
-  /** @deprecated not-applicable */
-  length?: never
-  /** @deprecated not-applicable */
-  valueOf?: never
-  /** @deprecated not-applicable */
-  codePointAt?: never
-  /** @deprecated not-applicable */
-  includes?: never
-  /** @deprecated not-applicable */
-  endsWith?: never
-  /** @deprecated not-applicable */
-  normalize?: never
-  /** @deprecated not-applicable */
-  repeat?: never
-  /** @deprecated not-applicable */
-  startsWith?: never
-  /** @deprecated not-applicable */
-  matchAll?: never
-  /** @deprecated not-applicable */
-  padStart?: never
-  /** @deprecated not-applicable */
-  padEnd?: never
-  /** @deprecated not-applicable */
-  replaceAll?: never
-  /** @deprecated not-applicable */
-  trimEnd?: never
-  /** @deprecated not-applicable */
-  trimStart?: never
-}
-
-import type * as CSS from 'csstype'
+import type { AtRules } from 'csstype'
+import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { Properties } from 'csstype'
 import type { props } from '@stylexjs/stylex'
-import type * as StyleX from '@stylexjs/stylex/lib/types/StyleXTypes'
-import type { StyleXStyles } from '@stylexjs/stylex'
+import type { Pseudos } from 'csstype'
+import type { StyleXClassNameFor } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { StyleXVar } from '@stylexjs/stylex/lib/types/StyleXTypes'
+//

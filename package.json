@@ -31,8 +31,8 @@
     }
   },
   "dependencies": {
-    "@stylexjs/stylex": "0.18.x",
-    "csstype": "^3.2.3"
+    "@stylexjs/stylex": "0.18.2",
+    "csstype": "3.x"
   },
   "devDependencies": {
     "@eslint/js": "10.x",
@@ -40,14 +40,14 @@
     "@eslint/markdown": "8.x",
     "@microsoft/api-extractor": "7.x",
     "@stylistic/eslint-plugin": "5.x",
-    "@txe/eslint-plugin-x": "0.2.x",
+    "@txe/eslint-plugin-x": "0.2.1",
     "@txee/tsconfig": "file:../tsconfig",
     "@types/babel__traverse": "7.x",
-    "@types/jsdom": "^28.0.1",
+    "@types/jsdom": "28.x",
     "@types/node": "25.x",
     "@typescript-eslint/parser": "8.x",
     "@typescript/native-preview": ">=7.0.0-dev <8",
-    "@vitest/coverage-v8": "^4.1.2",
+    "@vitest/coverage-v8": "4.x",
     "@vitest/eslint-plugin": "1.x",
     "cspell": "9.x",
     "eslint": "10.x",
@@ -57,11 +57,11 @@
     "eslint-plugin-n": "17.x",
     "eslint-plugin-unicorn": "64.x",
     "globals": "17.x",
-    "jsdom": "^29.0.1",
+    "jsdom": "29.x",
     "npm-run-all2": "8.x",
     "prettier": "3.x",
-    "shx": "0.4.x",
-    "typescript": "5.x",
+    "shx": "0.4.0",
+    "typescript": "6.x",
     "typescript-eslint": "8.x",
     "vite": "8.x",
     "vitest": "4.x"
