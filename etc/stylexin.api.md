@@ -4,81 +4,55 @@
 
 ```ts
 
-import type { AtRules } from 'csstype';
-import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes';
-import type { Properties } from 'csstype';
+import type * as CSS_2 from 'csstype';
 import type { props } from '@stylexjs/stylex';
-import type { Pseudos } from 'csstype';
+import type * as StyleX from '@stylexjs/stylex/lib/types/StyleXTypes';
 import type { StyleXStyles } from '@stylexjs/stylex';
 
+// Warning: (ae-forgotten-export) The symbol "Thunkable" needs to be exported by the entry point index.d.ts
+//
 // @public (undocumented)
-export type AuthoredProtoStyle = {
-    [Key in keyof ProtoStylePropertiesWithExtras]: ProtoStylePropertiesWithExtras[Key] | (() => ProtoStylePropertiesWithExtras[Key]);
+export type AuthoredStyle = {
+    [P in keyof StylePropertiesWithExtras]?: Thunkable<StylePropertiesWithExtras[P]>;
+} | Partial<Record<string, Thunkable<StylePropertyValue<{} | null>>>>;
+
+// @public (undocumented)
+export type Bar = StylePropertiesWithExtras['color'];
+
+// @public (undocumented)
+export type Foo = StyleProperties['color'];
+
+// @public (undocumented)
+export type PseudoClasses = Exclude<CSS_2.Pseudos, PseudoElements>;
+
+// @public (undocumented)
+export type PseudoElements = Extract<CSS_2.Pseudos, `::${string}`> | Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`> | (`::${string}` & {}) | ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
+
+// @public (undocumented)
+export type Quux = AuthoredStyle['color'];
+
+// @public (undocumented)
+export const style: (...args: (AuthoredStyle | StyleXStyles)[]) => StyleXStyles;
+
+// @public (undocumented)
+export type StyleProperties = Omit<{
+    [P in keyof CSS_2.Properties]?: StylePropertyValue<CSS_2.Properties[P] | null>;
+}, keyof StyleX.CSSPropertiesWithExtras> & Pick<{
+    [P in keyof CSS_2.Properties]?: StylePropertyValue<CSS_2.Properties[P] | null>;
+}, Extract<keyof CSS_2.Properties, keyof StyleX.CSSPropertiesWithExtras>> & Omit<{
+    [P in keyof StyleX.CSSPropertiesWithExtras]?: StylePropertyValue<StyleX.CSSPropertiesWithExtras[P]>;
+}, keyof CSS_2.Properties | PseudoElements>;
+
+// @public (undocumented)
+export type StylePropertiesWithExtras = StyleProperties & Partial<Record<Exclude<PseudoElements, Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`>>, StyleProperties & Partial<Record<string, StylePropertyValue<{} | null>>>>> & Partial<Record<Extract<keyof StyleX.CSSPropertiesWithExtras, `::${string}`>, StyleProperties & Partial<Record<string, StylePropertyValue<{} | null>>>>>;
+
+// @public (undocumented)
+export type StylePropertyValue<T> = T | {
+    [Key in 'default' | PseudoClasses | CSS_2.AtRules | (string & {})]?: StylePropertyValue<T>;
 };
 
 // @public (undocumented)
-export type ProtoStyleProperties = {
-    [P in keyof Properties]?: ProtoStylePropertyValue<Properties[P] | null>;
-} & {
-    [P in Exclude<keyof CSSPropertiesWithExtras, keyof Properties | PseudoElements>]?: ProtoStylePropertyValue<CSSPropertiesWithExtras[P]>;
-};
-
-// @public (undocumented)
-export type ProtoStylePropertiesWithExtras = ProtoStyleProperties & Partial<Record<PseudoElements, ProtoStyleProperties> & Record<string, ProtoStylePropertyValue<string | null>>>;
-
-// @public (undocumented)
-export type ProtoStylePropertyValue<T> = T | {
-    [Key in 'default' | PseudoClasses | AtRules | (string & {})]?: ProtoStylePropertyValue<T>;
-} | {
-    _key?: unknown;
-    _opaque?: unknown;
-    _value?: unknown;
-    at?: unknown;
-    toString?: unknown;
-    charAt?: unknown;
-    charCodeAt?: unknown;
-    concat?: unknown;
-    indexOf?: unknown;
-    lastIndexOf?: unknown;
-    localeCompare?: unknown;
-    match?: unknown;
-    replace?: unknown;
-    search?: unknown;
-    slice?: unknown;
-    split?: unknown;
-    substring?: unknown;
-    toLowerCase?: unknown;
-    toLocaleLowerCase?: unknown;
-    toUpperCase?: unknown;
-    toLocaleUpperCase?: unknown;
-    trim?: unknown;
-    length?: unknown;
-    valueOf?: unknown;
-    codePointAt?: unknown;
-    includes?: unknown;
-    endsWith?: unknown;
-    normalize?: unknown;
-    repeat?: unknown;
-    startsWith?: unknown;
-    matchAll?: unknown;
-    padStart?: unknown;
-    padEnd?: unknown;
-    replaceAll?: unknown;
-    trimEnd?: unknown;
-    trimStart?: unknown;
-};
-
-// @public (undocumented)
-export type PseudoClasses = Exclude<Pseudos, PseudoElements>;
-
-// @public (undocumented)
-export type PseudoElements = Extract<Pseudos, `::${string}`> | Extract<keyof CSSPropertiesWithExtras, `::${string}`> | (`::${string}` & {}) | ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
-
-// @public (undocumented)
-export function style(...styles: (AuthoredProtoStyle | StyleXStyles)[]): StyleXStyles;
-
-// @public (undocumented)
-export function styler(...styles: (AuthoredProtoStyle | StyleXStyles)[]): ReturnType<typeof props>;
+export const styler: (...args: (AuthoredStyle | StyleXStyles)[]) => ReturnType<typeof props>;
 
 // (No @packageDocumentation comment for this package)
 

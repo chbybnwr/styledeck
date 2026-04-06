@@ -12,6 +12,7 @@
 
     "rootDir": "./src/",
     "outDir": "./dist/",
+    "noUnusedLocals": false,
 
     "emitDeclarationOnly": true,
     "declarationDir": "./lib/",

@@ -168,6 +168,7 @@ export default defineConfig([
         },
       ],
       'vitest/expect-expect': 'off',
+      'vitest/require-to-throw-message': 'off',
     },
   },
 

@@ -4,4 +4,5 @@ Renderable
 stylex
 stylexin
 stylexjs
+Thunkable
 txee
