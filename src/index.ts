@@ -20,28 +20,18 @@ const styler: (...args: AuthoredStyle[]) => ReturnType<typeof props> = macro
  */
 const style: <StyleList extends AuthoredStyle[]>(
   ...args: {
-    [Index in keyof StyleList]: StyleList[Index] & AuthoredStyle
+    [Index in keyof StyleList]: StyleList[Index]
+    // & AuthoredStyle
   }
 ) => {
   [Index in keyof StyleList]: StyleList[Index] extends infer Style
-    ? {
-        readonly [Key in keyof Style]: Style[Key] extends infer Value
-          ? Value extends StyleXClassNameFor<unknown, unknown>
-            ? Value
-            : StyleXClassNameFor<
-                Key,
-                Value extends object
-                  ? Value extends unknown[] | ((...args: unknown[]) => unknown)
-                    ? Value extends (...args: never[]) => infer Result
-                      ? Result
-                      : Value
-                    : string extends keyof Value
-                      ? Value
-                      : unknown
-                  : Value
-              >
-          : never
-      }
+    ? Style extends Record<string, StyleXClassNameFor<unknown, unknown>>
+      ? Style
+      : MapNamespace<{
+          [Key in keyof Style]: Style[Key] extends () => infer Result
+            ? Result
+            : Style[Key]
+        }>
     : never
 } = macro
 
@@ -229,9 +219,10 @@ interface NonApplicableStringProperties {
 
 import type { AtRules } from 'csstype'
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { MapNamespace } from '@stylexjs/stylex/lib/types/StyleXTypes'
 import type { Properties } from 'csstype'
 import type { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
-import type { StyleXClassNameFor } from '@stylexjs/stylex/lib/types/StyleXTypes'
-import type { StyleXVar } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { StyleXClassNameFor } from '@stylexjs/stylex'
+import type { StyleXVar } from '@stylexjs/stylex'
 //
