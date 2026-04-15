@@ -27,11 +27,16 @@ const style: <StyleList extends AuthoredStyle[]>(
   [Index in keyof StyleList]: StyleList[Index] extends infer Style
     ? Style extends StyleXStyles
       ? Style
-      : MapNamespace<{
-          [Key in keyof Style]: Style[Key] extends () => infer Result
-            ? Result
-            : Style[Key]
-        }>
+      : Style extends Record<string, () => unknown>
+        ? readonly [
+            MapNamespace<{
+              [Key in keyof Style]: Style[Key] extends () => infer Result
+                ? Result
+                : Style[Key]
+            }>,
+            InlineStyles,
+          ]
+        : MapNamespace<Style>
     : never
 } = macro
 
@@ -47,6 +52,8 @@ type AuthoredStyle =
       [Key in keyof StylePropertiesWithExtras]:
         | StylePropertiesWithExtras[Key]
         | (() => StylePropertiesWithExtras[Key])
+        | boolean
+        | null
     }
   | Record<StyleXVar<unknown>, StylePropertyValue | (() => StylePropertyValue)>
   | StyleXStyles<
@@ -120,6 +127,7 @@ type StylePropertyValue<
     })
   | NonApplicableClassNameForProperties
   | NonApplicableStringProperties
+  | readonly string[]
 
 /**
  * @public
@@ -273,6 +281,7 @@ interface NonApplicableStringProperties {
 import type { AtRules } from 'csstype'
 import type { Properties as CSSProperties } from 'csstype'
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { InlineStyles } from '@stylexjs/stylex'
 import type { MapNamespace } from '@stylexjs/stylex/lib/types/StyleXTypes'
 import type { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'

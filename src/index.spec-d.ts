@@ -44,6 +44,35 @@ describe(styler, () => {
     })
   })
 
+  it('accepts conditional styles', () => {
+    // eslint-disable-next-line no-unassigned-vars, init-declarations
+    let condition!: boolean
+
+    styler({
+      color: condition && 'red',
+      textBoxEdge: condition && 'cap ex',
+      cornerShape: condition && 'squircle',
+      '--custom': condition && 'lorem',
+      [vars.foo]: condition && 'ipsum',
+      '::before': condition && {
+        color: 'red',
+      },
+    })
+
+    styler({
+      color: condition ? 'red' : null,
+      textBoxEdge: condition ? 'cap ex' : null,
+      cornerShape: condition ? 'squircle' : null,
+      '--custom': condition ? 'lorem' : null,
+      [vars.foo]: condition ? 'ipsum' : null,
+      '::before': condition
+        ? {
+            color: 'red',
+          }
+        : null,
+    })
+  })
+
   it('accepts dynamic styles', () => {
     styler({
       color: () => 'red',
@@ -290,6 +319,16 @@ describe(styler, () => {
       color: 'red',
     })
   })
+
+  it('accepts stylex marker', () => {
+    styler(defaultMarker())
+  })
+
+  it('accepts styles with fallback', () => {
+    styler({
+      position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
+    })
+  })
 })
 
 describe(style, () => {
@@ -340,26 +379,26 @@ describe(style, () => {
       }>
     >()
 
-    const { foo, bar } = create({
+    const { foo } = create({
       foo: {
-        color: 'blue',
+        color: 'red',
       },
+    })
+
+    expectTypeOf(style(foo)).toExtend<
+      StyleXStyles<{
+        color?: 'red'
+      }>
+    >()
+
+    const { bar } = create({
       bar: (color: string) => ({
         color,
       }),
     })
 
-    expectTypeOf(
-      style(
-        foo,
-        //
-        // bar('red'),
-        {
-          color: 'red',
-        },
-      ),
-    ).toExtend<
-      StaticStyles<{
+    expectTypeOf(style(bar('red'))).toExtend<
+      StyleXStyles<{
         color?: string
       }>
     >()
@@ -367,11 +406,12 @@ describe(style, () => {
 })
 
 import { create } from '@stylexjs/stylex'
+import { defaultMarker } from '@stylexjs/stylex'
 import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { expectTypeOf } from 'vitest'
+import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
-import type { StaticStyles } from '@stylexjs/stylex'
 import { style } from './index.ts'
 import { styler } from './index.ts'
 import type { StyleXStyles } from '@stylexjs/stylex'
