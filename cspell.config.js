@@ -2,7 +2,7 @@
 export default {
   version: '0.2',
   language: 'en',
-  ignorePaths: ['pnpm-lock.yaml'],
+  ignorePaths: ['./etc/**/*', './pnpm-lock.yaml'],
   useGitignore: true,
   dictionaries: ['dictionary'],
 

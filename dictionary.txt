@@ -1,8 +1,10 @@
 mjsx
 mtsx
 Renderable
+squircle
 stylex
-stylexin
 stylexjs
 Thunkable
 txee
+Visinage
+visinagecss

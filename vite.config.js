@@ -22,35 +22,22 @@ export default {
   },
 
   test: {
+    name: 'unit',
     passWithNoTests: true,
     coverage: {
       exclude: ['src/test/**/*'],
     },
-    projects: [
-      {
-        resolve: {
-          alias: {
-            '#': fileURLToPath(new URL('src', import.meta.url)),
-          },
-        },
-        test: {
-          name: 'unit',
-          include: [
-            '**/*.spec.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
-            '**/*.error.spec-d.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
-          ],
-          environment: 'jsdom',
-          typecheck: {
-            enabled: true,
-            tsconfig: './tsconfig.test.json',
-          },
-        },
-      },
+    include: [
+      '**/*.spec.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
+      '**/*.error.spec-d.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
     ],
+    environment: 'jsdom',
+    typecheck: {
+      enabled: true,
+      tsconfig: './tsconfig.test.json',
+    },
   },
 }
 
-import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import { URL } from 'node:url'
 //
