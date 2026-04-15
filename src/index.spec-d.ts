@@ -3,7 +3,6 @@
 
 const vars = defineVars({
   foo: null,
-  bar: types.angle('360deg'),
 })
 
 describe(styler, () => {
@@ -261,14 +260,18 @@ describe(styler, () => {
   })
 
   it('accepts typed variable styles', () => {
+    const typedVars = defineVars({
+      foo: types.angle('360deg'),
+    })
+
     styler({
-      color: vars.bar,
-      textBoxEdge: vars.bar,
-      cornerShape: vars.bar,
-      '--custom': vars.bar,
-      [vars.bar]: vars.bar,
+      color: typedVars.foo,
+      textBoxEdge: typedVars.foo,
+      cornerShape: typedVars.foo,
+      '--custom': typedVars.foo,
+      [typedVars.foo]: typedVars.foo,
       '::before': () => ({
-        color: vars.bar,
+        color: typedVars.foo,
       }),
     })
   })
