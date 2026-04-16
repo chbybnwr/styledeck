@@ -1,4 +1,4 @@
-describe(styler, () => {
+describe('styler', () => {
   it('rejects unknown non-custom properties', () => {
     expect(() => {
       styler({

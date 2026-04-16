@@ -143,6 +143,8 @@ export default defineConfig([
       'vitest/prefer-expect-assertions': 'off',
       'vitest/prefer-importing-vitest-globals': 'off',
       'vitest/require-mock-type-parameters': 'off',
+      // TODO: use vite-plugin-test-name instead
+      'vitest/prefer-describe-function-title': 'off',
     },
   },
 

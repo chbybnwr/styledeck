@@ -52,7 +52,7 @@ type AuthoredStyle =
       [Key in keyof StylePropertiesWithExtras]:
         | StylePropertiesWithExtras[Key]
         | (() => StylePropertiesWithExtras[Key])
-        | boolean
+        | false
         | null
     }
   | Record<StyleXVar<unknown>, StylePropertyValue | (() => StylePropertyValue)>
@@ -68,7 +68,9 @@ type StylePropertiesWithExtras = StyleProperties &
   Record<
     | Exclude<PseudoElements, LegacyPseudoElements>
     | `${ParameterizedPseudoElements}(${string})`,
-    StyleProperties
+    | StyleProperties
+    | NonApplicableStringProperties
+    | NonApplicableClassNameForProperties
   > & {
     // legacy pseudo-elements
     /** @deprecated legacy */

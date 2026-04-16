@@ -6,18 +6,18 @@
 
 import type { AtRules } from 'csstype';
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes';
+import type { InlineStyles } from '@stylexjs/stylex';
 import type { MapNamespace } from '@stylexjs/stylex/lib/types/StyleXTypes';
 import type { Properties } from 'csstype';
 import type { props } from '@stylexjs/stylex';
 import type { Pseudos } from 'csstype';
-import type { StyleXClassNameFor } from '@stylexjs/stylex';
 import type { StyleXStyles } from '@stylexjs/stylex/lib/types/StyleXTypes';
 import type { StyleXVar } from '@stylexjs/stylex';
 
 // @public (undocumented)
 export type AuthoredStyle = {
-    [Key in keyof StylePropertiesWithExtras]: Thunkable<StylePropertiesWithExtras[Key]>;
-} | Record<StyleXVar<unknown>, Thunkable<StyleValue>>;
+    [Key in keyof StylePropertiesWithExtras]: StylePropertiesWithExtras[Key] | (() => StylePropertiesWithExtras[Key]) | boolean | null;
+} | Record<StyleXVar<unknown>, StylePropertyValue | (() => StylePropertyValue)> | StyleXStyles<CSSPropertiesWithExtras & Omit<Properties, keyof CSSPropertiesWithExtras>>;
 
 // @public (undocumented)
 export type LegacyPseudoClasses = ':-moz-any()' | ':-webkit-any()' | ':matches()';
@@ -117,17 +117,20 @@ export type PseudoElements = Extract<Pseudos, `::${string}`> | Exclude<Extract<k
 export const style: <StyleList extends AuthoredStyle[]>(...args: {
     [Index in keyof StyleList]: StyleList[Index];
 }) => {
-    [Index in keyof StyleList]: StyleList[Index] extends infer Style ? Style extends Record<string, StyleXClassNameFor<unknown, unknown>> ? Style : MapNamespace<{
+    [Index in keyof StyleList]: StyleList[Index] extends infer Style ? Style extends StyleXStyles ? Style : Style extends Record<string, () => unknown> ? readonly [
+    MapNamespace<{
         [Key in keyof Style]: Style[Key] extends () => infer Result ? Result : Style[Key];
-    }> : never;
+    }>,
+    InlineStyles
+    ] : MapNamespace<Style> : never;
 };
 
 // @public (undocumented)
 export type StyleProperties = {
-    [Key in keyof Properties]: StyleValue<Properties[Key] | null>;
+    [Key in keyof Properties]: StylePropertyValue<Properties[Key] | null>;
 } & Omit<{
-    [Key in keyof CSSPropertiesWithExtras]: StyleValue<CSSPropertiesWithExtras[Key]>;
-}, keyof Properties | `::${string}`> & Record<`--${string}`, StyleValue>;
+    [Key in keyof CSSPropertiesWithExtras]: StylePropertyValue<CSSPropertiesWithExtras[Key]>;
+}, keyof Properties | `::${string}`> & Record<`--${string}`, StylePropertyValue>;
 
 // @public (undocumented)
 export type StylePropertiesWithExtras = StyleProperties & Record<Exclude<PseudoElements, LegacyPseudoElements> | `${ParameterizedPseudoElements}(${string})`, StyleProperties> & {
@@ -140,21 +143,18 @@ export type StylePropertiesWithExtras = StyleProperties & Record<Exclude<PseudoE
 };
 
 // @public (undocumented)
-export const styler: (...args: (AuthoredStyle | StyleXStyles<CSSPropertiesWithExtras & Omit<Properties, keyof CSSPropertiesWithExtras>>)[]) => ReturnType<typeof props>;
-
-// @public (undocumented)
-export type StyleValue<T = {} | null> = T | ({
-    default: StyleValue<T>;
+export type StylePropertyValue<T = {} | null> = T | ({
+    default: StylePropertyValue<T>;
 } & {
-    [Key in Exclude<PseudoClasses, LegacyPseudoClasses> | `${ParameterizedPseudoClasses}(${string})` | AtRules | `${AtRules} ${string}`]?: StyleValue<T>;
+    [Key in Exclude<PseudoClasses, LegacyPseudoClasses> | `${ParameterizedPseudoClasses}(${string})` | AtRules | `${AtRules} ${string}`]?: StylePropertyValue<T>;
 } & {
     ':-moz-any()'?: never;
     ':-webkit-any()'?: never;
     ':matches()'?: never;
-}) | NonApplicableClassNameForProperties | NonApplicableStringProperties;
+}) | NonApplicableClassNameForProperties | NonApplicableStringProperties | readonly string[];
 
 // @public (undocumented)
-export type Thunkable<T> = T | (() => T);
+export const styler: (...args: AuthoredStyle[]) => ReturnType<typeof props>;
 
 // (No @packageDocumentation comment for this package)
 

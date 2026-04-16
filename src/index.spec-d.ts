@@ -5,7 +5,7 @@ const vars = defineVars({
   foo: null,
 })
 
-describe(styler, () => {
+describe('styler', () => {
   it('accepts standard properties', () => {
     styler({
       color: 'red',
@@ -327,6 +327,15 @@ describe(styler, () => {
     styler(defaultMarker())
   })
 
+  it('can access ancestor', () => {
+    styler({
+      color: {
+        default: null,
+        [when.ancestor(':hover')]: 'red',
+      },
+    })
+  })
+
   it('accepts styles with fallback', () => {
     styler({
       position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
@@ -334,7 +343,7 @@ describe(styler, () => {
   })
 })
 
-describe(style, () => {
+describe('style', () => {
   it('returns stylex styles', () => {
     expectTypeOf(
       style({
@@ -419,4 +428,5 @@ import { style } from './index.ts'
 import { styler } from './index.ts'
 import type { StyleXStyles } from '@stylexjs/stylex'
 import { types } from '@stylexjs/stylex'
+import { when } from '@stylexjs/stylex'
 //
