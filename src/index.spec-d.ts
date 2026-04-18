@@ -5,9 +5,9 @@ const vars = defineVars({
   foo: null,
 })
 
-describe('styler', () => {
+describe('apply', () => {
   it('accepts standard properties', () => {
-    styler({
+    apply({
       color: 'red',
       textBoxEdge: 'cap ex',
       cornerShape: 'squircle',
@@ -15,11 +15,11 @@ describe('styler', () => {
   })
 
   it('accepts custom properties', () => {
-    styler({
+    apply({
       '--custom': 'lorem',
       [vars.foo]: 'ipsum',
     })
-    styler({
+    apply({
       '::before': {
         '--custom': 'lorem',
         [vars.foo]: 'ipsum',
@@ -28,7 +28,7 @@ describe('styler', () => {
   })
 
   it('accepts pseudo-elements', () => {
-    styler({
+    apply({
       '::before': {
         color: 'red',
       },
@@ -36,7 +36,7 @@ describe('styler', () => {
   })
 
   it('accepts pseudo-elements with params', () => {
-    styler({
+    apply({
       '::part(foo)': {
         color: 'red',
       },
@@ -47,7 +47,7 @@ describe('styler', () => {
     // eslint-disable-next-line no-unassigned-vars, init-declarations
     let condition!: boolean
 
-    styler({
+    apply({
       color: condition && 'red',
       textBoxEdge: condition && 'cap ex',
       cornerShape: condition && 'squircle',
@@ -58,7 +58,7 @@ describe('styler', () => {
       },
     })
 
-    styler({
+    apply({
       color: condition ? 'red' : null,
       textBoxEdge: condition ? 'cap ex' : null,
       cornerShape: condition ? 'squircle' : null,
@@ -73,7 +73,7 @@ describe('styler', () => {
   })
 
   it('accepts dynamic styles', () => {
-    styler({
+    apply({
       color: () => 'red',
       textBoxEdge: () => 'cap ex',
       cornerShape: () => 'squircle',
@@ -86,7 +86,7 @@ describe('styler', () => {
   })
 
   it('accepts contextual styles', () => {
-    styler({
+    apply({
       color: {
         default: null,
         ':focus': 'red',
@@ -118,7 +118,7 @@ describe('styler', () => {
   })
 
   it('accepts combined contextual styles', () => {
-    styler({
+    apply({
       color: {
         default: null,
         '@container (width >= 1440px)': {
@@ -167,7 +167,7 @@ describe('styler', () => {
   })
 
   it('accepts dynamic contextual styles', () => {
-    styler({
+    apply({
       color: () => ({
         default: null,
         ':focus': 'red',
@@ -198,7 +198,7 @@ describe('styler', () => {
   })
 
   it('accepts dynamic combined contextual styles', () => {
-    styler({
+    apply({
       color: () => ({
         default: null,
         '@container (width >= 1440px)': {
@@ -247,7 +247,7 @@ describe('styler', () => {
   })
 
   it('accepts variable styles', () => {
-    styler({
+    apply({
       color: vars.foo,
       textBoxEdge: vars.foo,
       cornerShape: vars.foo,
@@ -264,7 +264,7 @@ describe('styler', () => {
       foo: types.angle('360deg'),
     })
 
-    styler({
+    apply({
       color: typedVars.foo,
       textBoxEdge: typedVars.foo,
       cornerShape: typedVars.foo,
@@ -277,7 +277,7 @@ describe('styler', () => {
   })
 
   it('accepts pseudo-classes', () => {
-    styler({
+    apply({
       color: {
         default: null,
         ':focus': 'red',
@@ -286,7 +286,7 @@ describe('styler', () => {
   })
 
   it('accepts pseudo-classes with params', () => {
-    styler({
+    apply({
       color: {
         default: null,
         ':dir(rtl)': 'red',
@@ -295,7 +295,7 @@ describe('styler', () => {
   })
 
   it('accepts at-rules', () => {
-    styler({
+    apply({
       color: {
         default: null,
         '@page': 'red',
@@ -304,7 +304,7 @@ describe('styler', () => {
   })
 
   it('accepts at-rules with params', () => {
-    styler({
+    apply({
       color: {
         default: null,
         '@container (width >= 1440)': 'red',
@@ -316,19 +316,19 @@ describe('styler', () => {
     // eslint-disable-next-line no-unassigned-vars, init-declarations
     let style!: StyleXStyles
 
-    styler(style)
+    apply(style)
 
-    styler(style, {
+    apply(style, {
       color: 'red',
     })
   })
 
   it('accepts stylex marker', () => {
-    styler(defaultMarker())
+    apply(defaultMarker())
   })
 
   it('can access ancestor', () => {
-    styler({
+    apply({
       color: {
         default: null,
         [when.ancestor(':hover')]: 'red',
@@ -337,16 +337,16 @@ describe('styler', () => {
   })
 
   it('accepts styles with fallback', () => {
-    styler({
+    apply({
       position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
     })
   })
 })
 
-describe('style', () => {
+describe('sheet', () => {
   it('returns stylex styles', () => {
     expectTypeOf(
-      style({
+      sheet({
         color: 'red',
       }),
     ).toExtend<
@@ -356,7 +356,7 @@ describe('style', () => {
     >()
 
     expectTypeOf(
-      style({
+      sheet({
         color: () => 'red',
       }),
     ).toExtend<
@@ -366,7 +366,7 @@ describe('style', () => {
     >()
 
     expectTypeOf(
-      style({
+      sheet({
         color: {
           default: 'red',
           ':focus': 'blue',
@@ -379,7 +379,7 @@ describe('style', () => {
     >()
 
     expectTypeOf(
-      style({
+      sheet({
         color: () => ({
           default: 'red',
           ':focus': 'blue',
@@ -397,7 +397,7 @@ describe('style', () => {
       },
     })
 
-    expectTypeOf(style(foo)).toExtend<
+    expectTypeOf(sheet(foo)).toExtend<
       StyleXStyles<{
         color?: 'red'
       }>
@@ -409,7 +409,7 @@ describe('style', () => {
       }),
     })
 
-    expectTypeOf(style(bar('red'))).toExtend<
+    expectTypeOf(sheet(bar('red'))).toExtend<
       StyleXStyles<{
         color?: string
       }>
@@ -417,6 +417,7 @@ describe('style', () => {
   })
 })
 
+import { apply } from './index.ts'
 import { create } from '@stylexjs/stylex'
 import { defaultMarker } from '@stylexjs/stylex'
 import { defineVars } from '@stylexjs/stylex'
@@ -424,8 +425,7 @@ import { describe } from 'vitest'
 import { expectTypeOf } from 'vitest'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
-import { style } from './index.ts'
-import { styler } from './index.ts'
+import { sheet } from './index.ts'
 import type { StyleXStyles } from '@stylexjs/stylex'
 import { types } from '@stylexjs/stylex'
 import { when } from '@stylexjs/stylex'

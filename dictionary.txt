@@ -1,10 +1,8 @@
 mjsx
 mtsx
-Renderable
+solarwindcss
 squircle
 stylex
 stylexjs
-Thunkable
 txee
 Visinage
-visinagecss

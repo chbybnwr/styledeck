@@ -16,7 +16,7 @@ import type { StyleXVar } from '@stylexjs/stylex';
 
 // @public (undocumented)
 export type AuthoredStyle = {
-    [Key in keyof StylePropertiesWithExtras]: StylePropertiesWithExtras[Key] | (() => StylePropertiesWithExtras[Key]) | boolean | null;
+    [Key in keyof StylePropertiesWithExtras]: StylePropertiesWithExtras[Key] | (() => StylePropertiesWithExtras[Key]) | false | null;
 } | Record<StyleXVar<unknown>, StylePropertyValue | (() => StylePropertyValue)> | StyleXStyles<CSSPropertiesWithExtras & Omit<Properties, keyof CSSPropertiesWithExtras>>;
 
 // @public (undocumented)
@@ -133,7 +133,7 @@ export type StyleProperties = {
 }, keyof Properties | `::${string}`> & Record<`--${string}`, StylePropertyValue>;
 
 // @public (undocumented)
-export type StylePropertiesWithExtras = StyleProperties & Record<Exclude<PseudoElements, LegacyPseudoElements> | `${ParameterizedPseudoElements}(${string})`, StyleProperties> & {
+export type StylePropertiesWithExtras = StyleProperties & Record<Exclude<PseudoElements, LegacyPseudoElements> | `${ParameterizedPseudoElements}(${string})`, StyleProperties | NonApplicableStringProperties | NonApplicableClassNameForProperties> & {
     ':after'?: never;
     ':before'?: never;
     ':first-letter'?: never;

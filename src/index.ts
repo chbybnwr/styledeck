@@ -1,4 +1,5 @@
-export type { AuthoredStyle }
+/* eslint-disable max-lines */
+export { apply }
 export type { LegacyPseudoClasses }
 export type { LegacyPseudoElements }
 export type { NonApplicableClassNameForProperties }
@@ -7,21 +8,74 @@ export type { ParameterizedPseudoClasses }
 export type { ParameterizedPseudoElements }
 export type { PseudoClasses }
 export type { PseudoElements }
-export { style }
+export { sheet }
+export type { Style }
 export type { StyleProperties }
 export type { StylePropertiesWithExtras }
 export type { StylePropertyValue }
-export { styler }
 
 /**
+ * Apply styles as props, e.g. `className` and `style`.
+ *
+ * @param args - One or more style objects or `StyleXStyles`
+ * @returns `ReturnType<typeof stylex.props>`
+ *
+ * @example
+ * ```tsx
+ * function App() {
+ *   return (
+ *     <div
+ *       {...apply(
+ *         { color: 'blue' },
+ *         styles.italic,
+ *       )}>
+ *       hello
+ *     </div>
+ *   )
+ * }
+ *
+ * const styles = stylex.create({
+ *   italic: {
+ *     fontStyle: 'italic',
+ *   }
+ * })
+ * ```
+ *
  * @public
  */
-const styler: (...args: AuthoredStyle[]) => ReturnType<typeof props> = macro
+const apply: (...args: Style[]) => ReturnType<typeof props> = macro
 
 /**
+ * Composes style objects into a sheet (`StyleXStyles`) for component style props.
+ *
+ * @param args - One or more style objects or `StyleXStyles`
+ * @returns Compiled sheet (`StyleXStyles`)
+ *
+ * @example
+ * ```tsx
+ * function Feed() {
+ *   return (
+ *     <Post style={sheet({ color: 'blue' })} />
+ *   )
+ * }
+ *
+ * function Post({ style }: { style?: StyleXStyles }) {
+ *   return (
+ *     <div
+ *       {...apply(
+ *         { color: 'black' },
+ *         style,
+ *       )}
+ *     >
+ *       Lorem ipsum
+ *     </div>
+ *   )
+ * }
+ * ```
+ *
  * @public
  */
-const style: <StyleList extends AuthoredStyle[]>(
+const sheet: <StyleList extends Style[]>(
   ...args: { [Index in keyof StyleList]: StyleList[Index] }
 ) => {
   [Index in keyof StyleList]: StyleList[Index] extends infer Style
@@ -47,7 +101,7 @@ function macro(): never {
 /**
  * @public
  */
-type AuthoredStyle =
+type Style =
   | {
       [Key in keyof StylePropertiesWithExtras]:
         | StylePropertiesWithExtras[Key]
@@ -287,6 +341,6 @@ import type { InlineStyles } from '@stylexjs/stylex'
 import type { MapNamespace } from '@stylexjs/stylex/lib/types/StyleXTypes'
 import type { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
-import type { StyleXStyles } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { StyleXStyles } from '@stylexjs/stylex'
 import type { StyleXVar } from '@stylexjs/stylex'
 //

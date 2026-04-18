@@ -1,19 +1,19 @@
-describe('styler', () => {
+describe('apply', () => {
   it('rejects unknown non-custom properties', () => {
     expect(() => {
-      styler({
+      apply({
         // @ts-expect-error
         foo: 'bar',
       })
 
-      styler({
+      apply({
         '::before': {
           // @ts-expect-error
           foo: 'bar',
         },
       })
 
-      styler({
+      apply({
         '::before': () => ({
           // TODO: @ts-expect-error
           foo: 'bar',
@@ -24,7 +24,7 @@ describe('styler', () => {
 
   it('rejects unknown pseudo-elements', () => {
     expect(() => {
-      styler({
+      apply({
         // @ts-expect-error
         '::foo': {
           color: 'red',
@@ -36,17 +36,17 @@ describe('styler', () => {
   it('rejects invalid style values', () => {
     expect(() => {
       // @ts-expect-error
-      styler({
+      apply({
         textJustify: 'foo',
       })
 
       // @ts-expect-error
-      styler({
+      apply({
         textJustify: () => 'foo',
       })
 
       // @ts-expect-error
-      styler({
+      apply({
         textJustify: {
           default: 'foo',
         },
@@ -57,14 +57,14 @@ describe('styler', () => {
   it('rejects contextual styles without default value', () => {
     expect(() => {
       // @ts-expect-error
-      styler({
+      apply({
         color: {
           ':focus': 'red',
         },
       })
 
       // @ts-expect-error
-      styler({
+      apply({
         color: {
           default: null,
           '@container (width >= 1440)': {
@@ -74,7 +74,7 @@ describe('styler', () => {
       })
 
       // @ts-expect-error
-      styler({
+      apply({
         color: () => ({
           ':focus': 'red',
         }),
@@ -84,7 +84,7 @@ describe('styler', () => {
 
   it('rejects unknown contexts(pseudo-elements and at-rules)', () => {
     expect(() => {
-      styler({
+      apply({
         color: {
           default: null,
           // @ts-expect-error
@@ -92,7 +92,7 @@ describe('styler', () => {
         },
       })
 
-      styler({
+      apply({
         color: {
           default: null,
           // @ts-expect-error
@@ -100,7 +100,7 @@ describe('styler', () => {
         },
       })
 
-      styler({
+      apply({
         color: {
           default: null,
           // @ts-expect-error
@@ -111,8 +111,8 @@ describe('styler', () => {
   })
 })
 
+import { apply } from './index.ts'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
-import { styler } from './index.ts'
 //
