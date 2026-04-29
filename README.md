@@ -28,22 +28,44 @@ Install the packages:
 
 ```bash
 npm install vicinage @stylexjs/stylex
-npm install --save-dev @vicinage/vite-plugin @stylexjs/unplugin
+npm install --save-dev @vicinage/unplugin @stylexjs/unplugin
 ```
 
-Configure `vite.config.js`. Put the Vicinage plugin before the StyleX plugin.
+Add the plugin to your Vite configuration right before the StyleX plugin.
 
 ```js
 import { defineConfig } from 'vite'
-import vicinage from '@vicinage/vite-plugin'
+import vicinage from '@vicinage/unplugin'
 import stylex from '@stylexjs/unplugin'
 
 export default defineConfig({
-  plugins: [vicinage(), stylex.vite()],
+  plugins: [vicinage.vite(), stylex.vite()],
 })
 ```
 
-Tip: Add design tokens with [SolarWind CSS](https://npmx.dev/package/solarwindcss).
+Tips:
+
+- Add design tokens with [SolarWind CSS](https://npmx.dev/package/solarwindcss).
+- Install VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding).
+
+  <detail>
+  <summary>Recommended settings</summary>
+
+  ```json
+    "[javascriptreact][typescriptreact]": {
+      "editor.defaultFoldingRangeProvider": "zokugun.explicit-folding",
+      "explicitFolding.rules": [
+        {
+          "beginRegex": "^\\s*<[a-zA-Z][a-zA-Z0-9-]*",
+          "endRegex": ">$",
+          "autoFold": true,
+          "foldLastLine": true
+        }
+      ]
+    },
+  ```
+
+  </detail>
 
 ## Usage
 
@@ -262,6 +284,7 @@ function SaveButton({ isEnabled }: { isEnabled: boolean }) {
   return (
     <button
       {...apply({
+        fontWeight: isEnabled && 'bold',
         backgroundColor: isEnabled ? 'blue' : 'gray',
       })}
     >
@@ -278,11 +301,11 @@ Use function to define runtime dynamic values.
 ```tsx
 import { apply } from 'vicinage'
 
-function ProgressBar({ percent }: { percent: number }) {
+function ProgressBar({ percentage }: { percentage: number }) {
   return (
     <div
       {...apply({
-        width: () => `${percent}%`,
+        width: () => `${percentage}%`,
         height: '16px',
         backgroundColor: 'blue',
       })}
