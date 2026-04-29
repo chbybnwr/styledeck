@@ -1,52 +1,49 @@
-# Visinage <!-- omit in toc -->
+# Vicinage <!-- omit in toc -->
 
 Modern CSS right in the markup.
 
 <details>
+
 <summary>Table of Contents</summary>
 
 - [Setup](#setup)
 - [Usage](#usage)
   - [Element styling](#element-styling)
   - [Component styling](#component-styling)
-  - [Conditional styling](#conditional-styling)
-  - [Dynamic styling](#dynamic-styling)
   - [Responsive styling](#responsive-styling)
   - [Pseudo-classes](#pseudo-classes)
   - [Pseudo-elements](#pseudo-elements)
   - [Variables](#variables)
   - [Cascade with StyleX styles](#cascade-with-stylex-styles)
-- [Troubleshooting](#troubleshooting)
-- [Using Visinage with Tailwind](#using-visinage-with-tailwind)
+  - [Conditional styling](#conditional-styling)
+  - [Dynamic styling](#dynamic-styling)
 
 </details>
 
 ## Setup
 
-Visinage is implemented as a preprocessor for [StyleX](https://stylexjs.com/).
+Vicinage is implemented as a preprocessor for [StyleX](https://stylexjs.com/).
 
 Install the packages:
 
 ```bash
-npm install visinage @stylexjs/stylex
-npm install --save-dev @visinage/vite-plugin @stylexjs/unplugin
+npm install vicinage @stylexjs/stylex
+npm install --save-dev @vicinage/vite-plugin @stylexjs/unplugin
 ```
 
-Configure `vite.config.js`. Put the Visinage plugin before the StyleX plugin.
+Configure `vite.config.js`. Put the Vicinage plugin before the StyleX plugin.
 
 ```js
 import { defineConfig } from 'vite'
-import visinage from '@visinage/vite-plugin'
+import vicinage from '@vicinage/vite-plugin'
 import stylex from '@stylexjs/unplugin'
 
 export default defineConfig({
-  plugins: [visinage(), stylex.vite()],
+  plugins: [vicinage(), stylex.vite()],
 })
 ```
 
-If you encounter issues, see [Troubleshooting](#troubleshooting).
-
-Tip: Bring Tailwind design tokens and utilities in with [SolarWind CSS](https://npmx.dev/package/solarwindcss).
+Tip: Add design tokens with [SolarWind CSS](https://npmx.dev/package/solarwindcss).
 
 ## Usage
 
@@ -55,7 +52,7 @@ Tip: Bring Tailwind design tokens and utilities in with [SolarWind CSS](https://
 Apply styles directly to HTML elements.
 
 ```tsx
-import { apply } from 'visinage'
+import { apply } from 'vicinage'
 
 function App() {
   return (
@@ -73,11 +70,10 @@ function App() {
 
 ### Component styling
 
-Pass styles with the `sheet()` function to components that accept `StyleXStyles`.
-It accepts the same type of arguments as `apply()`.
+Pass styles with the `sheet()` function to components that accept [`StyleXStyles`](https://stylexjs.com/docs/api/types/StyleXStyles).
 
 ```tsx
-import { apply, sheet } from 'visinage'
+import { apply, sheet } from 'vicinage'
 import type { StyleXStyles } from '@stylexjs/stylex'
 
 function Feed() {
@@ -106,42 +102,11 @@ function Post({ style }: { style?: StyleXStyles }) {
 }
 ```
 
-### Conditional styling
-
-```tsx
-function SaveButton({ isEnabled }: { isEnabled: boolean }) {
-  return (
-    <button
-      {...apply({
-        backgroundColor: isEnabled ? 'blue' : 'gray',
-      })}
-    >
-      Save changes
-    </button>
-  )
-}
-```
-
-### Dynamic styling
-
-```tsx
-function ProgressBar({ percent }: { percent: number }) {
-  return (
-    <div
-      {...apply({
-        // Closure form is required for runtime dynamic values.
-        width: () => `${percent}%`,
-        height: '16px',
-        backgroundColor: 'blue',
-      })}
-    />
-  )
-}
-```
-
 ### Responsive styling
 
 ```tsx
+import { apply } from 'vicinage'
+
 function Hero() {
   return (
     <h1
@@ -161,7 +126,7 @@ function Hero() {
 ### Pseudo-classes
 
 ```tsx
-import { apply } from 'visinage'
+import { apply } from 'vicinage'
 
 function BillingLink() {
   return (
@@ -183,7 +148,7 @@ function BillingLink() {
 ### Pseudo-elements
 
 ```tsx
-import { apply } from 'visinage'
+import { apply } from 'vicinage'
 
 function SearchInput() {
   return (
@@ -213,6 +178,8 @@ Custom properties for app-level theming and inline overrides:
 ```
 
 ```tsx
+import { apply } from 'vicinage'
+
 function Sidebar() {
   return (
     <nav
@@ -240,7 +207,7 @@ export const color = stylex.defineVars({
 ```
 
 ```tsx
-import { apply } from 'visinage'
+import { apply } from 'vicinage'
 import { color } from './tokens.stylex'
 
 function PrimaryButton({ label }: { label: string }) {
@@ -259,7 +226,7 @@ function PrimaryButton({ label }: { label: string }) {
 ### Cascade with StyleX styles
 
 ```tsx
-import { apply } from 'visinage'
+import { apply } from 'vicinage'
 import * as stylex from '@stylexjs/stylex'
 
 const typography = stylex.create({
@@ -286,46 +253,61 @@ function Timestamp() {
 }
 ```
 
-## Troubleshooting
+### Conditional styling
 
-- For setup with Tailwind, see [Using Visinage with Tailwind](#using-visinage-with-tailwind).
-- `Error: macro was called at runtime`:
-  - Ensure `@visinage/vite-plugin` is installed as a dev dependency.
-  - Ensure visinage plugin appears before stylex plugin in your Vite plugins array.
-  - Restart the dev server after changing plugin configuration.
-- Type errors for contextual rules:
-  - Ensure contextual objects include a `default` value.
-- Unknown pseudo or property errors:
-  - Ensure the selector/property is valid and supported.
+```tsx
+import { apply } from 'vicinage'
 
-## Using Visinage with Tailwind
-
-Using Visinage with Tailwind in the same project is possible.
-Visinage can not be used with Tailwind for the same element, `apply()` returns `{ className, style }` props. It will overwrite Tailwind classes, or vice-versa, depending on the order.
-
-Tailwind can overrides Visinage styles unexpectedly. Prevent this by isolating Tailwind inside a layer.
-In `index.html`, declare the layer before other stylesheets:
-
-```html
-<!doctype html>
-<html lang="">
-  <head>
-    <style type="text/css">
-      @layer tailwind;
-    </style>
-    <!-- other headers -->
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
-</html>
-```
-
-Then import Tailwind inside that layer:
-
-```css
-@layer tailwind {
-  @import 'tailwindcss';
+function SaveButton({ isEnabled }: { isEnabled: boolean }) {
+  return (
+    <button
+      {...apply({
+        backgroundColor: isEnabled ? 'blue' : 'gray',
+      })}
+    >
+      Save changes
+    </button>
+  )
 }
 ```
+
+### Dynamic styling
+
+Use function to define runtime dynamic values.
+
+```tsx
+import { apply } from 'vicinage'
+
+function ProgressBar({ percent }: { percent: number }) {
+  return (
+    <div
+      {...apply({
+        width: () => `${percent}%`,
+        height: '16px',
+        backgroundColor: 'blue',
+      })}
+    />
+  )
+}
+```
+
+Dynamic values can also be deeply nested.
+
+```tsx
+import { apply } from 'vicinage'
+
+function Swatch({ hue }: { hue: number }) {
+  return (
+    <div
+      {...apply({
+        backgroundColor: {
+          default: () => `hsl(${hue}, 60%, 50%)`,
+          ':hover': () => `hsl(${hue}, 80%, 40%)`,
+        },
+      })}
+    />
+  )
+}
+```
+
+NOTE: The function body must be an expression statement. You cannot use a function body with block statement.
