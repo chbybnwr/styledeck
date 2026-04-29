@@ -51,18 +51,6 @@ export default defineConfig([
       },
     },
     rules: {
-      '@typescript-eslint/no-deprecated': [
-        'warn',
-        {
-          allow: [
-            {
-              from: 'file',
-              name: ['RenderableNode'],
-              path: './src/rendering.ts',
-            },
-          ],
-        },
-      ],
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
