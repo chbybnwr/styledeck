@@ -79,9 +79,9 @@ describe('apply', () => {
       cornerShape: () => 'squircle',
       '--custom': () => 'lorem',
       [vars.foo]: () => 'ipsum',
-      '::before': () => ({
-        color: 'red',
-      }),
+      '::before': {
+        color: () => 'red',
+      },
     })
   })
 
@@ -166,83 +166,21 @@ describe('apply', () => {
     })
   })
 
-  it('accepts dynamic contextual styles', () => {
+  it('accepts deep dynamic contextual values', () => {
     apply({
-      color: () => ({
-        default: null,
-        ':focus': 'red',
-      }),
-      textBoxEdge: () => ({
-        default: null,
-        ':focus': 'cap ex',
-      }),
-      cornerShape: () => ({
-        default: null,
-        ':focus': 'squircle',
-      }),
-      '--custom': () => ({
-        default: null,
-        ':focus': 'lorem',
-      }),
-      [vars.foo]: () => ({
-        default: null,
-        ':focus': 'ipsum',
-      }),
-      '::before': () => ({
+      color: {
+        default: () => 'red',
+        '@container (width >= 1440px)': {
+          default: () => 'green',
+          ':focus': () => 'blue',
+        },
+      },
+      '::before': {
         color: {
-          default: null,
-          ':focus': 'red',
+          default: () => 'orange',
+          ':focus': () => 'yellow',
         },
-      }),
-    })
-  })
-
-  it('accepts dynamic combined contextual styles', () => {
-    apply({
-      color: () => ({
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'red',
-        },
-      }),
-      textBoxEdge: () => ({
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'cap ex',
-        },
-      }),
-      cornerShape: () => ({
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'squircle',
-        },
-      }),
-      '--custom': () => ({
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'lorem',
-        },
-      }),
-      [vars.foo]: () => ({
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'ipsum',
-        },
-      }),
-      '::before': () => ({
-        color: {
-          default: null,
-          '@container (width >= 1440px)': {
-            default: null,
-            ':focus': 'red',
-          },
-        },
-      }),
+      },
     })
   })
 
@@ -253,9 +191,9 @@ describe('apply', () => {
       cornerShape: vars.foo,
       '--custom': vars.foo,
       [vars.foo]: vars.foo,
-      '::before': () => ({
-        color: vars.foo,
-      }),
+      '::before': {
+        color: () => vars.foo,
+      },
     })
   })
 
@@ -270,9 +208,9 @@ describe('apply', () => {
       cornerShape: typedVars.foo,
       '--custom': typedVars.foo,
       [typedVars.foo]: typedVars.foo,
-      '::before': () => ({
-        color: typedVars.foo,
-      }),
+      '::before': {
+        color: () => typedVars.foo,
+      },
     })
   })
 
@@ -350,7 +288,7 @@ describe('sheet', () => {
         color: 'red',
       }),
     ).toExtend<
-      StyleXStyles<{
+      StaticStyles<{
         color?: 'red'
       }>
     >()
@@ -373,6 +311,19 @@ describe('sheet', () => {
         },
       }),
     ).toExtend<
+      StaticStyles<{
+        color?: 'red' | 'blue'
+      }>
+    >()
+
+    expectTypeOf(
+      sheet({
+        color: {
+          default: () => 'red',
+          ':focus': 'blue',
+        },
+      }),
+    ).toExtend<
       StyleXStyles<{
         color?: 'red' | 'blue'
       }>
@@ -380,14 +331,17 @@ describe('sheet', () => {
 
     expectTypeOf(
       sheet({
-        color: () => ({
-          default: 'red',
-          ':focus': 'blue',
-        }),
+        color: {
+          default: () => 'red',
+          '@container (width > 1440px)': {
+            default: 'green',
+            ':focus': 'blue',
+          },
+        },
       }),
     ).toExtend<
       StyleXStyles<{
-        color?: 'red' | 'blue'
+        color?: 'red' | 'green' | 'blue'
       }>
     >()
 
@@ -398,7 +352,7 @@ describe('sheet', () => {
     })
 
     expectTypeOf(sheet(foo)).toExtend<
-      StyleXStyles<{
+      StaticStyles<{
         color?: 'red'
       }>
     >()
@@ -415,6 +369,38 @@ describe('sheet', () => {
       }>
     >()
   })
+
+  it('accepts variadic style inputs', () => {
+    apply(
+      ...sheet(
+        {
+          color: 'red',
+        },
+        {
+          backgroundColor: 'blue',
+        },
+      ),
+    )
+
+    apply(
+      ...sheet(
+        {
+          color: 'red',
+        },
+        {
+          opacity: () => '0.5',
+        },
+      ),
+    )
+  })
+
+  it('keeps array values as static leaf values', () => {
+    apply(
+      ...sheet({
+        fontFamily: ['Inter', 'sans-serif'],
+      }),
+    )
+  })
 })
 
 import { apply } from './index.ts'
@@ -426,6 +412,7 @@ import { expectTypeOf } from 'vitest'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
 import { sheet } from './index.ts'
+import type { StaticStyles } from '@stylexjs/stylex'
 import type { StyleXStyles } from '@stylexjs/stylex'
 import { types } from '@stylexjs/stylex'
 import { when } from '@stylexjs/stylex'

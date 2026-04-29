@@ -1,7 +1,10 @@
 /* eslint-disable max-lines */
+
 export { apply }
+export type { IsDynamicStyle }
 export type { LegacyPseudoClasses }
 export type { LegacyPseudoElements }
+export type { MapDynamicStyle }
 export type { NonApplicableClassNameForProperties }
 export type { NonApplicableStringProperties }
 export type { ParameterizedPseudoClasses }
@@ -15,9 +18,9 @@ export type { StylePropertiesWithExtras }
 export type { StylePropertyValue }
 
 /**
- * Apply styles as props, e.g. `className` and `style`.
+ * Apply styles as props `{ className, style }`.
  *
- * @param args - One or more style objects or `StyleXStyles`
+ * @param styles - Style objects or `StyleXStyles`
  * @returns `ReturnType<typeof stylex.props>`
  *
  * @example
@@ -43,12 +46,12 @@ export type { StylePropertyValue }
  *
  * @public
  */
-const apply: (...args: Style[]) => ReturnType<typeof props> = macro
+const apply: (...styles: Style[]) => ReturnType<typeof props> = macro
 
 /**
  * Composes style objects into a sheet (`StyleXStyles`) for component style props.
  *
- * @param args - One or more style objects or `StyleXStyles`
+ * @param styles - Style objects or `StyleXStyles`
  * @returns Compiled sheet (`StyleXStyles`)
  *
  * @example
@@ -75,21 +78,14 @@ const apply: (...args: Style[]) => ReturnType<typeof props> = macro
  *
  * @public
  */
-const sheet: <StyleList extends Style[]>(
-  ...args: { [Index in keyof StyleList]: StyleList[Index] }
+const sheet: <StyleList extends unknown[]>(
+  ...styles: { [Index in keyof StyleList]: StyleList[Index] & Style }
 ) => {
   [Index in keyof StyleList]: StyleList[Index] extends infer Style
     ? Style extends StyleXStyles
       ? Style
-      : Style extends Record<string, () => unknown>
-        ? readonly [
-            MapNamespace<{
-              [Key in keyof Style]: Style[Key] extends () => infer Result
-                ? Result
-                : Style[Key]
-            }>,
-            InlineStyles,
-          ]
+      : IsDynamicStyle<Style> extends true
+        ? readonly [MapNamespace<MapDynamicStyle<Style>>, InlineStyles]
         : MapNamespace<Style>
     : never
 } = macro
@@ -105,7 +101,6 @@ type Style =
   | {
       [Key in keyof StylePropertiesWithExtras]:
         | StylePropertiesWithExtras[Key]
-        | (() => StylePropertiesWithExtras[Key])
         | false
         | null
     }
@@ -114,6 +109,38 @@ type Style =
       CSSPropertiesWithExtras &
         Omit<CSSProperties, keyof CSSPropertiesWithExtras>
     >
+
+/**
+ * @public
+ */
+type MapDynamicStyle<Value, Seen = never> = [Value] extends [Seen]
+  ? Value
+  : Value extends (...args: never[]) => infer Result
+    ? MapDynamicStyle<Result, Seen | Value>
+    : Value extends readonly unknown[]
+      ? Value
+      : Value extends object
+        ? {
+            [Key in keyof Value]: MapDynamicStyle<Value[Key], Seen | Value>
+          }
+        : Value
+
+/**
+ * @public
+ */
+type IsDynamicStyle<Value, Seen = never> = [Value] extends [Seen]
+  ? false
+  : Value extends (...args: never[]) => unknown
+    ? true
+    : Value extends readonly unknown[]
+      ? false
+      : Value extends object
+        ? true extends {
+            [Key in keyof Value]-?: IsDynamicStyle<Value[Key], Seen | Value>
+          }[keyof Value]
+          ? true
+          : false
+        : false
 
 /**
  * @public
@@ -164,6 +191,7 @@ type StylePropertyValue<
   T = {} | null,
 > =
   | T
+  | (() => T)
   | ({
       default: StylePropertyValue<T>
     } & {
@@ -332,6 +360,10 @@ interface NonApplicableStringProperties {
   trimEnd?: never
   /** @deprecated non-applicable */
   trimStart?: never
+  /** @deprecated non-applicable */
+  at?: never
+  /** @deprecated non-applicable */
+  replaceAll?: never
 }
 
 import type { AtRules } from 'csstype'

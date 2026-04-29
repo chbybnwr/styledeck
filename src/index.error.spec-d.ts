@@ -12,13 +12,6 @@ describe('apply', () => {
           foo: 'bar',
         },
       })
-
-      apply({
-        '::before': () => ({
-          // TODO: @ts-expect-error
-          foo: 'bar',
-        }),
-      })
     }).toThrow()
   })
 
@@ -82,7 +75,7 @@ describe('apply', () => {
     }).toThrow()
   })
 
-  it('rejects unknown contexts(pseudo-elements and at-rules)', () => {
+  it('rejects unknown contexts', () => {
     expect(() => {
       apply({
         color: {
@@ -91,7 +84,11 @@ describe('apply', () => {
           foo: 'bar',
         },
       })
+    }).toThrow()
+  })
 
+  it('rejects unknown pseudo-elements)', () => {
+    expect(() => {
       apply({
         color: {
           default: null,
@@ -99,7 +96,11 @@ describe('apply', () => {
           ':foo': 'bar',
         },
       })
+    }).toThrow()
+  })
 
+  it('rejects unknown at-rules)', () => {
+    expect(() => {
       apply({
         color: {
           default: null,
@@ -107,6 +108,17 @@ describe('apply', () => {
           '@foo': 'bar',
         },
       })
+    }).toThrow()
+  })
+
+  it('rejects closures as arguments', () => {
+    expect(() => {
+      apply(
+        // @ts-expect-error
+        () => ({
+          color: 'red',
+        }),
+      )
     }).toThrow()
   })
 })
