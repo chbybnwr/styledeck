@@ -7,21 +7,19 @@
     "type": "git",
     "url": "git+https://github.com/chbybnwr/vicinage.git"
   },
-  "homepage": "https://github.com/chbybnwr/vicinage/tree/main",
+  "homepage": "https://github.com/chbybnwr/vicinage",
   "bugs": {
     "url": "https://github.com/chbybnwr/vicinage/issues"
   },
   "keywords": [
-    "compile-time",
     "css",
     "inline",
     "jsx",
-    "macro",
-    "modern",
     "style",
     "stylex",
-    "type-safe",
-    "typescript"
+    "styling",
+    "ui",
+    "vicinage"
   ],
   "type": "module",
   "exports": "./dist/index.js",
