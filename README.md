@@ -1,12 +1,15 @@
-# Vicinage <!-- omit in toc -->
+# Vicinage &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/chbybnwr/vicinage/blob/prototype/LICENSE) [![npm version](https://img.shields.io/npm/v/vicinage.svg?style=flat)](https://www.npmjs.com/package/vicinage) <!-- omit in toc -->
 
-Modern CSS right in the markup.
+Type-safe and zero-runtime UI styling, right in the markup.
+
+Vicinage lets you write strongly-typed CSS objects directly on your markup. Leveraging the power of [StyleX](https://stylexjs.com/) under the hood to extract them to zero-runtime atomic CSS, without the friction of naming every single style block.
 
 <details>
 
 <summary>Table of Contents</summary>
 
 - [Setup](#setup)
+  - [Tips](#tips)
 - [Usage](#usage)
   - [Element styling](#element-styling)
   - [Component styling](#component-styling)
@@ -43,15 +46,17 @@ export default defineConfig({
 })
 ```
 
-Tips:
+### Tips
 
 - Add design tokens with [SolarWind CSS](https://npmx.dev/package/solarwindcss).
+
 - Install VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding).
 
-  <detail>
+  <details>
   <summary>Recommended settings</summary>
 
   ```json
+  {
     "[javascriptreact][typescriptreact]": {
       "editor.defaultFoldingRangeProvider": "zokugun.explicit-folding",
       "explicitFolding.rules": [
@@ -62,10 +67,11 @@ Tips:
           "foldLastLine": true
         }
       ]
-    },
+    }
+  }
   ```
 
-  </detail>
+  </details>
 
 ## Usage
 
