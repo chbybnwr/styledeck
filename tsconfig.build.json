@@ -1,8 +1,8 @@
 {
   "extends": [
-    "@txee/tsconfig/tsconfig.base.json",
-    "@txee/tsconfig/tsconfig.library.json",
-    "@txee/tsconfig/tsconfig.vite.json"
+    "@txe/tsconfig/tsconfig.base.json",
+    "@txe/tsconfig/tsconfig.library.json",
+    "@txe/tsconfig/tsconfig.vite.json"
   ],
   "include": ["src/**/*"],
   "exclude": ["src/**/*.spec*.*", "src/test/**/*"],
