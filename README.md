@@ -48,7 +48,7 @@ export default defineConfig({
 
 ### Tips
 
-- Add design tokens with [SolarWind CSS](https://npmx.dev/package/solarwindcss).
+- Add design tokens with [SolarWind CSS](https://github.com/c5n8/solarwindcss).
 
 - Install VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding).
 
