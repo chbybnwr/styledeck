@@ -3,20 +3,25 @@
 !/src/
 !/etc/
 
-!/.npmignore
-!/.node-version
-
 !/.editorconfig
 !/.prettierignore
+!/cspell.config.*
 !/dictionary.txt
+!/eslint.config.*
+!/prettier.config.*
+
+!/api-extractor.json
+!/tsconfig*.json
+!/vite.config.*
+
+!/.npmignore
+!/.node-version
+!/package.json
+!/package-lock.json
+!/pnpm-lock.yaml
 
 !/LICENSE
 !/README.md
-
-!/*.yaml
-!/*.js
-!/*.json
-!/*.ts
 
 !/.gitatributes
 !/.gitignore
