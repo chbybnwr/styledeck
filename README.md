@@ -62,7 +62,7 @@ export default defineConfig({
       "explicitFolding.rules": [
         {
           "beginRegex": "^\\s*<[a-zA-Z][a-zA-Z0-9-]*",
-          "endRegex": ">$",
+          "endRegex": "(?<!=)>$",
           "autoFold": true,
           "foldLastLine": true
         }
