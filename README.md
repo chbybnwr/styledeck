@@ -23,6 +23,9 @@ Vicinage lets you write strongly-typed CSS objects directly on your markup. Leve
 
 </details>
 
+## Quick Start
+- [Next.js](https://github.com/chbybnwr/vicinage-nextjs-starter)
+
 ## Setup
 
 Vicinage is implemented as a preprocessor for [StyleX](https://stylexjs.com/).
@@ -49,7 +52,7 @@ export default defineConfig({
 ### Tips
 
 - Add design tokens with [SolarWind CSS](https://github.com/c5n8/solarwindcss).
-
+- Install Chrome Extension [StyleX DevTools](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem).
 - Install VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding).
 
   <details>
