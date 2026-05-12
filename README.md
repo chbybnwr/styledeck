@@ -24,6 +24,7 @@ Vicinage lets you write strongly-typed CSS objects directly on your markup. Leve
 </details>
 
 ## Quick Start
+
 - [Next.js](https://github.com/chbybnwr/vicinage-nextjs-starter)
 
 ## Setup
