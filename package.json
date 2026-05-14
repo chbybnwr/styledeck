@@ -28,17 +28,15 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "check": "run-s \"test -- --coverage --reporter=verbose\" lint \"format -- --check\" spellcheck",
-    "prepack": "shx cp package.json package.json.backup && npm pkg delete scripts packageManager devDependencies",
-    "postpack": "shx rm package.json && shx mv package.json.backup package.json",
+    "check": "npm run test -- --coverage --reporter=verbose && npm run lint && npm run format -- --check && npm run spellcheck",
+    "prepack": "npm pkg delete scripts packageManager devDependencies",
     "build": "vite build",
     "compile": "tsc --project tsconfig.build.json",
-    "extract": "shx rm -rf ./lib/ && npm run compile && api-extractor run --local",
+    "extract": "npm run compile && api-extractor run --local",
     "test": "vitest run",
     "lint": "eslint ./ --cache",
     "format": "prettier ./",
-    "spellcheck": "cspell ./",
-    "local-pack": "run-s build extract && npm pack"
+    "spellcheck": "cspell ./"
   },
   "packageManager": "pnpm@11.1.1",
   "dependencies": {
