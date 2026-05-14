@@ -31,7 +31,6 @@ export default {
       '**/*.spec.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
       '**/*.error.spec-d.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
     ],
-    environment: 'jsdom',
     typecheck: {
       enabled: true,
       tsconfig: './tsconfig.test.json',
