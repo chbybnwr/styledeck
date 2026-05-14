@@ -1,4 +1,4 @@
-# Vicinage &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/chbybnwr/vicinage/blob/prototype/LICENSE) [![npm version](https://img.shields.io/npm/v/vicinage.svg?style=flat)](https://www.npmjs.com/package/vicinage) <!-- omit in toc -->
+# Vicinage &middot; [![GitHub license](https://img.shields.io/npm/l/vicinage.svg?style=flat-square)](https://github.com/chbybnwr/vicinage/blob/prototype/LICENSE) [![npm version](https://img.shields.io/npm/v/vicinage.svg?style=flat-square)](https://www.npmjs.com/package/vicinage) <!-- omit in toc -->
 
 Type-safe and zero-runtime UI styling, right in the markup.
 
@@ -8,6 +8,7 @@ Vicinage lets you write strongly-typed CSS objects directly on your markup. Leve
 
 <summary>Table of Contents</summary>
 
+- [Quick Start](#quick-start)
 - [Setup](#setup)
   - [Tips](#tips)
 - [Usage](#usage)
