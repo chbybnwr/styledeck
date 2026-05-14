@@ -1,4 +1,4 @@
-# Vicinage &middot; [![GitHub license](https://img.shields.io/npm/l/vicinage.svg?style=flat-square)](https://github.com/chbybnwr/vicinage/blob/prototype/LICENSE) [![npm version](https://img.shields.io/npm/v/vicinage.svg?style=flat-square)](https://www.npmjs.com/package/vicinage) <!-- omit in toc -->
+# Vicinage &middot; [![npm version](https://img.shields.io/npm/v/vicinage.svg?style=flat-square)](https://www.npmjs.com/package/vicinage) [![build](https://img.shields.io/github/actions/workflow/status/chbybnwr/vicinage/publish.yml?label=build&style=flat-square)](https://github.com/chbybnwr/vicinage/actions/workflows/publish.yml) [![GitHub license](https://img.shields.io/npm/l/vicinage.svg?style=flat-square)](https://github.com/chbybnwr/vicinage/blob/prototype/LICENSE) <!-- omit in toc -->
 
 Type-safe and zero-runtime UI styling, right in the markup.
 
