@@ -34,8 +34,8 @@ importers:
         specifier: ~0.2.1
         version: 0.2.1(eslint@10.3.0)(typescript@6.0.3)
       '@txe/tsconfig':
-        specifier: file:modules/txe-tsconfig-0.1.0.tgz
-        version: file:modules/txe-tsconfig-0.1.0.tgz
+        specifier: github:chbybnwr/tsconfig
+        version: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/6fbc8a0f84f8d7b99e472b06af3348431d86b509
       '@types/babel__traverse':
         specifier: ^7.28.0
         version: 7.28.0
@@ -704,8 +704,8 @@ packages:
   '@txe/eslint-plugin-x@0.2.1':
     resolution: {integrity: sha512-eMysmg7eSclvg/CR5z68e72i4USj4hecSo+Jcch/9vsS8Vr50wQdFajHl0xCMbCcpM9GkdmAQjoMeo0SxE5tKg==}
 
-  '@txe/tsconfig@file:modules/txe-tsconfig-0.1.0.tgz':
-    resolution: {integrity: sha512-Pt2vrazQ0OzFSMZ/ct9xlus1W3KGYcoK+E/xbFavpofhH0sBNKOc1qXQ2oK38TXcC2NdfUr05tnjQwsNuh4ELA==, tarball: file:modules/txe-tsconfig-0.1.0.tgz}
+  '@txe/tsconfig@https://codeload.github.com/chbybnwr/tsconfig/tar.gz/6fbc8a0f84f8d7b99e472b06af3348431d86b509':
+    resolution: {gitHosted: true, integrity: sha512-baqDRFBwSoi0hS1UaFXwHgYN5xupncNYTlZIzihNx1MDIJrgYzd1GXQW+7mdfRU+WCsOQ3yoQQjVYcLY7eJHew==, tarball: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/6fbc8a0f84f8d7b99e472b06af3348431d86b509}
     version: 0.1.0
 
   '@tybys/wasm-util@0.10.2':
@@ -3068,7 +3068,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@txe/tsconfig@file:modules/txe-tsconfig-0.1.0.tgz': {}
+  '@txe/tsconfig@https://codeload.github.com/chbybnwr/tsconfig/tar.gz/6fbc8a0f84f8d7b99e472b06af3348431d86b509': {}
 
   '@tybys/wasm-util@0.10.2':
     dependencies:
