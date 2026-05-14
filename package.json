@@ -28,11 +28,13 @@
     "./package.json": "./package.json"
   },
   "scripts": {
+    "prepack": "npm run build && npm run extract",
+    "prepublishOnly": "npm pkg delete scripts packageManager devDependencies",
     "check": "npm run test -- --coverage --reporter=verbose && npm run lint && npm run format -- --check && npm run spellcheck",
-    "prepack": "npm pkg delete scripts packageManager devDependencies",
     "build": "vite build",
     "compile": "tsc --project tsconfig.build.json",
-    "extract": "npm run compile && api-extractor run --local",
+    "extract": "npm run compile && api-extractor run",
+    "extract:local": "npm run extract -- --local",
     "test": "vitest run",
     "lint": "eslint ./ --cache",
     "format": "prettier ./",
