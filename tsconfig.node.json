@@ -1,7 +1,7 @@
 {
   "extends": [
-    "@txe/tsconfig/tsconfig.base.json",
-    "@txe/tsconfig/tsconfig.node24.json"
+    "@chbybnwr/tsconfig/tsconfig.base.json",
+    "@chbybnwr/tsconfig/tsconfig.node24.json"
   ],
 
   "include": ["./*"],

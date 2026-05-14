@@ -15,6 +15,9 @@ importers:
         specifier: ^3.2.3
         version: 3.2.3
     devDependencies:
+      '@chbybnwr/tsconfig':
+        specifier: github:chbybnwr/tsconfig
+        version: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/642e42bd201c9b071761b39f1b559c0a1c765b5e
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.3.0)
@@ -33,9 +36,6 @@ importers:
       '@txe/eslint-plugin-x':
         specifier: ~0.2.1
         version: 0.2.1(eslint@10.3.0)(typescript@6.0.3)
-      '@txe/tsconfig':
-        specifier: github:chbybnwr/tsconfig
-        version: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/6fbc8a0f84f8d7b99e472b06af3348431d86b509
       '@types/node':
         specifier: ^25.7.0
         version: 25.7.0
@@ -113,6 +113,10 @@ packages:
   '@bcoe/v8-coverage@1.0.2':
     resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
     engines: {node: '>=18'}
+
+  '@chbybnwr/tsconfig@https://codeload.github.com/chbybnwr/tsconfig/tar.gz/642e42bd201c9b071761b39f1b559c0a1c765b5e':
+    resolution: {gitHosted: true, integrity: sha512-0R3QJMadYrzLkDV+6UR+QOokqG7TSPXSJYU5FLFc3SgVLkv1/iti8HjBsdHux0OdUnD2hZiCPWlEAQ8a8RIDLg==, tarball: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/642e42bd201c9b071761b39f1b559c0a1c765b5e}
+    version: 0.1.1
 
   '@cspell/cspell-bundled-dicts@10.0.0':
     resolution: {integrity: sha512-ci410HEkng2582oOjlRHQtlGXwh+rUC/mVcN9dObLHpKhvPgzn2S6vT56pARstxxZpcCUG/oLhn3dCqdJlVzmA==}
@@ -612,10 +616,6 @@ packages:
 
   '@txe/eslint-plugin-x@0.2.1':
     resolution: {integrity: sha512-eMysmg7eSclvg/CR5z68e72i4USj4hecSo+Jcch/9vsS8Vr50wQdFajHl0xCMbCcpM9GkdmAQjoMeo0SxE5tKg==}
-
-  '@txe/tsconfig@https://codeload.github.com/chbybnwr/tsconfig/tar.gz/6fbc8a0f84f8d7b99e472b06af3348431d86b509':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/6fbc8a0f84f8d7b99e472b06af3348431d86b509}
-    version: 0.1.0
 
   '@tybys/wasm-util@0.10.2':
     resolution: {integrity: sha512-RoBvJ2X0wuKlWFIjrwffGw1IqZHKQqzIchKaadZZfnNpsAYp2mM0h36JtPCjNDAHGgYez/15uMBpfGwchhiMgg==}
@@ -2143,6 +2143,8 @@ snapshots:
 
   '@bcoe/v8-coverage@1.0.2': {}
 
+  '@chbybnwr/tsconfig@https://codeload.github.com/chbybnwr/tsconfig/tar.gz/642e42bd201c9b071761b39f1b559c0a1c765b5e': {}
+
   '@cspell/cspell-bundled-dicts@10.0.0':
     dependencies:
       '@cspell/dict-ada': 4.1.1
@@ -2638,8 +2640,6 @@ snapshots:
       - eslint
       - supports-color
       - typescript
-
-  '@txe/tsconfig@https://codeload.github.com/chbybnwr/tsconfig/tar.gz/6fbc8a0f84f8d7b99e472b06af3348431d86b509': {}
 
   '@tybys/wasm-util@0.10.2':
     dependencies:

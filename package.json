@@ -44,13 +44,13 @@
     "csstype": "^3.2.3"
   },
   "devDependencies": {
+    "@chbybnwr/tsconfig": "github:chbybnwr/tsconfig",
     "@eslint/js": "^10.0.1",
     "@eslint/json": "^1.2.0",
     "@eslint/markdown": "^8.0.1",
     "@microsoft/api-extractor": "^7.58.7",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@txe/eslint-plugin-x": "~0.2.1",
-    "@txe/tsconfig": "github:chbybnwr/tsconfig",
     "@types/node": "^25.7.0",
     "@typescript-eslint/parser": "^8.59.3",
     "@typescript/native-preview": "7.0.0-dev.20260513.1",
