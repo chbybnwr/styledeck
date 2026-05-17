@@ -108,6 +108,7 @@ export default defineConfig([
     rules: {
       'unicorn/no-null': 'off',
       'unicorn/prevent-abbreviations': 'off',
+      'unicorn/no-named-default': 'off',
     },
   },
 

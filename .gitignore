@@ -12,7 +12,8 @@
 
 !/api-extractor.json
 !/tsconfig*.json
-!/vite.config.*
+!/tsdown.config.*
+!/vitest.config.*
 
 !/.github
 !/.npmignore

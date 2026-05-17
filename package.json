@@ -30,7 +30,7 @@
   "scripts": {
     "prepublishOnly": "npm run build && npm run extract && npm pkg delete scripts packageManager devDependencies",
     "check": "npm run test -- --coverage --reporter=verbose && npm run lint && npm run format -- --check && npm run spellcheck",
-    "build": "vite build",
+    "build": "tsdown",
     "compile": "tsc --project tsconfig.build.json",
     "extract": "npm run compile && api-extractor run",
     "extract:local": "npm run extract -- --local",
@@ -66,6 +66,7 @@
     "eslint-plugin-unicorn": "^64.0.0",
     "globals": "^17.6.0",
     "prettier": "^3.8.3",
+    "tsdown": "^0.22.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.3",
     "vite": "^8.0.12",
