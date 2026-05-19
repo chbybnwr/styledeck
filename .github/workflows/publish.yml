@@ -4,13 +4,12 @@ on:
   release:
     types: [created]
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
   publish:
     environment: production
+    permissions:
+      id-token: write
+      contents: read
     needs: [test, lint]
     runs-on: ubuntu-latest
     steps:
