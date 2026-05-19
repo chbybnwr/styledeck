@@ -2,7 +2,7 @@
 
 Type-safe and zero-runtime UI styling, right in the markup.
 
-Vicinage lets you write strongly-typed CSS objects directly on your markup. Leveraging the power of [StyleX](https://stylexjs.com/) under the hood to extract them to zero-runtime atomic CSS, without the friction of naming every single style block.
+Vicinage lets you write strongly-typed CSS objects directly on your markup. At build time, it preprocesses them into StyleX API calls, which StyleX then extracts into zero-runtime atomic CSS, with no style block naming required.
 
 <details>
 
