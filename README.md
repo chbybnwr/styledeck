@@ -40,7 +40,7 @@ npm install vicinage @stylexjs/stylex
 npm install --save-dev @vicinage/unplugin @stylexjs/unplugin
 ```
 
-Add the plugin to your Vite configuration right before the StyleX plugin.
+Add the plugin to your bundler configuration right before the StyleX plugin.
 
 ```js
 import { defineConfig } from 'vite'
@@ -48,7 +48,11 @@ import vicinage from '@vicinage/unplugin'
 import stylex from '@stylexjs/unplugin'
 
 export default defineConfig({
-  plugins: [vicinage.vite(), stylex.vite()],
+  plugins: [
+    vicinage.vite(),
+    stylex.vite(),
+    // ...other plugins
+  ],
 })
 ```
 
