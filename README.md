@@ -10,7 +10,7 @@ Vicinage lets you write strongly-typed CSS objects directly on your markup. At b
 
 - [Quick Start](#quick-start)
 - [Setup](#setup)
-  - [Tips](#tips)
+- [Ecosystem](#ecosystem)
 - [Usage](#usage)
   - [Element styling](#element-styling)
   - [Component styling](#component-styling)
@@ -56,11 +56,11 @@ export default defineConfig({
 })
 ```
 
-### Tips
+## Ecosystem
 
-- Add design tokens with [SolarWind CSS](https://github.com/c5n8/solarwindcss).
-- Install Chrome Extension [StyleX DevTools](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem).
-- Install VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding).
+- Design tokens from [SolarWind CSS](https://github.com/c5n8/solarwindcss)
+- Chrome Extension [StyleX DevTools](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem)
+- VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding)
 
   <details>
   <summary>Recommended settings</summary>
