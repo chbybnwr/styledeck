@@ -31,8 +31,6 @@ Vicinage lets you write strongly-typed CSS objects directly on your markup. At b
 
 ## Setup
 
-Vicinage is implemented as a preprocessor for [StyleX](https://stylexjs.com/).
-
 Install the packages:
 
 ```bash
@@ -58,7 +56,9 @@ export default defineConfig({
 
 ## Ecosystem
 
-- Design tokens from [SolarWind CSS](https://github.com/c5n8/solarwindcss)
+- [Universal bundler plugin](https://github.com/chbybnwr/vicinage-unplugin)
+- [ESLint plugin](https://github.com/chbybnwr/vicinage-eslint-plugin)
+- Design tokens from [SolarWind CSS](https://github.com/chbybnwr/solarwindcss)
 - Chrome Extension [StyleX DevTools](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem)
 - VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding)
 
