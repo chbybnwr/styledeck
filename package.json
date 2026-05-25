@@ -1,7 +1,7 @@
 {
   "name": "vicinage",
   "version": "0.5.16",
-  "description": "Modern CSS right in the markup.",
+  "description": "Type-safe and zero-runtime UI styling, right in the markup.",
   "license": "MIT",
   "repository": {
     "type": "git",
