@@ -41,8 +41,10 @@
   },
   "packageManager": "pnpm@11.1.1",
   "dependencies": {
-    "@stylexjs/stylex": "~0.18.3",
     "csstype": "^3.2.3"
+  },
+  "peerDependencies": {
+    "@stylexjs/stylex": "~0.18.3"
   },
   "devDependencies": {
     "@chbybnwr/tsconfig": "github:chbybnwr/tsconfig",
@@ -50,6 +52,7 @@
     "@eslint/json": "^1.2.0",
     "@eslint/markdown": "^8.0.1",
     "@microsoft/api-extractor": "^7.58.7",
+    "@stylexjs/stylex": "~0.18.3",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@txe/eslint-plugin-x": "~0.2.1",
     "@types/node": "^25.7.0",
