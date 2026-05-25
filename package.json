@@ -47,7 +47,7 @@
     "@stylexjs/stylex": "~0.18.3"
   },
   "devDependencies": {
-    "@chbybnwr/tsconfig": "github:chbybnwr/tsconfig",
+    "@chbybnwr/tsconfig": "github:chbybnwr/tsconfig#v0.1.1",
     "@eslint/js": "^10.0.1",
     "@eslint/json": "^1.2.0",
     "@eslint/markdown": "^8.0.1",

@@ -13,7 +13,7 @@ importers:
         version: 3.2.3
     devDependencies:
       '@chbybnwr/tsconfig':
-        specifier: github:chbybnwr/tsconfig
+        specifier: github:chbybnwr/tsconfig#v0.1.1
         version: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/642e42bd201c9b071761b39f1b559c0a1c765b5e
       '@eslint/js':
         specifier: ^10.0.1
@@ -144,7 +144,7 @@ packages:
     engines: {node: '>=18'}
 
   '@chbybnwr/tsconfig@https://codeload.github.com/chbybnwr/tsconfig/tar.gz/642e42bd201c9b071761b39f1b559c0a1c765b5e':
-    resolution: {gitHosted: true, integrity: sha512-0R3QJMadYrzLkDV+6UR+QOokqG7TSPXSJYU5FLFc3SgVLkv1/iti8HjBsdHux0OdUnD2hZiCPWlEAQ8a8RIDLg==, tarball: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/642e42bd201c9b071761b39f1b559c0a1c765b5e}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/chbybnwr/tsconfig/tar.gz/642e42bd201c9b071761b39f1b559c0a1c765b5e}
     version: 0.1.1
 
   '@cspell/cspell-bundled-dicts@10.0.0':
