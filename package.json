@@ -35,7 +35,7 @@
     "extract": "npm run compile && api-extractor run",
     "extract:local": "npm run extract -- --local",
     "test": "vitest run",
-    "lint": "eslint ./ --cache",
+    "lint": "eslint ./",
     "format": "prettier ./",
     "spellcheck": "cspell ./"
   },
