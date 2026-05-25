@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-  publish:
+  stage-publish:
     environment: production
     permissions:
       id-token: write
