@@ -13,9 +13,12 @@ export type { PseudoClasses }
 export type { PseudoElements }
 export { sheet }
 export type { Style }
+export type { StyleDeck }
 export type { StyleProperties }
 export type { StylePropertiesWithExtras }
 export type { StylePropertyValue }
+
+type StyleDeck = Style | Style[] | StyleDeck[]
 
 /**
  * Apply styles as props `{ className, style }`.
