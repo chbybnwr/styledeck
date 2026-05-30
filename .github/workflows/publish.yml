@@ -46,7 +46,7 @@ jobs:
           node-version-file: '.node-version'
           cache: 'pnpm'
       - run: pnpm install
-      - run: npm run test -- --coverage --reporter=verbose
+      - run: npm run test -- --coverage
 
   lint:
     runs-on: ubuntu-latest
