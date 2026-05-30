@@ -1,21 +1,25 @@
 export { apply }
-export type { IsDynamicStyle }
-export type { LegacyPseudoClasses }
-export type { LegacyPseudoElements }
-export type { MapDynamicStyle }
-export type { NonApplicableClassNameForProperties }
-export type { NonApplicableStringProperties }
-export type { ParameterizedPseudoClasses }
-export type { ParameterizedPseudoElements }
-export type { PseudoClasses }
-export type { PseudoElements }
 export { sheet }
-export type { Style }
 export type { StyleDeck }
-export type { StyleProperties }
-export type { StylePropertiesWithExtras }
-export type { StylePropertyValue }
 
+export type { IsDynamicStyle as '~IsDynamicStyle' }
+export type { LegacyPseudoClasses as '~LegacyPseudoClasses' }
+export type { LegacyPseudoElements as '~LegacyPseudoElements' }
+export type { MapDynamicStyle as '~MapDynamicStyle' }
+export type { NonApplicableClassNameForProperties as '~NonApplicableClassNameForProperties' }
+export type { NonApplicableStringProperties as '~NonApplicableStringProperties' }
+export type { ParameterizedPseudoClasses as '~ParameterizedPseudoClasses' }
+export type { ParameterizedPseudoElements as '~ParameterizedPseudoElements' }
+export type { PseudoClasses as '~PseudoClasses' }
+export type { PseudoElements as '~PseudoElements' }
+export type { Style as '~Style' }
+export type { StyleProperties as '~StyleProperties' }
+export type { StylePropertiesWithExtras as '~StylePropertiesWithExtras' }
+export type { StylePropertyValue as '~StylePropertyValue' }
+
+/**
+ * @public
+ */
 type StyleDeck = Style | Style[] | StyleDeck[]
 
 /**
@@ -96,7 +100,7 @@ function macro(): never {
 }
 
 /**
- * @public
+ * @private
  */
 type Style =
   | {
@@ -112,7 +116,7 @@ type Style =
     >
 
 /**
- * @public
+ * @private
  */
 type MapDynamicStyle<Value, Seen = never> = [Value] extends [Seen]
   ? Value
@@ -127,7 +131,7 @@ type MapDynamicStyle<Value, Seen = never> = [Value] extends [Seen]
         : Value
 
 /**
- * @public
+ * @private
  */
 type IsDynamicStyle<Value, Seen = never> = [Value] extends [Seen]
   ? false
@@ -144,7 +148,7 @@ type IsDynamicStyle<Value, Seen = never> = [Value] extends [Seen]
         : false
 
 /**
- * @public
+ * @private
  */
 type StylePropertiesWithExtras = StyleProperties &
   Record<
@@ -170,7 +174,7 @@ type StylePropertiesWithExtras = StyleProperties &
   }
 
 /**
- * @public
+ * @private
  */
 type StyleProperties = {
   [Key in keyof CSSProperties]: StylePropertyValue<CSSProperties[Key] | null>
@@ -185,7 +189,7 @@ type StyleProperties = {
   Record<`--${string}`, StylePropertyValue>
 
 /**
- * @public
+ * @private
  */
 type StylePropertyValue<
   // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -215,12 +219,12 @@ type StylePropertyValue<
   | readonly string[]
 
 /**
- * @public
+ * @private
  */
 type PseudoClasses = Exclude<Pseudos, PseudoElements>
 
 /**
- * @public
+ * @private
  */
 type ParameterizedPseudoClasses =
   | ':active-view-transition-type'
@@ -240,12 +244,12 @@ type ParameterizedPseudoClasses =
   | ':where'
 
 /**
- * @public
+ * @private
  */
 type LegacyPseudoClasses = ':-moz-any()' | ':-webkit-any()' | ':matches()'
 
 /**
- * @public
+ * @private
  */
 type PseudoElements =
   | Extract<Pseudos, `::${string}`>
@@ -253,7 +257,7 @@ type PseudoElements =
   | LegacyPseudoElements
 
 /**
- * @public
+ * @private
  */
 type LegacyPseudoElements =
   | ':after'
@@ -264,7 +268,7 @@ type LegacyPseudoElements =
   | ':-ms-input-placeholder'
 
 /**
- * @public
+ * @private
  */
 type ParameterizedPseudoElements =
   | '::highlight'
@@ -278,7 +282,7 @@ type ParameterizedPseudoElements =
   | '::view-transition-old'
 
 /**
- * @public
+ * @private
  */
 interface NonApplicableClassNameForProperties {
   /**
@@ -293,7 +297,7 @@ interface NonApplicableClassNameForProperties {
 }
 
 /**
- * @public
+ * @private
  */
 interface NonApplicableStringProperties {
   /**
