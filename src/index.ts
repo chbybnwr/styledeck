@@ -1,5 +1,3 @@
-/* eslint-disable max-lines */
-
 export { apply }
 export type { IsDynamicStyle }
 export type { LegacyPseudoClasses }

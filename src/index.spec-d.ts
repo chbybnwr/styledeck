@@ -1,7 +1,6 @@
-/* eslint-disable max-lines */
 /* eslint-disable vitest/expect-expect */
 
-const vars = defineVars({
+const tokens = defineVars({
   foo: null,
 })
 
@@ -17,12 +16,12 @@ describe('apply', () => {
   it('accepts custom properties', () => {
     apply({
       '--custom': 'lorem',
-      [vars.foo]: 'ipsum',
+      [tokens.foo]: 'ipsum',
     })
     apply({
       '::before': {
         '--custom': 'lorem',
-        [vars.foo]: 'ipsum',
+        [tokens.foo]: 'ipsum',
       },
     })
   })
@@ -44,7 +43,7 @@ describe('apply', () => {
   })
 
   it('accepts conditional styles', () => {
-    // eslint-disable-next-line no-unassigned-vars, init-declarations
+    // eslint-disable-next-line no-unassigned-vars
     let condition!: boolean
 
     apply({
@@ -52,7 +51,7 @@ describe('apply', () => {
       textBoxEdge: condition && 'cap ex',
       cornerShape: condition && 'squircle',
       '--custom': condition && 'lorem',
-      [vars.foo]: condition && 'ipsum',
+      [tokens.foo]: condition && 'ipsum',
       '::before': condition && {
         color: 'red',
       },
@@ -63,7 +62,7 @@ describe('apply', () => {
       textBoxEdge: condition ? 'cap ex' : null,
       cornerShape: condition ? 'squircle' : null,
       '--custom': condition ? 'lorem' : null,
-      [vars.foo]: condition ? 'ipsum' : null,
+      [tokens.foo]: condition ? 'ipsum' : null,
       '::before': condition
         ? {
             color: 'red',
@@ -78,7 +77,7 @@ describe('apply', () => {
       textBoxEdge: () => 'cap ex',
       cornerShape: () => 'squircle',
       '--custom': () => 'lorem',
-      [vars.foo]: () => 'ipsum',
+      [tokens.foo]: () => 'ipsum',
       '::before': {
         color: () => 'red',
       },
@@ -90,7 +89,7 @@ describe('apply', () => {
       color: {
         default: null,
         ':focus': 'red',
-        [vars.foo]: vars.foo,
+        [tokens.foo]: tokens.foo,
       },
       textBoxEdge: {
         default: null,
@@ -104,7 +103,7 @@ describe('apply', () => {
         default: null,
         ':focus': 'lorem',
       },
-      [vars.foo]: {
+      [tokens.foo]: {
         default: null,
         ':focus': 'ipsum',
       },
@@ -147,7 +146,7 @@ describe('apply', () => {
           ':focus': 'lorem',
         },
       },
-      [vars.foo]: {
+      [tokens.foo]: {
         default: null,
         '@container (width >= 1440px)': {
           default: null,
@@ -186,30 +185,30 @@ describe('apply', () => {
 
   it('accepts variable styles', () => {
     apply({
-      color: vars.foo,
-      textBoxEdge: vars.foo,
-      cornerShape: vars.foo,
-      '--custom': vars.foo,
-      [vars.foo]: vars.foo,
+      color: tokens.foo,
+      textBoxEdge: tokens.foo,
+      cornerShape: tokens.foo,
+      '--custom': tokens.foo,
+      [tokens.foo]: tokens.foo,
       '::before': {
-        color: () => vars.foo,
+        color: () => tokens.foo,
       },
     })
   })
 
   it('accepts typed variable styles', () => {
-    const typedVars = defineVars({
+    const strictTokens = defineVars({
       foo: types.angle('360deg'),
     })
 
     apply({
-      color: typedVars.foo,
-      textBoxEdge: typedVars.foo,
-      cornerShape: typedVars.foo,
-      '--custom': typedVars.foo,
-      [typedVars.foo]: typedVars.foo,
+      color: strictTokens.foo,
+      textBoxEdge: strictTokens.foo,
+      cornerShape: strictTokens.foo,
+      '--custom': strictTokens.foo,
+      [strictTokens.foo]: strictTokens.foo,
       '::before': {
-        color: () => typedVars.foo,
+        color: () => strictTokens.foo,
       },
     })
   })
@@ -251,7 +250,7 @@ describe('apply', () => {
   })
 
   it('accepts stylex styles', () => {
-    // eslint-disable-next-line no-unassigned-vars, init-declarations
+    // eslint-disable-next-line no-unassigned-vars
     let style!: StyleXStyles
 
     apply(style)
