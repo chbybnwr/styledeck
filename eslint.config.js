@@ -11,30 +11,9 @@ export default defineConfig([
     name: 'js',
     files: ['**/*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
     plugins: { js: jsPlugin },
-    extends: ['js/all'],
+    extends: [jsPlugin.configs.recommended],
     languageOptions: {
       globals: globals.browser,
-    },
-    rules: {
-      'capitalized-comments': 'off',
-      eqeqeq: 'off',
-      'func-names': 'off',
-      'func-style': 'off',
-      'id-length': 'off',
-      'max-lines-per-function': 'off',
-      'max-statements': 'off',
-      'no-duplicate-imports': 'off',
-      'no-eq-null': 'off',
-      'no-magic-numbers': ['warn', { ignore: [0, 1] }],
-      'no-param-reassign': ['error', { props: true }],
-      'no-ternary': 'off',
-      'no-use-before-define': 'off',
-      'no-warning-comments': 'off',
-      'one-var': 'off',
-      'prefer-arrow-callback': 'off',
-      'sort-imports': 'off',
-      'sort-keys': 'off',
-      'symbol-description': 'off',
     },
   },
 
@@ -51,6 +30,7 @@ export default defineConfig([
       },
     },
     rules: {
+      '@typescript-eslint/consistent-type-exports': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
@@ -101,21 +81,28 @@ export default defineConfig([
   {
     name: 'unicorn',
     files: ['**/*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
-    extends: [unicornPlugin.configs.all],
+    extends: [unicornPlugin.configs.recommended],
     languageOptions: {
       globals: globals.builtin,
     },
     rules: {
-      'unicorn/no-null': 'off',
-      'unicorn/prevent-abbreviations': 'off',
       'unicorn/no-named-default': 'off',
+      'unicorn/no-null': 'off',
+      'unicorn/prevent-abbreviations': [
+        'warn',
+        {
+          allowList: {
+            args: true,
+          },
+        },
+      ],
     },
   },
 
   {
     name: 'vitest',
     files: ['**/*.{test,spec}*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
-    extends: [vitestPlugin.configs.all],
+    extends: [vitestPlugin.configs.recommended],
     settings: {
       vitest: {
         typecheck: true,
@@ -128,23 +115,6 @@ export default defineConfig([
           pattern: '.*.spec(-d)?.ts(x)?$',
         },
       ],
-      'vitest/no-hooks': 'off',
-      'vitest/prefer-expect-assertions': 'off',
-      'vitest/prefer-importing-vitest-globals': 'off',
-      'vitest/require-mock-type-parameters': 'off',
-      // TODO: use vite-plugin-test-name instead
-      'vitest/prefer-describe-function-title': 'off',
-    },
-  },
-
-  {
-    name: 'vitest-type',
-    files: ['**/*.spec-d.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
-    rules: {
-      'vitest/prefer-lowercase-title': 'off',
-      'vitest/require-top-level-describe': 'off',
-      'vitest/consistent-test-it': 'off',
-      'vitest/valid-title': 'off',
     },
   },
 
@@ -158,8 +128,6 @@ export default defineConfig([
           'ts-expect-error': false,
         },
       ],
-      'vitest/expect-expect': 'off',
-      'vitest/require-to-throw-message': 'off',
     },
   },
 
@@ -171,7 +139,6 @@ export default defineConfig([
     ],
     extends: [nodePlugin.configs['flat/recommended']],
     rules: {
-      'n/no-missing-import': 'off',
       'n/no-unsupported-features/node-builtins': [
         'error',
         {
