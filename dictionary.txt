@@ -4,6 +4,7 @@ mjsx
 mtsx
 solarwindcss
 squircle
+styledeck
 stylex
 stylexjs
 txee
