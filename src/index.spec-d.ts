@@ -247,7 +247,7 @@ describe('apply', () => {
     })
   })
 
-  it('accepts stylex styles', () => {
+  it('accepts StyleDeck', () => {
     // eslint-disable-next-line no-unassigned-vars
     let style!: StyleDeck
 
@@ -279,7 +279,7 @@ describe('apply', () => {
 })
 
 describe('sheet', () => {
-  it('returns stylex styles', () => {
+  it('returns StyleDeck', () => {
     expectTypeOf(
       sheet({
         color: 'red',
