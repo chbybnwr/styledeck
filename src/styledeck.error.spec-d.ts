@@ -70,7 +70,7 @@ describe('StyleDeck', () => {
     })
   })
 
-  it('rejects unknown pseudo-elements)', () => {
+  it('rejects unknown pseudo-classes)', () => {
     assertType<StyleDeck>({
       color: {
         default: null,
