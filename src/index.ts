@@ -6,6 +6,7 @@ export type { StyleCard as '~StyleCard' }
 export type { StyleConfig as '~PropertiesWithExtras' }
 export type { PseudoElementRecord as '~PseudoElementRecord' }
 export type { CustomProperties as '~CustomProperties' }
+export type { CompiledProperties as '~CompiledProperties' }
 export type { CommonProperties as '~CommonProperties' }
 export type { SourceValue as '~SourceValue' }
 export type { ResolvableValue as '~ResolvableValue' }
@@ -117,7 +118,11 @@ type StyleCard<T extends StyleConfig> = {
 /**
  * @private
  */
-type StyleConfig = CommonProperties | CustomProperties | PseudoElementRecord
+type StyleConfig =
+  | CommonProperties
+  | CustomProperties
+  | CompiledProperties
+  | PseudoElementRecord
 
 /**
  * @private
@@ -126,7 +131,7 @@ type PseudoElementRecord = Partial<
   Record<
     | Exclude<PseudoElementKey, Exclude<ParameterizedPseudoElementKey, '::cue'>>
     | `${ParameterizedPseudoElementKey}(${string})`,
-    CommonProperties | CustomProperties
+    CommonProperties | CustomProperties | CompiledProperties
   >
 >
 
@@ -134,6 +139,11 @@ type PseudoElementRecord = Partial<
  * @private
  */
 type CustomProperties = Partial<Record<`--${string}`, {}>>
+
+/**
+ * @private
+ */
+type CompiledProperties = Partial<Record<StyleXVar<unknown>, {}>>
 
 /**
  * @private
