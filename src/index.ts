@@ -36,9 +36,6 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
 /**
  * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.
  *
- * @param styledeck - Style objects or `StyleDeck`
- * @returns `ReturnType<typeof stylex.props>`
- *
  * @example
  * ```tsx
  * function App() {
