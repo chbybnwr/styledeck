@@ -49,7 +49,7 @@
   "devDependencies": {
     "@chbybnwr/tsconfig": "github:chbybnwr/tsconfig#v0.1.1",
     "@eslint/js": "^10.0.1",
-    "@eslint/json": "^1.2.0",
+    "@eslint/json": "^2.0.0",
     "@eslint/markdown": "^8.0.2",
     "@microsoft/api-extractor": "^7.58.7",
     "@stylexjs/stylex": "~0.18.3",
@@ -57,7 +57,7 @@
     "@txe/eslint-plugin-x": "~0.2.1",
     "@types/node": "^25.9.1",
     "@typescript-eslint/parser": "^8.60.1",
-    "@typescript/native-preview": "7.0.0-dev.20260513.1",
+    "@typescript/native-preview": "7.0.0-dev.20260601.1",
     "@vitest/coverage-v8": "^4.1.8",
     "@vitest/eslint-plugin": "^1.6.19",
     "cspell": "^10.0.1",
