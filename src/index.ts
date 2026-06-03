@@ -247,8 +247,8 @@ interface CompiledValue<K, V> {
  * @private
  */
 interface NonApplicableObjectProperties {
-  /** @deprecated not applicable */ toString?: object['toString']
-  /** @deprecated not applicable */ valueOf?: object['valueOf']
+  /** @deprecated not applicable */ toString?: object['toString'] | undefined
+  /** @deprecated not applicable */ valueOf?: object['valueOf'] | undefined
 }
 
 /**
