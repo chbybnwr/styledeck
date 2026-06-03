@@ -10,7 +10,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    needs: [build, test, lint]
+    needs: [build, extract, test, lint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -35,6 +35,18 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install
       - run: npm run build
+
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: npm run extract
 
   test:
     runs-on: ubuntu-latest
