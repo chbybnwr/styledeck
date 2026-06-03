@@ -312,6 +312,7 @@ import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
 import { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
+import type { StyleXVar } from '@stylexjs/stylex'
 import type { Theme } from '@stylexjs/stylex'
 import type { VarGroup } from '@stylexjs/stylex'
 //
