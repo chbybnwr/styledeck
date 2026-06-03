@@ -243,61 +243,63 @@ type LegacyPseudoElementKey =
  * @private
  */
 interface CompiledValue<K, V> {
-  /** @deprecated */ _opaque: StyleXClassNameFor<K, V>['_opaque']
-  /** @deprecated */ _key: StyleXClassNameFor<K, V>['_key']
-  /** @deprecated */ _value: StyleXClassNameFor<K, V>['_value'] | null
+  /** @deprecated not applicable */ _opaque: StyleXClassNameFor<K, V>['_opaque']
+  /** @deprecated not applicable */ _key: StyleXClassNameFor<K, V>['_key']
+  /** @deprecated not applicable */ _value:
+    | StyleXClassNameFor<K, V>['_value']
+    | null
 }
 
 /**
  * @private
  */
 interface NonApplicableObjectProperties {
-  /** @deprecated */ toString?: object['toString']
-  /** @deprecated */ valueOf?: object['valueOf']
+  /** @deprecated not applicable */ toString?: object['toString']
+  /** @deprecated not applicable */ valueOf?: object['valueOf']
 }
 
 /**
  * @private
  */
 interface NonApplicableSymbolProperties {
-  /** @deprecated */ description?: never
+  /** @deprecated not applicable */ description?: never
 }
 
 /**
  * @private
  */
 interface NonApplicableStringProperties {
-  /** @deprecated */ at?: never
-  /** @deprecated */ charAt?: never
-  /** @deprecated */ charCodeAt?: never
-  /** @deprecated */ codePointAt?: never
-  /** @deprecated */ concat?: never
-  /** @deprecated */ endsWith?: never
-  /** @deprecated */ includes?: never
-  /** @deprecated */ indexOf?: never
-  /** @deprecated */ lastIndexOf?: never
-  /** @deprecated */ length?: never
-  /** @deprecated */ localeCompare?: never
-  /** @deprecated */ match?: never
-  /** @deprecated */ matchAll?: never
-  /** @deprecated */ normalize?: never
-  /** @deprecated */ padEnd?: never
-  /** @deprecated */ padStart?: never
-  /** @deprecated */ repeat?: never
-  /** @deprecated */ replace?: never
-  /** @deprecated */ replaceAll?: never
-  /** @deprecated */ search?: never
-  /** @deprecated */ slice?: never
-  /** @deprecated */ split?: never
-  /** @deprecated */ startsWith?: never
-  /** @deprecated */ substring?: never
-  /** @deprecated */ toLocaleLowerCase?: never
-  /** @deprecated */ toLocaleUpperCase?: never
-  /** @deprecated */ toLowerCase?: never
-  /** @deprecated */ toUpperCase?: never
-  /** @deprecated */ trim?: never
-  /** @deprecated */ trimEnd?: never
-  /** @deprecated */ trimStart?: never
+  /** @deprecated not applicable */ at?: never
+  /** @deprecated not applicable */ charAt?: never
+  /** @deprecated not applicable */ charCodeAt?: never
+  /** @deprecated not applicable */ codePointAt?: never
+  /** @deprecated not applicable */ concat?: never
+  /** @deprecated not applicable */ endsWith?: never
+  /** @deprecated not applicable */ includes?: never
+  /** @deprecated not applicable */ indexOf?: never
+  /** @deprecated not applicable */ lastIndexOf?: never
+  /** @deprecated not applicable */ length?: never
+  /** @deprecated not applicable */ localeCompare?: never
+  /** @deprecated not applicable */ match?: never
+  /** @deprecated not applicable */ matchAll?: never
+  /** @deprecated not applicable */ normalize?: never
+  /** @deprecated not applicable */ padEnd?: never
+  /** @deprecated not applicable */ padStart?: never
+  /** @deprecated not applicable */ repeat?: never
+  /** @deprecated not applicable */ replace?: never
+  /** @deprecated not applicable */ replaceAll?: never
+  /** @deprecated not applicable */ search?: never
+  /** @deprecated not applicable */ slice?: never
+  /** @deprecated not applicable */ split?: never
+  /** @deprecated not applicable */ startsWith?: never
+  /** @deprecated not applicable */ substring?: never
+  /** @deprecated not applicable */ toLocaleLowerCase?: never
+  /** @deprecated not applicable */ toLocaleUpperCase?: never
+  /** @deprecated not applicable */ toLowerCase?: never
+  /** @deprecated not applicable */ toUpperCase?: never
+  /** @deprecated not applicable */ trim?: never
+  /** @deprecated not applicable */ trimEnd?: never
+  /** @deprecated not applicable */ trimStart?: never
 }
 
 import type { AtRules } from 'csstype'
