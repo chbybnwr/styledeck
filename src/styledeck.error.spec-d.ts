@@ -98,6 +98,30 @@ describe('StyleDeck', () => {
       }),
     )
   })
+
+  it('rejects properties outside config', () => {
+    assertType<
+      StyleDeck<{
+        color?: string
+      }>
+    >({
+      // @ts-expect-error
+      backgroundColor: 'red',
+    })
+
+    const styledeck: StyleDeck<{
+      backgroundColor?: string
+    }> = {}
+
+    assertType<
+      StyleDeck<{
+        color?: string
+      }>
+    >(
+      // @ts-expect-error
+      styledeck,
+    )
+  })
 })
 
 import { assertType } from 'vitest'
