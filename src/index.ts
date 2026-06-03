@@ -30,6 +30,7 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
   | StyleCard<T>
   | readonly [StyleCard<T>, InlineStyles]
   | Theme<VarGroup<{}>>
+  | NonApplicableThemeProperties
   | NonApplicableObjectProperties
   | NonApplicableSymbolProperties
 
@@ -235,6 +236,13 @@ type LegacyPseudoElementKey =
   | ':first-line'
   | ':-moz-placeholder'
   | ':-ms-input-placeholder'
+
+/**
+ * @private
+ */
+interface NonApplicableThemeProperties {
+  /** @deprecated not applicable */ theme?: never
+}
 
 /**
  * @private
