@@ -299,12 +299,11 @@ interface NonApplicableStringProperties {
 
 import type { AtRules } from 'csstype'
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
-import type { InlineStyles } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
 import { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
-import type { StyleXClassNameFor } from '@stylexjs/stylex/lib/types/StyleXTypes'
-import type { StyleXVar } from '@stylexjs/stylex'
-import type { Theme } from '@stylexjs/stylex/lib/types/StyleXTypes'
-import type { VarGroup } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { StyleXClassNameFor } from '@stylexjs/stylex'
+import type { Theme } from '@stylexjs/stylex'
+import type { VarGroup } from '@stylexjs/stylex'
 //
