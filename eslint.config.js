@@ -8,18 +8,43 @@ export default defineConfig([
   ]),
 
   {
-    name: 'js',
-    files: ['**/*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
-    plugins: { js: jsPlugin },
-    extends: [jsPlugin.configs.recommended],
+    name: 'builtin-globals',
+    files: ['**/*.?(c|m)[jt]s?(x)'],
+    languageOptions: {
+      globals: globals.builtin,
+    },
+  },
+
+  {
+    name: 'browser-globals',
+    files: ['src/**/*.?(c|m)[jt]s?(x)'],
     languageOptions: {
       globals: globals.browser,
     },
   },
 
   {
-    name: 'typescript',
-    files: ['**/*.{ts,tsx,mtsx}'],
+    name: 'node-globals',
+    files: [
+      '*.?(c|m)[jt]s?(x)',
+      'src/**/*.{test,spec}.?(c|m)[jt]s?(x)',
+      //
+    ],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+
+  {
+    name: 'js',
+    files: ['**/*.?(c|m)[jt]s?(x)'],
+    plugins: { js: jsPlugin },
+    extends: [jsPlugin.configs.recommended],
+  },
+
+  {
+    name: 'ts',
+    files: ['**/*.?(c|m)ts?(x)'],
     extends: [
       tslintConfigs.strictTypeChecked,
       tslintConfigs.stylisticTypeChecked,
@@ -42,7 +67,7 @@ export default defineConfig([
 
   {
     name: 'import-x',
-    files: ['**/*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
+    files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [importXPlugin.flatConfigs.recommended],
     rules: {
       'import-x/no-duplicates': 'off',
@@ -51,7 +76,7 @@ export default defineConfig([
 
   {
     name: 'import-x-typescript',
-    files: ['**/*.{ts,tsx,mtsx}'],
+    files: ['**/*.?(c|m)ts?(x)'],
     extends: [importXPlugin.flatConfigs.typescript],
     languageOptions: {
       parser: tslintParser,
@@ -71,7 +96,7 @@ export default defineConfig([
 
   {
     name: 'x',
-    files: ['**/*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
+    files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [
       // @ts-ignore
       xPlugin.configs.recommended,
@@ -80,11 +105,8 @@ export default defineConfig([
 
   {
     name: 'unicorn',
-    files: ['**/*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
+    files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [unicornPlugin.configs.recommended],
-    languageOptions: {
-      globals: globals.builtin,
-    },
     rules: {
       'unicorn/no-named-default': 'off',
       'unicorn/no-null': 'off',
@@ -101,7 +123,7 @@ export default defineConfig([
 
   {
     name: 'vitest',
-    files: ['**/*.{test,spec}*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
+    files: ['**/*.{test,spec}*.?(c|m)[jt]s?(x)'],
     extends: [vitestPlugin.configs.recommended],
     settings: {
       vitest: {
@@ -120,7 +142,7 @@ export default defineConfig([
 
   {
     name: 'type-error-test',
-    files: ['**/*.error.{test,spec}-d.{ts,tsx,mtsx}'],
+    files: ['**/*.error.{test,spec}-d.?(c|m)[jt]s?(x)'],
     rules: {
       '@typescript-eslint/ban-ts-comment': [
         'error',
@@ -133,10 +155,7 @@ export default defineConfig([
 
   {
     name: 'node',
-    files: [
-      './*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
-      '**/*.{test,spec}*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
-    ],
+    files: ['*.?(c|m)[jt]s?(x)', 'src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
     extends: [nodePlugin.configs['flat/recommended']],
     rules: {
       'n/no-unsupported-features/node-builtins': [
@@ -150,7 +169,7 @@ export default defineConfig([
 
   {
     name: 'stylistic',
-    files: ['**/*.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}'],
+    files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [
       stylisticPlugin.configs.customize({
         arrowParens: true,
@@ -173,30 +192,29 @@ export default defineConfig([
 
   {
     name: 'json',
-    files: ['package.json'],
-    plugins: { json: jsonPlugin },
-    extends: ['json/recommended'],
     language: 'json/json',
+    files: ['**/*.json'],
+    plugins: { json: jsonPlugin },
+    extends: [jsonPlugin.configs.recommended],
   },
 
   {
     name: 'jsonc',
-    files: ['**/*.json', '**/*.jsonc'],
-    ignores: ['package*.json'],
-    plugins: { json: jsonPlugin },
-    extends: ['json/recommended'],
     language: 'json/jsonc',
+    files: ['**/*.jsonc', '.vscode/*.json'],
+    plugins: { json: jsonPlugin },
+    extends: [jsonPlugin.configs.recommended],
   },
 
   {
     name: 'markdown',
+    language: 'markdown/gfm',
     files: ['**/*.md'],
     plugins: {
       // @ts-ignore
       markdown: markdownPlugin,
     },
-    extends: ['markdown/recommended'],
-    language: 'markdown/gfm',
+    extends: [markdownPlugin.configs.recommended],
   },
 
   prettierConfig,
