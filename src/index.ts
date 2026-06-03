@@ -2,23 +2,25 @@ export { apply }
 export { sheet }
 export type { StyleDeck }
 
-export type { StyleCard as '~StyleCard' }
-export type { StyleConfig as '~PropertiesWithExtras' }
-export type { PseudoElementRecord as '~PseudoElementRecord' }
-export type { CustomProperties as '~CustomProperties' }
-export type { CompiledProperties as '~CompiledProperties' }
 export type { CommonProperties as '~CommonProperties' }
-export type { SourceValue as '~SourceValue' }
-export type { ResolvableValue as '~ResolvableValue' }
-export type { ContextualValue as '~ContextualValue' }
-export type { PseudoClassKey as '~PseudoClassKey' }
-export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' }
-export type { PseudoElementKey as '~PseudoElementKey' }
-export type { ParameterizedPseudoElementKey as '~ParameterizedPseudoElementKey' }
-export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
+export type { CompiledProperties as '~CompiledProperties' }
 export type { CompiledValue as '~CompiledValue' }
+export type { ContextualValue as '~ContextualValue' }
+export type { CustomProperties as '~CustomProperties' }
+export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
 export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' }
 export type { NonApplicableStringProperties as '~NonApplicableStringProperties' }
+export type { NonApplicableSymbolProperties as '~NonApplicableSymbolProperties' }
+export type { NonApplicableThemeProperties as '~NonApplicableThemeProperties' }
+export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' }
+export type { ParameterizedPseudoElementKey as '~ParameterizedPseudoElementKey' }
+export type { PseudoClassKey as '~PseudoClassKey' }
+export type { PseudoElementKey as '~PseudoElementKey' }
+export type { PseudoElementRecord as '~PseudoElementRecord' }
+export type { ResolvableValue as '~ResolvableValue' }
+export type { SourceValue as '~SourceValue' }
+export type { StyleCard as '~StyleCard' }
+export type { StyleConfig as '~PropertiesWithExtras' }
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
@@ -99,7 +101,7 @@ function macro(): never {
 }
 
 /**
- * @private
+ * @internal
  */
 type StyleCard<T extends StyleConfig> = {
   [TKey in keyof T]: TKey extends keyof PseudoElementRecord
@@ -116,7 +118,7 @@ type StyleCard<T extends StyleConfig> = {
 }
 
 /**
- * @private
+ * @internal
  */
 type StyleConfig =
   | CommonProperties
@@ -125,7 +127,7 @@ type StyleConfig =
   | PseudoElementRecord
 
 /**
- * @private
+ * @internal
  */
 type PseudoElementRecord = Partial<
   Record<
@@ -136,33 +138,33 @@ type PseudoElementRecord = Partial<
 >
 
 /**
- * @private
+ * @internal
  */
 type CustomProperties = Partial<Record<`--${string}`, {}>>
 
 /**
- * @private
+ * @internal
  */
 type CompiledProperties = Partial<Record<StyleXVar<unknown>, {}>>
 
 /**
- * @private
+ * @internal
  */
 type CommonProperties = Properties &
   Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>
 
 /**
- * @private
+ * @internal
  */
 type SourceValue<T> = false | ResolvableValue<T> | ContextualValue<T>
 
 /**
- * @private
+ * @internal
  */
 type ResolvableValue<T> = null | T | (() => T) | readonly T[]
 
 /**
- * @private
+ * @internal
  */
 type ContextualValue<T> = ({
   default: ResolvableValue<T>
@@ -177,7 +179,7 @@ type ContextualValue<T> = ({
   NonApplicableStringProperties
 
 /**
- * @private
+ * @internal
  */
 type PseudoClassKey = Exclude<
   Pseudos,
@@ -185,7 +187,7 @@ type PseudoClassKey = Exclude<
 >
 
 /**
- * @private
+ * @internal
  */
 type ParameterizedPseudoClassKey =
   | ':active-view-transition-type'
@@ -205,14 +207,14 @@ type ParameterizedPseudoClassKey =
   | ':where'
 
 /**
- * @private
+ * @internal
  */
 type PseudoElementKey =
   | Extract<Pseudos, `::${string}`>
   | Extract<keyof CSSPropertiesWithExtras, `::${string}`>
 
 /**
- * @private
+ * @internal
  */
 type ParameterizedPseudoElementKey =
   | '::cue'
@@ -227,7 +229,7 @@ type ParameterizedPseudoElementKey =
   | '::view-transition-old'
 
 /**
- * @private
+ * @internal
  */
 type LegacyPseudoElementKey =
   | ':after'
@@ -238,14 +240,14 @@ type LegacyPseudoElementKey =
   | ':-ms-input-placeholder'
 
 /**
- * @private
+ * @internal
  */
 interface NonApplicableThemeProperties {
   /** @deprecated not applicable */ theme?: never
 }
 
 /**
- * @private
+ * @internal
  */
 interface CompiledValue<K, V> {
   /** @deprecated not applicable */ _opaque: ClassNameFor<K, V>['_opaque']
@@ -254,7 +256,7 @@ interface CompiledValue<K, V> {
 }
 
 /**
- * @private
+ * @internal
  */
 interface NonApplicableObjectProperties {
   /** @deprecated not applicable */ toString?: object['toString'] | undefined
@@ -262,14 +264,14 @@ interface NonApplicableObjectProperties {
 }
 
 /**
- * @private
+ * @internal
  */
 interface NonApplicableSymbolProperties {
   /** @deprecated not applicable */ description?: never
 }
 
 /**
- * @private
+ * @internal
  */
 interface NonApplicableStringProperties {
   /** @deprecated not applicable */ at?: never
