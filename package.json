@@ -1,6 +1,6 @@
 {
   "name": "vicinage",
-  "version": "0.6.19",
+  "version": "0.6.20",
   "description": "Type-safe and zero-runtime UI styling, right in the markup.",
   "license": "MIT",
   "repository": {
