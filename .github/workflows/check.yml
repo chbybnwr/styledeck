@@ -5,21 +5,49 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/setup.yml
-    with:
-      command: npm run build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: npm run build
 
   extract:
-    uses: ./.github/workflows/setup.yml
-    with:
-      command: npm run extract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: npm run extract
 
   test:
-    uses: ./.github/workflows/setup.yml
-    with:
-      command: npm run test -- --coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: npm run test -- --coverage
 
   lint:
-    uses: ./.github/workflows/setup.yml
-    with:
-      command: npm run lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: '.node-version'
+          cache: 'pnpm'
+      - run: pnpm install
+      - run: npm run lint
