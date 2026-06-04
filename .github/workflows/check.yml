@@ -1,0 +1,25 @@
+name: check
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    uses: ./.github/workflows/setup.yml
+    with:
+      command: npm run build
+
+  extract:
+    uses: ./.github/workflows/setup.yml
+    with:
+      command: npm run extract
+
+  test:
+    uses: ./.github/workflows/setup.yml
+    with:
+      command: npm run test -- --coverage
+
+  lint:
+    uses: ./.github/workflows/setup.yml
+    with:
+      command: npm run lint

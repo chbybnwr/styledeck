@@ -6,11 +6,11 @@ on:
 
 jobs:
   publish:
+    needs: [check]
     environment: production
     permissions:
       id-token: write
       contents: read
-    needs: [build, extract, test, lint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -24,74 +24,8 @@ jobs:
       - run: npm install -g npm@^11.15.0
       - run: npm publish
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run build
+  check:
+    uses: ./.github/workflows/check.yml
 
-  extract:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run extract
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run test -- --coverage
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run lint
-
-  format:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run format -- --check
-
-  spellcheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run spellcheck
+  copyedit:
+    uses: ./.github/workflows/copyedit.yml
