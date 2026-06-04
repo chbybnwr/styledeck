@@ -110,11 +110,10 @@ function App() {
 
 ### Component styling
 
-Pass styles with the `sheet()` function to components that accept [`StyleXStyles`](https://stylexjs.com/docs/api/types/StyleXStyles).
+Pass styles with the `sheet()` function to components that accept `StyleDeck`
 
 ```tsx
-import { apply, sheet } from 'vicinage'
-import type { StyleXStyles } from '@stylexjs/stylex'
+import { apply, sheet, type StyleDeck } from 'vicinage'
 
 function Feed() {
   return (
@@ -126,7 +125,7 @@ function Feed() {
   )
 }
 
-function Post({ style }: { style?: StyleXStyles }) {
+function Post({ style }: { style?: StyleDeck }) {
   return (
     <div
       {...apply(
