@@ -1,0 +1,15 @@
+name: copyedit
+
+on:
+  workflow_call:
+
+jobs:
+  format:
+    uses: ./.github/workflows/setup.yml
+    with:
+      command: npm run format -- --check
+
+  spellcheck:
+    uses: ./.github/workflows/setup.yml
+    with:
+      command: npm run spellcheck

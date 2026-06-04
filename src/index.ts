@@ -1,27 +1,43 @@
-/* eslint-disable max-lines */
-
 export { apply }
-export type { IsDynamicStyle }
-export type { LegacyPseudoClasses }
-export type { LegacyPseudoElements }
-export type { MapDynamicStyle }
-export type { NonApplicableClassNameForProperties }
-export type { NonApplicableStringProperties }
-export type { ParameterizedPseudoClasses }
-export type { ParameterizedPseudoElements }
-export type { PseudoClasses }
-export type { PseudoElements }
 export { sheet }
-export type { Style }
-export type { StyleProperties }
-export type { StylePropertiesWithExtras }
-export type { StylePropertyValue }
+export type { StyleDeck }
+
+export type { CommonProperties as '~CommonProperties' }
+export type { CompiledProperties as '~CompiledProperties' }
+export type { CompiledValue as '~CompiledValue' }
+export type { ContextualValue as '~ContextualValue' }
+export type { CustomProperties as '~CustomProperties' }
+export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
+export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' }
+export type { NonApplicableStringProperties as '~NonApplicableStringProperties' }
+export type { NonApplicableSymbolProperties as '~NonApplicableSymbolProperties' }
+export type { NonApplicableThemeProperties as '~NonApplicableThemeProperties' }
+export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' }
+export type { ParameterizedPseudoElementKey as '~ParameterizedPseudoElementKey' }
+export type { PseudoClassKey as '~PseudoClassKey' }
+export type { PseudoElementKey as '~PseudoElementKey' }
+export type { PseudoElementRecord as '~PseudoElementRecord' }
+export type { ResolvableValue as '~ResolvableValue' }
+export type { SourceValue as '~SourceValue' }
+export type { StyleCard as '~StyleCard' }
+export type { StyleConfig as '~PropertiesWithExtras' }
+
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 
 /**
- * Apply styles as props `{ className, style }`.
- *
- * @param styles - Style objects or `StyleXStyles`
- * @returns `ReturnType<typeof stylex.props>`
+ * @public
+ */
+type StyleDeck<T extends StyleConfig = StyleConfig> =
+  | StyleDeck<T>[]
+  | StyleCard<T>
+  | readonly [StyleCard<T>, InlineStyles]
+  | Theme<VarGroup<{}>>
+  | NonApplicableThemeProperties
+  | NonApplicableObjectProperties
+  | NonApplicableSymbolProperties
+
+/**
+ * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.
  *
  * @example
  * ```tsx
@@ -46,28 +62,28 @@ export type { StylePropertyValue }
  *
  * @public
  */
-const apply: (...styles: Style[]) => ReturnType<typeof props> = macro
+const apply: (...styledeck: StyleDeck[]) => ReturnType<typeof props> = macro
 
 /**
- * Composes style objects into a sheet (`StyleXStyles`) for component style props.
+ * Composes styles into a deck (`StyleDeck`) for component style props.
  *
- * @param styles - Style objects or `StyleXStyles`
- * @returns Compiled sheet (`StyleXStyles`)
+ * @param styles - Style objects or `StyleDeck`
+ * @returns Compiled deck (`StyleDeck`)
  *
  * @example
  * ```tsx
  * function Feed() {
  *   return (
- *     <Post style={sheet({ color: 'blue' })} />
+ *     <Post styledeck={sheet({ color: 'blue' })} />
  *   )
  * }
  *
- * function Post({ style }: { style?: StyleXStyles }) {
+ * function Post({ styledeck }: { styledeck?: StyleDeck }) {
  *   return (
  *     <div
  *       {...apply(
  *         { color: 'black' },
- *         style,
+ *         styledeck,
  *       )}
  *     >
  *       Lorem ipsum
@@ -78,150 +94,102 @@ const apply: (...styles: Style[]) => ReturnType<typeof props> = macro
  *
  * @public
  */
-const sheet: <StyleList extends unknown[]>(
-  ...styles: { [Index in keyof StyleList]: StyleList[Index] & Style }
-) => {
-  [Index in keyof StyleList]: StyleList[Index] extends infer Style
-    ? Style extends StyleXStyles
-      ? Style
-      : IsDynamicStyle<Style> extends true
-        ? readonly [MapNamespace<MapDynamicStyle<Style>>, InlineStyles]
-        : MapNamespace<Style>
-    : never
-} = macro
+const sheet: <T extends StyleDeck[]>(...styledeck: T) => T = macro
 
 function macro(): never {
   throw new Error('macro was called at runtime')
 }
 
 /**
- * @public
+ * @internal
  */
-type Style =
-  | {
-      [Key in keyof StylePropertiesWithExtras]:
-        | StylePropertiesWithExtras[Key]
-        | false
-        | null
-    }
-  | Record<StyleXVar<unknown>, StylePropertyValue | (() => StylePropertyValue)>
-  | StyleXStyles<
-      CSSPropertiesWithExtras &
-        Omit<CSSProperties, keyof CSSPropertiesWithExtras>
-    >
+type StyleCard<T extends StyleConfig> = {
+  [TKey in keyof T]: TKey extends keyof PseudoElementRecord
+    ? NonNullable<T[TKey]> extends infer U
+      ?
+          | {
+              [UKey in keyof U]: SourceValue<Exclude<U[UKey], undefined | null>>
+            }
+          | CompiledValue<TKey, { [Key in keyof U]: U[Key] }>
+      : never
+    :
+        | SourceValue<Exclude<T[TKey], undefined | null>>
+        | CompiledValue<TKey, Exclude<T[TKey], undefined | null>>
+}
 
 /**
- * @public
+ * @internal
  */
-type MapDynamicStyle<Value, Seen = never> = [Value] extends [Seen]
-  ? Value
-  : Value extends (...args: never[]) => infer Result
-    ? MapDynamicStyle<Result, Seen | Value>
-    : Value extends readonly unknown[]
-      ? Value
-      : Value extends object
-        ? {
-            [Key in keyof Value]: MapDynamicStyle<Value[Key], Seen | Value>
-          }
-        : Value
+type StyleConfig =
+  | CommonProperties
+  | CustomProperties
+  | CompiledProperties
+  | PseudoElementRecord
 
 /**
- * @public
+ * @internal
  */
-type IsDynamicStyle<Value, Seen = never> = [Value] extends [Seen]
-  ? false
-  : Value extends (...args: never[]) => unknown
-    ? true
-    : Value extends readonly unknown[]
-      ? false
-      : Value extends object
-        ? true extends {
-            [Key in keyof Value]-?: IsDynamicStyle<Value[Key], Seen | Value>
-          }[keyof Value]
-          ? true
-          : false
-        : false
-
-/**
- * @public
- */
-type StylePropertiesWithExtras = StyleProperties &
+type PseudoElementRecord = Partial<
   Record<
-    | Exclude<PseudoElements, LegacyPseudoElements>
-    | `${ParameterizedPseudoElements}(${string})`,
-    | StyleProperties
-    | NonApplicableStringProperties
-    | NonApplicableClassNameForProperties
-  > & {
-    // legacy pseudo-elements
-    /** @deprecated legacy */
-    ':after'?: never
-    /** @deprecated legacy */
-    ':before'?: never
-    /** @deprecated legacy */
-    ':first-letter'?: never
-    /** @deprecated legacy */
-    ':first-line'?: never
-    /** @deprecated legacy */
-    ':-moz-placeholder'?: never
-    /** @deprecated legacy */
-    ':-ms-input-placeholder'?: never
-  }
+    | Exclude<PseudoElementKey, Exclude<ParameterizedPseudoElementKey, '::cue'>>
+    | `${ParameterizedPseudoElementKey}(${string})`,
+    CommonProperties | CustomProperties | CompiledProperties
+  >
+>
 
 /**
- * @public
+ * @internal
  */
-type StyleProperties = {
-  [Key in keyof CSSProperties]: StylePropertyValue<CSSProperties[Key] | null>
-} & Omit<
-  {
-    [Key in keyof CSSPropertiesWithExtras]: StylePropertyValue<
-      CSSPropertiesWithExtras[Key]
-    >
-  },
-  keyof CSSProperties | `::${string}`
-> &
-  Record<`--${string}`, StylePropertyValue>
+type CustomProperties = Partial<Record<`--${string}`, {}>>
 
 /**
- * @public
+ * @internal
  */
-type StylePropertyValue<
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  T = {} | null,
-> =
-  | T
-  | (() => T)
-  | ({
-      default: StylePropertyValue<T>
-    } & {
-      [Key in
-        | Exclude<PseudoClasses, LegacyPseudoClasses>
-        | `${ParameterizedPseudoClasses}(${string})`
-        | AtRules
-        | `${AtRules} ${string}`]?: StylePropertyValue<T>
-    } & {
-      // legacy pseudo-classes
-      /** @deprecated legacy */
-      ':-moz-any()'?: never
-      /** @deprecated legacy */
-      ':-webkit-any()'?: never
-      /** @deprecated legacy */
-      ':matches()'?: never
-    })
-  | NonApplicableClassNameForProperties
-  | NonApplicableStringProperties
-  | readonly string[]
+type CompiledProperties = Partial<Record<StyleXVar<unknown>, {}>>
 
 /**
- * @public
+ * @internal
  */
-type PseudoClasses = Exclude<Pseudos, PseudoElements>
+type CommonProperties = Properties &
+  Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>
 
 /**
- * @public
+ * @internal
  */
-type ParameterizedPseudoClasses =
+type SourceValue<T> = false | ResolvableValue<T> | ContextualValue<T>
+
+/**
+ * @internal
+ */
+type ResolvableValue<T> = null | T | (() => T) | readonly T[]
+
+/**
+ * @internal
+ */
+type ContextualValue<T> = ({
+  default: ResolvableValue<T>
+} & {
+  [Key in
+    | PseudoClassKey
+    | `${ParameterizedPseudoClassKey}(${string})`
+    | AtRules
+    | `${AtRules} ${string}`]?: ResolvableValue<T> | ContextualValue<T>
+}) &
+  NonApplicableObjectProperties &
+  NonApplicableStringProperties
+
+/**
+ * @internal
+ */
+type PseudoClassKey = Exclude<
+  Pseudos,
+  PseudoElementKey | LegacyPseudoElementKey
+>
+
+/**
+ * @internal
+ */
+type ParameterizedPseudoClassKey =
   | ':active-view-transition-type'
   | ':dir'
   | ':has'
@@ -239,33 +207,17 @@ type ParameterizedPseudoClasses =
   | ':where'
 
 /**
- * @public
+ * @internal
  */
-type LegacyPseudoClasses = ':-moz-any()' | ':-webkit-any()' | ':matches()'
-
-/**
- * @public
- */
-type PseudoElements =
+type PseudoElementKey =
   | Extract<Pseudos, `::${string}`>
-  | Exclude<Extract<keyof CSSPropertiesWithExtras, `::${string}`>, Pseudos>
-  | LegacyPseudoElements
+  | Extract<keyof CSSPropertiesWithExtras, `::${string}`>
 
 /**
- * @public
+ * @internal
  */
-type LegacyPseudoElements =
-  | ':after'
-  | ':before'
-  | ':first-letter'
-  | ':first-line'
-  | ':-moz-placeholder'
-  | ':-ms-input-placeholder'
-
-/**
- * @public
- */
-type ParameterizedPseudoElements =
+type ParameterizedPseudoElementKey =
+  | '::cue'
   | '::highlight'
   | '::part'
   | '::picker'
@@ -277,102 +229,92 @@ type ParameterizedPseudoElements =
   | '::view-transition-old'
 
 /**
- * @public
+ * @internal
  */
-interface NonApplicableClassNameForProperties {
-  /**
-   * @type {import('@stylexjs/stylex').StyleXClassNameFor}
-   */
-  /** @deprecated non-applicable */
-  _opaque?: never
-  /** @deprecated non-applicable */
-  _key?: never
-  /** @deprecated non-applicable */
-  _value?: never
+type LegacyPseudoElementKey =
+  | ':after'
+  | ':before'
+  | ':first-letter'
+  | ':first-line'
+  | ':-moz-placeholder'
+  | ':-ms-input-placeholder'
+
+/**
+ * @internal
+ */
+interface NonApplicableThemeProperties {
+  /** @deprecated not applicable */ theme?: never
 }
 
 /**
- * @public
+ * @internal
+ */
+interface CompiledValue<K, V> {
+  /** @deprecated not applicable */ _opaque: ClassNameFor<K, V>['_opaque']
+  /** @deprecated not applicable */ _key: ClassNameFor<K, V>['_key']
+  /** @deprecated not applicable */ _value: ClassNameFor<K, V>['_value'] | null
+}
+
+/**
+ * @internal
+ */
+interface NonApplicableObjectProperties {
+  /** @deprecated not applicable */ toString?: object['toString'] | undefined
+  /** @deprecated not applicable */ valueOf?: object['valueOf'] | undefined
+}
+
+/**
+ * @internal
+ */
+interface NonApplicableSymbolProperties {
+  /** @deprecated not applicable */ description?: never
+}
+
+/**
+ * @internal
  */
 interface NonApplicableStringProperties {
-  /**
-   * @type {string}
-   */
-  /** @deprecated non-applicable */
-  toString?: never
-  /** @deprecated non-applicable */
-  charAt?: never
-  /** @deprecated non-applicable */
-  charCodeAt?: never
-  /** @deprecated non-applicable */
-  concat?: never
-  /** @deprecated non-applicable */
-  indexOf?: never
-  /** @deprecated non-applicable */
-  lastIndexOf?: never
-  /** @deprecated non-applicable */
-  localeCompare?: never
-  /** @deprecated non-applicable */
-  match?: never
-  /** @deprecated non-applicable */
-  replace?: never
-  /** @deprecated non-applicable */
-  search?: never
-  /** @deprecated non-applicable */
-  slice?: never
-  /** @deprecated non-applicable */
-  split?: never
-  /** @deprecated non-applicable */
-  substring?: never
-  /** @deprecated non-applicable */
-  toLowerCase?: never
-  /** @deprecated non-applicable */
-  toLocaleLowerCase?: never
-  /** @deprecated non-applicable */
-  toUpperCase?: never
-  /** @deprecated non-applicable */
-  toLocaleUpperCase?: never
-  /** @deprecated non-applicable */
-  trim?: never
-  /** @deprecated non-applicable */
-  length?: never
-  /** @deprecated non-applicable */
-  valueOf?: never
-  /** @deprecated non-applicable */
-  codePointAt?: never
-  /** @deprecated non-applicable */
-  includes?: never
-  /** @deprecated non-applicable */
-  endsWith?: never
-  /** @deprecated non-applicable */
-  normalize?: never
-  /** @deprecated non-applicable */
-  repeat?: never
-  /** @deprecated non-applicable */
-  startsWith?: never
-  /** @deprecated non-applicable */
-  matchAll?: never
-  /** @deprecated non-applicable */
-  padStart?: never
-  /** @deprecated non-applicable */
-  padEnd?: never
-  /** @deprecated non-applicable */
-  trimEnd?: never
-  /** @deprecated non-applicable */
-  trimStart?: never
-  /** @deprecated non-applicable */
-  at?: never
-  /** @deprecated non-applicable */
-  replaceAll?: never
+  /** @deprecated not applicable */ at?: never
+  /** @deprecated not applicable */ charAt?: never
+  /** @deprecated not applicable */ charCodeAt?: never
+  /** @deprecated not applicable */ codePointAt?: never
+  /** @deprecated not applicable */ concat?: never
+  /** @deprecated not applicable */ endsWith?: never
+  /** @deprecated not applicable */ includes?: never
+  /** @deprecated not applicable */ indexOf?: never
+  /** @deprecated not applicable */ lastIndexOf?: never
+  /** @deprecated not applicable */ length?: never
+  /** @deprecated not applicable */ localeCompare?: never
+  /** @deprecated not applicable */ match?: never
+  /** @deprecated not applicable */ matchAll?: never
+  /** @deprecated not applicable */ normalize?: never
+  /** @deprecated not applicable */ padEnd?: never
+  /** @deprecated not applicable */ padStart?: never
+  /** @deprecated not applicable */ repeat?: never
+  /** @deprecated not applicable */ replace?: never
+  /** @deprecated not applicable */ replaceAll?: never
+  /** @deprecated not applicable */ search?: never
+  /** @deprecated not applicable */ slice?: never
+  /** @deprecated not applicable */ split?: never
+  /** @deprecated not applicable */ startsWith?: never
+  /** @deprecated not applicable */ substring?: never
+  /** @deprecated not applicable */ toLocaleLowerCase?: never
+  /** @deprecated not applicable */ toLocaleUpperCase?: never
+  /** @deprecated not applicable */ toLowerCase?: never
+  /** @deprecated not applicable */ toUpperCase?: never
+  /** @deprecated not applicable */ trim?: never
+  /** @deprecated not applicable */ trimEnd?: never
+  /** @deprecated not applicable */ trimStart?: never
 }
 
 import type { AtRules } from 'csstype'
-import type { Properties as CSSProperties } from 'csstype'
+import type { StyleXClassNameFor as ClassNameFor } from '@stylexjs/stylex'
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
 import type { InlineStyles } from '@stylexjs/stylex'
-import type { MapNamespace } from '@stylexjs/stylex/lib/types/StyleXTypes'
-import type { props } from '@stylexjs/stylex'
+import type { Properties } from 'csstype'
+import { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
-import type { StyleXStyles } from '@stylexjs/stylex'
 import type { StyleXVar } from '@stylexjs/stylex'
+import type { Theme } from '@stylexjs/stylex'
+import type { VarGroup } from '@stylexjs/stylex'
 //

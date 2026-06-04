@@ -11,8 +11,9 @@ const vitestConfig = {
       exclude: ['src/test/**/*'],
     },
     include: [
-      '**/*.spec.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
-      '**/*.error.spec-d.{js,jsx,ts,tsx,mjs,mjsx,mtsx,cjs}',
+      '**/*.spec.?(c|m)[jt]s?(x)',
+      '**/*.error.spec-d.?(c|m)[jt]s?(x)',
+      //
     ],
     typecheck: {
       enabled: true,

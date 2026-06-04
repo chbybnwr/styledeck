@@ -10,6 +10,10 @@ const tsdownConfig = {
     onlyBundle: [],
   },
 
+  dts: {
+    tsconfig: 'tsconfig.build.json',
+  },
+
   format: 'esm',
   fixedExtension: false,
   minify: true,

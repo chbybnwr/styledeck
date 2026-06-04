@@ -1,13 +1,12 @@
 {
   "extends": "./tsconfig.build.json",
-  "include": ["src/**/*.spec*.*", "src/test/**/*"],
+  "include": ["src/**/*"],
   "exclude": [],
 
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.test.tsbuildinfo",
     "noEmit": true,
     "skipLibCheck": true,
-    "lib": [],
     "types": ["node"]
   }
 }

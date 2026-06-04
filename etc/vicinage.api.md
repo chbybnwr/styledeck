@@ -7,44 +7,62 @@
 import type { AtRules } from 'csstype';
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes';
 import type { InlineStyles } from '@stylexjs/stylex';
-import type { MapNamespace } from '@stylexjs/stylex/lib/types/StyleXTypes';
 import type { Properties } from 'csstype';
-import type { props } from '@stylexjs/stylex';
+import { props } from '@stylexjs/stylex';
 import type { Pseudos } from 'csstype';
-import type { StyleXStyles } from '@stylexjs/stylex';
+import type { StyleXClassNameFor } from '@stylexjs/stylex';
 import type { StyleXVar } from '@stylexjs/stylex';
+import type { Theme } from '@stylexjs/stylex';
+import type { VarGroup } from '@stylexjs/stylex';
 
 // @public
-export const apply: (...styles: Style[]) => ReturnType<typeof props>;
+export const apply: (...styledeck: StyleDeck[]) => ReturnType<typeof props>;
+
+// @public
+export const sheet: <T extends StyleDeck[]>(...styledeck: T) => T;
 
 // @public (undocumented)
-export type IsDynamicStyle<Value, Seen = never> = [Value] extends [Seen] ? false : Value extends (...args: never[]) => unknown ? true : Value extends readonly unknown[] ? false : Value extends object ? true extends {
-    [Key in keyof Value]-?: IsDynamicStyle<Value[Key], Seen | Value>;
-}[keyof Value] ? true : false : false;
+export type StyleDeck<T extends ~PropertiesWithExtras = ~PropertiesWithExtras> = StyleDeck<T>[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | Theme<VarGroup<{}>> | ~NonApplicableThemeProperties | ~NonApplicableObjectProperties | ~NonApplicableSymbolProperties;
 
-// @public (undocumented)
-export type LegacyPseudoClasses = ':-moz-any()' | ':-webkit-any()' | ':matches()';
+// @internal (undocumented)
+export type ~CommonProperties = Properties & Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
 
-// @public (undocumented)
-export type LegacyPseudoElements = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
+// @internal (undocumented)
+export type ~CompiledProperties = Partial<Record<StyleXVar<unknown>, {}>>;
 
-// @public (undocumented)
-export type MapDynamicStyle<Value, Seen = never> = [Value] extends [Seen] ? Value : Value extends (...args: never[]) => infer Result ? MapDynamicStyle<Result, Seen | Value> : Value extends readonly unknown[] ? Value : Value extends object ? {
-    [Key in keyof Value]: MapDynamicStyle<Value[Key], Seen | Value>;
-} : Value;
-
-// @public (undocumented)
-export interface NonApplicableClassNameForProperties {
+// @internal (undocumented)
+export interface ~CompiledValue<K, V> {
     // @deprecated (undocumented)
-    _key?: never;
+    _key: StyleXClassNameFor<K, V>['_key'];
     // @deprecated (undocumented)
-    _opaque?: never;
+    _opaque: StyleXClassNameFor<K, V>['_opaque'];
     // @deprecated (undocumented)
-    _value?: never;
+    _value: StyleXClassNameFor<K, V>['_value'] | null;
 }
 
-// @public (undocumented)
-export interface NonApplicableStringProperties {
+// @internal (undocumented)
+export type ~ContextualValue<T> = ({
+    default: ~ResolvableValue<T>;
+} & {
+    [Key in ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | AtRules | `${AtRules} ${string}`]?: ~ResolvableValue<T> | ~ContextualValue<T>;
+}) & ~NonApplicableObjectProperties & ~NonApplicableStringProperties;
+
+// @internal (undocumented)
+export type ~CustomProperties = Partial<Record<`--${string}`, {}>>;
+
+// @internal (undocumented)
+export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
+
+// @internal (undocumented)
+export interface ~NonApplicableObjectProperties {
+    // @deprecated (undocumented)
+    toString?: object['toString'] | undefined;
+    // @deprecated (undocumented)
+    valueOf?: object['valueOf'] | undefined;
+}
+
+// @internal (undocumented)
+export interface ~NonApplicableStringProperties {
     // @deprecated (undocumented)
     at?: never;
     // @deprecated (undocumented)
@@ -100,8 +118,6 @@ export interface NonApplicableStringProperties {
     // @deprecated (undocumented)
     toLowerCase?: never;
     // @deprecated (undocumented)
-    toString?: never;
-    // @deprecated (undocumented)
     toUpperCase?: never;
     // @deprecated (undocumented)
     trim?: never;
@@ -109,61 +125,52 @@ export interface NonApplicableStringProperties {
     trimEnd?: never;
     // @deprecated (undocumented)
     trimStart?: never;
-    // @deprecated (undocumented)
-    valueOf?: never;
 }
 
-// @public (undocumented)
-export type ParameterizedPseudoClasses = ':active-view-transition-type' | ':dir' | ':has' | ':heading' | ':host-context' | ':host' | ':is' | ':lang' | ':not' | ':nth-child' | ':nth-last-child' | ':nth-last-of-type' | ':nth-of-type' | ':state' | ':where';
+// @internal (undocumented)
+export interface ~NonApplicableSymbolProperties {
+    // @deprecated (undocumented)
+    description?: never;
+}
 
-// @public (undocumented)
-export type ParameterizedPseudoElements = '::highlight' | '::part' | '::picker' | '::scroll-button' | '::slotted' | '::view-transition-group' | '::view-transition-image-pair' | '::view-transition-new' | '::view-transition-old';
+// @internal (undocumented)
+export interface ~NonApplicableThemeProperties {
+    // @deprecated (undocumented)
+    theme?: never;
+}
 
-// @public (undocumented)
-export type PseudoClasses = Exclude<Pseudos, PseudoElements>;
+// @internal (undocumented)
+export type ~ParameterizedPseudoClassKey = ':active-view-transition-type' | ':dir' | ':has' | ':heading' | ':host-context' | ':host' | ':is' | ':lang' | ':not' | ':nth-child' | ':nth-last-child' | ':nth-last-of-type' | ':nth-of-type' | ':state' | ':where';
 
-// @public (undocumented)
-export type PseudoElements = Extract<Pseudos, `::${string}`> | Exclude<Extract<keyof CSSPropertiesWithExtras, `::${string}`>, Pseudos> | LegacyPseudoElements;
+// @internal (undocumented)
+export type ~ParameterizedPseudoElementKey = '::cue' | '::highlight' | '::part' | '::picker' | '::scroll-button' | '::slotted' | '::view-transition-group' | '::view-transition-image-pair' | '::view-transition-new' | '::view-transition-old';
 
-// @public
-export const sheet: <StyleList extends unknown[]>(...styles: {
-    [Index in keyof StyleList]: StyleList[Index] & Style;
-}) => {
-    [Index in keyof StyleList]: StyleList[Index] extends infer Style ? Style extends StyleXStyles ? Style : IsDynamicStyle<Style> extends true ? readonly [MapNamespace<MapDynamicStyle<Style>>, InlineStyles] : MapNamespace<Style> : never;
+// @internal (undocumented)
+export type ~PropertiesWithExtras = ~CommonProperties | ~CustomProperties | ~CompiledProperties | ~PseudoElementRecord;
+
+// @internal (undocumented)
+export type ~PseudoClassKey = Exclude<Pseudos, ~PseudoElementKey | ~LegacyPseudoElementKey>;
+
+// @internal (undocumented)
+export type ~PseudoElementKey = Extract<Pseudos, `::${string}`> | Extract<keyof CSSPropertiesWithExtras, `::${string}`>;
+
+// @internal (undocumented)
+export type ~PseudoElementRecord = Partial<Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~CommonProperties | ~CustomProperties | ~CompiledProperties>>;
+
+// @internal (undocumented)
+export type ~ResolvableValue<T> = null | T | (() => T) | readonly T[];
+
+// @internal (undocumented)
+export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T>;
+
+// @internal (undocumented)
+export type ~StyleCard<T extends ~PropertiesWithExtras> = {
+    [TKey in keyof T]: TKey extends keyof ~PseudoElementRecord ? NonNullable<T[TKey]> extends infer U ? {
+        [UKey in keyof U]: ~SourceValue<Exclude<U[UKey], undefined | null>>;
+    } | ~CompiledValue<TKey, {
+        [Key in keyof U]: U[Key];
+    }> : never : ~SourceValue<Exclude<T[TKey], undefined | null>> | ~CompiledValue<TKey, Exclude<T[TKey], undefined | null>>;
 };
-
-// @public (undocumented)
-export type Style = {
-    [Key in keyof StylePropertiesWithExtras]: StylePropertiesWithExtras[Key] | false | null;
-} | Record<StyleXVar<unknown>, StylePropertyValue | (() => StylePropertyValue)> | StyleXStyles<CSSPropertiesWithExtras & Omit<Properties, keyof CSSPropertiesWithExtras>>;
-
-// @public (undocumented)
-export type StyleProperties = {
-    [Key in keyof Properties]: StylePropertyValue<Properties[Key] | null>;
-} & Omit<{
-    [Key in keyof CSSPropertiesWithExtras]: StylePropertyValue<CSSPropertiesWithExtras[Key]>;
-}, keyof Properties | `::${string}`> & Record<`--${string}`, StylePropertyValue>;
-
-// @public (undocumented)
-export type StylePropertiesWithExtras = StyleProperties & Record<Exclude<PseudoElements, LegacyPseudoElements> | `${ParameterizedPseudoElements}(${string})`, StyleProperties | NonApplicableStringProperties | NonApplicableClassNameForProperties> & {
-    ':after'?: never;
-    ':before'?: never;
-    ':first-letter'?: never;
-    ':first-line'?: never;
-    ':-moz-placeholder'?: never;
-    ':-ms-input-placeholder'?: never;
-};
-
-// @public (undocumented)
-export type StylePropertyValue<T = {} | null> = T | (() => T) | ({
-    default: StylePropertyValue<T>;
-} & {
-    [Key in Exclude<PseudoClasses, LegacyPseudoClasses> | `${ParameterizedPseudoClasses}(${string})` | AtRules | `${AtRules} ${string}`]?: StylePropertyValue<T>;
-} & {
-    ':-moz-any()'?: never;
-    ':-webkit-any()'?: never;
-    ':matches()'?: never;
-}) | NonApplicableClassNameForProperties | NonApplicableStringProperties | readonly string[];
 
 // (No @packageDocumentation comment for this package)
 
