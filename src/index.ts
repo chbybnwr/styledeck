@@ -35,6 +35,7 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
   | NonApplicableThemeProperties
   | NonApplicableObjectProperties
   | NonApplicableSymbolProperties
+  | undefined
 
 /**
  * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.
