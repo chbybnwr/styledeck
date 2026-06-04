@@ -22,7 +22,7 @@ export const apply: (...styledeck: StyleDeck[]) => ReturnType<typeof props>;
 export const sheet: <T extends StyleDeck[]>(...styledeck: T) => T;
 
 // @public (undocumented)
-export type StyleDeck<T extends ~PropertiesWithExtras = ~PropertiesWithExtras> = StyleDeck<T>[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | Theme<VarGroup<{}>> | ~NonApplicableThemeProperties | ~NonApplicableObjectProperties | ~NonApplicableSymbolProperties;
+export type StyleDeck<T extends ~PropertiesWithExtras = ~PropertiesWithExtras> = StyleDeck<T>[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | Theme<VarGroup<{}>> | ~NonApplicableThemeProperties | ~NonApplicableObjectProperties | ~NonApplicableSymbolProperties | undefined;
 
 // @internal (undocumented)
 export type ~CommonProperties = Properties & Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
