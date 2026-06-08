@@ -22,7 +22,7 @@ export type { PseudoElementRecord as '~PseudoElementRecord' }
 export type { ResolvableValue as '~ResolvableValue' }
 export type { SourceValue as '~SourceValue' }
 export type { StyleCard as '~StyleCard' }
-export type { StyleConfig as '~PropertiesWithExtras' }
+export type { StyleConfig as '~StyleConfig' }
 export type { StylexAttributes as '~StylexAttributes' }
 export type { StylexProperties as '~StylexProperties' }
 
