@@ -8,6 +8,8 @@ export type { CompiledValue as '~CompiledValue' }
 export type { ContextualValue as '~ContextualValue' }
 export type { CustomProperties as '~CustomProperties' }
 export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
+export { mergeClassAttribute as '~mergeClassAttribute' }
+export { mergeClassProperty as '~mergeClassProperty' }
 export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' }
 export type { NonApplicableStringProperties as '~NonApplicableStringProperties' }
 export type { NonApplicableSymbolProperties as '~NonApplicableSymbolProperties' }
@@ -21,8 +23,52 @@ export type { ResolvableValue as '~ResolvableValue' }
 export type { SourceValue as '~SourceValue' }
 export type { StyleCard as '~StyleCard' }
 export type { StyleConfig as '~PropertiesWithExtras' }
+export type { StylexAttributes as '~StylexAttributes' }
+export type { StylexProperties as '~StylexProperties' }
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
+
+/**
+ * @internal
+ */
+type StylexAttributes = ReturnType<(typeof stylex)['attrs']>
+
+/**
+ * @internal
+ */
+function mergeClassAttribute(
+  originalClass: string,
+  { class: compiledClass, ...attributes }: StylexAttributes,
+): StylexAttributes {
+  return {
+    ...attributes,
+    class: [
+      originalClass,
+      ...(compiledClass == null ? [] : [compiledClass]),
+    ].join(' '),
+  }
+}
+
+/**
+ * @internal
+ */
+type StylexProperties = ReturnType<(typeof stylex)['props']>
+
+/**
+ * @internal
+ */
+function mergeClassProperty(
+  originalClass: string,
+  { className: compiledClass, ...properties }: StylexProperties,
+): StylexProperties {
+  return {
+    ...properties,
+    className: [
+      originalClass,
+      ...(compiledClass == null ? [] : [compiledClass]),
+    ].join(' '),
+  }
+}
 
 /**
  * @public
@@ -63,7 +109,7 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
  *
  * @public
  */
-const apply: (...styledeck: StyleDeck[]) => ReturnType<typeof props> = macro
+const apply: (...styledeck: StyleDeck[]) => StylexProperties = macro
 
 /**
  * Composes styles into a deck (`StyleDeck`) for component style props.
@@ -313,8 +359,8 @@ import type { StyleXClassNameFor as ClassNameFor } from '@stylexjs/stylex'
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
 import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
-import { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
+import type * as stylex from '@stylexjs/stylex'
 import type { StyleXVar } from '@stylexjs/stylex'
 import type { Theme } from '@stylexjs/stylex'
 import type { VarGroup } from '@stylexjs/stylex'
