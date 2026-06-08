@@ -11,6 +11,10 @@ describe('mergeClassAttribute', () => {
       style: 'color: red;',
       'data-style-src': 'xxx',
     })
+
+    expect(mergeClassAttribute('foo bar', {})).toStrictEqual({
+      class: 'foo bar',
+    })
   })
 })
 
@@ -30,6 +34,10 @@ describe('mergeClassProperty', () => {
         color: 'red',
       },
       'data-style-src': 'xxx',
+    })
+
+    expect(mergeClassProperty('foo bar', {})).toStrictEqual({
+      className: 'foo bar',
     })
   })
 })
