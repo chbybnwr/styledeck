@@ -8,21 +8,21 @@ import type { AtRules } from 'csstype';
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes';
 import type { InlineStyles } from '@stylexjs/stylex';
 import type { Properties } from 'csstype';
-import { props } from '@stylexjs/stylex';
 import type { Pseudos } from 'csstype';
+import type * as stylex from '@stylexjs/stylex';
 import type { StyleXClassNameFor } from '@stylexjs/stylex';
 import type { StyleXVar } from '@stylexjs/stylex';
 import type { Theme } from '@stylexjs/stylex';
 import type { VarGroup } from '@stylexjs/stylex';
 
 // @public
-export const apply: (...styledeck: StyleDeck[]) => ReturnType<typeof props>;
+export const apply: (...styledeck: StyleDeck[]) => ~StylexProperties;
 
 // @public
 export const sheet: <T extends StyleDeck[]>(...styledeck: T) => T;
 
 // @public (undocumented)
-export type StyleDeck<T extends ~PropertiesWithExtras = ~PropertiesWithExtras> = StyleDeck<T>[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | Theme<VarGroup<{}>> | ~NonApplicableThemeProperties | ~NonApplicableObjectProperties | ~NonApplicableSymbolProperties | undefined;
+export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = StyleDeck<T>[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | Theme<VarGroup<{}>> | ~NonApplicableThemeProperties | ~NonApplicableObjectProperties | ~NonApplicableSymbolProperties | undefined;
 
 // @internal (undocumented)
 export type ~CommonProperties = Properties & Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
@@ -52,6 +52,12 @@ export type ~CustomProperties = Partial<Record<`--${string}`, {}>>;
 
 // @internal (undocumented)
 export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
+
+// @internal (undocumented)
+export function ~mergeClassAttribute(originalClass: string, input: ~StylexAttributes): ~StylexAttributes;
+
+// @internal (undocumented)
+export function ~mergeClassProperty(originalClass: string, input: ~StylexProperties): ~StylexProperties;
 
 // @internal (undocumented)
 export interface ~NonApplicableObjectProperties {
@@ -146,9 +152,6 @@ export type ~ParameterizedPseudoClassKey = ':active-view-transition-type' | ':di
 export type ~ParameterizedPseudoElementKey = '::cue' | '::highlight' | '::part' | '::picker' | '::scroll-button' | '::slotted' | '::view-transition-group' | '::view-transition-image-pair' | '::view-transition-new' | '::view-transition-old';
 
 // @internal (undocumented)
-export type ~PropertiesWithExtras = ~CommonProperties | ~CustomProperties | ~CompiledProperties | ~PseudoElementRecord;
-
-// @internal (undocumented)
 export type ~PseudoClassKey = Exclude<Pseudos, ~PseudoElementKey | ~LegacyPseudoElementKey>;
 
 // @internal (undocumented)
@@ -164,13 +167,22 @@ export type ~ResolvableValue<T> = null | T | (() => T) | readonly T[];
 export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T>;
 
 // @internal (undocumented)
-export type ~StyleCard<T extends ~PropertiesWithExtras> = {
+export type ~StyleCard<T extends ~StyleConfig> = {
     [TKey in keyof T]: TKey extends keyof ~PseudoElementRecord ? NonNullable<T[TKey]> extends infer U ? {
         [UKey in keyof U]: ~SourceValue<Exclude<U[UKey], undefined | null>>;
     } | ~CompiledValue<TKey, {
         [Key in keyof U]: U[Key];
     }> : never : ~SourceValue<Exclude<T[TKey], undefined | null>> | ~CompiledValue<TKey, Exclude<T[TKey], undefined | null>>;
 };
+
+// @internal (undocumented)
+export type ~StyleConfig = ~CommonProperties | ~CustomProperties | ~CompiledProperties | ~PseudoElementRecord;
+
+// @internal (undocumented)
+export type ~StylexAttributes = ReturnType<(typeof stylex)['attrs']>;
+
+// @internal (undocumented)
+export type ~StylexProperties = ReturnType<(typeof stylex)['props']>;
 
 // (No @packageDocumentation comment for this package)
 
