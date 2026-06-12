@@ -208,7 +208,12 @@ type SourceValue<T> = false | ResolvableValue<T> | ContextualValue<T>
 /**
  * @internal
  */
-type ResolvableValue<T> = null | T | (() => T) | readonly T[]
+type ResolvableValue<T> =
+  | T
+  | readonly T[]
+  | (() => T | null | undefined)
+  | null
+  | undefined
 
 /**
  * @internal
