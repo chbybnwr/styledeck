@@ -161,7 +161,7 @@ export type ~PseudoElementKey = Extract<Pseudos, `::${string}`> | Extract<keyof 
 export type ~PseudoElementRecord = Partial<Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~CommonProperties | ~CustomProperties | ~CompiledProperties>>;
 
 // @internal (undocumented)
-export type ~ResolvableValue<T> = null | T | (() => T) | readonly T[];
+export type ~ResolvableValue<T> = T | readonly T[] | (() => T | null | undefined) | null | undefined;
 
 // @internal (undocumented)
 export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T>;
