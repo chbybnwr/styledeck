@@ -29,6 +29,19 @@ export type { StylexProperties as '~StylexProperties' }
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
 /**
+ * @public
+ */
+type StyleDeck<T extends StyleConfig = StyleConfig> =
+  | StyleDeck<T>[]
+  | StyleCard<T>
+  | readonly [StyleCard<T>, InlineStyles]
+  | Theme<VarGroup<{}>>
+  | NonApplicableThemeProperties
+  | NonApplicableObjectProperties
+  | NonApplicableSymbolProperties
+  | undefined
+
+/**
  * @internal
  */
 type StylexAttributes = ReturnType<(typeof stylex)['attrs']>
@@ -69,19 +82,6 @@ function mergeClassProperty(
     ].join(' '),
   }
 }
-
-/**
- * @public
- */
-type StyleDeck<T extends StyleConfig = StyleConfig> =
-  | StyleDeck<T>[]
-  | StyleCard<T>
-  | readonly [StyleCard<T>, InlineStyles]
-  | Theme<VarGroup<{}>>
-  | NonApplicableThemeProperties
-  | NonApplicableObjectProperties
-  | NonApplicableSymbolProperties
-  | undefined
 
 /**
  * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.
