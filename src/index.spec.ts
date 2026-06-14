@@ -19,7 +19,7 @@ describe('mergeClassAttribute', () => {
 })
 
 describe('mergeClassProperty', () => {
-  it('merges class attribute', () => {
+  it('merges class property', () => {
     expect(
       mergeClassProperty('foo bar', {
         className: 'quux',
