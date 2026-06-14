@@ -113,9 +113,12 @@ export default defineConfig([
       'unicorn/prevent-abbreviations': [
         'warn',
         {
-          allowList: {
-            args: true,
-          },
+          ignore: [
+            'args',
+            /attrs/i,
+            /props/i,
+            //
+          ],
         },
       ],
     },

@@ -42,6 +42,20 @@ describe('mergeClassProperty', () => {
   })
 })
 
+describe('attrs', () => {
+  it('returns attrs', () => {
+    expect(
+      attrs({
+        '--fooBar': 'initial',
+        MozAnimation: 'auto',
+      }),
+    ).toStrictEqual({
+      style: '--fooBar:initial;-moz-animation:auto',
+    })
+  })
+})
+
+import { '~attrs' as attrs } from './index.ts'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
