@@ -98,7 +98,11 @@ function attrs(
     className,
     style,
     'data-style-src': styleSource,
-  } = props.apply(this, styles)
+  } = props.apply(
+    // eslint-disable-next-line unicorn/no-this-outside-of-class
+    this,
+    styles,
+  )
 
   return {
     ...(className == null
