@@ -25,6 +25,11 @@ export const sheet: <T extends StyleDeck[]>(...styledeck: T) => T;
 export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = StyleDeck<T>[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | Theme<VarGroup<{}>> | ~NonApplicableThemeProperties | ~NonApplicableObjectProperties | ~NonApplicableSymbolProperties | undefined;
 
 // @internal (undocumented)
+export function ~attrs(this: unknown, ...styles: any[]): ReturnType<(typeof stylex)['attrs']> extends infer T ? {
+    [Key in keyof T]: T[Key] | undefined;
+} : never;
+
+// @internal (undocumented)
 export type ~CommonProperties = Properties & Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
 
 // @internal (undocumented)
