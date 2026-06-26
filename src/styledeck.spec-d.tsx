@@ -4,8 +4,17 @@ const tokens = defineVars({
 
 describe('StyleDeck', () => {
   it('accepts undefined', () => {
-    // eslint-disable-next-line unicorn/no-useless-undefined
-    assertType<StyleDeck>(undefined)
+    const props: {
+      styleDeck?: StyleDeck
+    } = {}
+
+    assertType<StyleDeck>(props.styleDeck)
+
+    assertType<StyleDeck>([
+      { color: 'red' },
+      props.styleDeck,
+      //
+    ])
   })
 
   it('accepts standard properties', () => {
@@ -428,6 +437,7 @@ import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
+import type { Style } from 'node:util'
 import type { StyleDeck } from './index.ts'
 import { types } from '@stylexjs/stylex'
 import { when } from '@stylexjs/stylex'
