@@ -14,7 +14,6 @@ export { mergeClassProperty as '~mergeClassProperty' }
 export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' }
 export type { NonApplicableStringProperties as '~NonApplicableStringProperties' }
 export type { NonApplicableSymbolProperties as '~NonApplicableSymbolProperties' }
-export type { NonApplicableThemeProperties as '~NonApplicableThemeProperties' }
 export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' }
 export type { ParameterizedPseudoElementKey as '~ParameterizedPseudoElementKey' }
 export type { PseudoClassKey as '~PseudoClassKey' }
@@ -36,9 +35,6 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
   | StyleDeck<T>[]
   | StyleCard<T>
   | readonly [StyleCard<T>, InlineStyles]
-  | Theme<VarGroup<{}>>
-  | NonApplicableThemeProperties
-  | NonApplicableObjectProperties
   | NonApplicableSymbolProperties
 
 /**
@@ -351,13 +347,6 @@ type LegacyPseudoElementKey =
 /**
  * @internal
  */
-interface NonApplicableThemeProperties {
-  /** @deprecated not applicable */ theme?: never
-}
-
-/**
- * @internal
- */
 interface CompiledValue<K, V> {
   /** @deprecated not applicable */ _opaque: ClassNameFor<K, V>['_opaque']
   /** @deprecated not applicable */ _key: ClassNameFor<K, V>['_key']
@@ -425,6 +414,4 @@ import { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
 import type * as stylex from '@stylexjs/stylex'
 import type { StyleXVar } from '@stylexjs/stylex'
-import type { Theme } from '@stylexjs/stylex'
-import type { VarGroup } from '@stylexjs/stylex'
 //

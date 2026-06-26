@@ -109,6 +109,17 @@ describe('StyleDeck', () => {
       backgroundColor: 'red',
     })
 
+    assertType<
+      StyleDeck<{
+        color?: string
+      }>
+    >([
+      {
+        // @ts-expect-error
+        backgroundColor: 'red',
+      },
+    ])
+
     const styledeck: StyleDeck<{
       backgroundColor?: string
     }> = {}
