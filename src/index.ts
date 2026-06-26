@@ -36,6 +36,7 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
   | StyleCard<T>
   | readonly [StyleCard<T>, InlineStyles]
   | NonApplicableSymbolProperties
+  | undefined
 
 /**
  * @internal
