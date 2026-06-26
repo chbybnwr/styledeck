@@ -40,7 +40,6 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
   | NonApplicableThemeProperties
   | NonApplicableObjectProperties
   | NonApplicableSymbolProperties
-  | undefined
 
 /**
  * @internal

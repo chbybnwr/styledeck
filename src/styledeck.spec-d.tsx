@@ -3,11 +3,6 @@ const tokens = defineVars({
 })
 
 describe('StyleDeck', () => {
-  it('accepts undefined', () => {
-    // eslint-disable-next-line unicorn/no-useless-undefined
-    assertType<StyleDeck>(undefined)
-  })
-
   it('accepts standard properties', () => {
     assertType<StyleDeck>({
       color: 'red',
