@@ -13,7 +13,6 @@ export { mergeClassAttribute as '~mergeClassAttribute' }
 export { mergeClassProperty as '~mergeClassProperty' }
 export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' }
 export type { NonApplicableStringProperties as '~NonApplicableStringProperties' }
-export type { NonApplicableSymbolProperties as '~NonApplicableSymbolProperties' }
 export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' }
 export type { ParameterizedPseudoElementKey as '~ParameterizedPseudoElementKey' }
 export type { PseudoClassKey as '~PseudoClassKey' }
@@ -35,7 +34,6 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
   | StyleDeck<T>[]
   | StyleCard<T>
   | readonly [StyleCard<T>, InlineStyles]
-  | NonApplicableSymbolProperties
   | undefined
 
 /**
@@ -356,13 +354,6 @@ interface CompiledValue<K, V> {
 interface NonApplicableObjectProperties {
   /** @deprecated not applicable */ toString?: object['toString'] | undefined
   /** @deprecated not applicable */ valueOf?: object['valueOf'] | undefined
-}
-
-/**
- * @internal
- */
-interface NonApplicableSymbolProperties {
-  /** @deprecated not applicable */ description?: never
 }
 
 /**
