@@ -137,6 +137,8 @@ function toKebabCase(text: string): string {
 }
 
 /**
+ * @deprecated
+ *
  * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.
  *
  * @example
@@ -165,6 +167,8 @@ function toKebabCase(text: string): string {
 const apply: (...styledeck: StyleDeck[]) => StylexProperties = macro
 
 /**
+ * @deprecated
+ *
  * Composes styles into a deck (`StyleDeck`) for component style props.
  *
  * @param styles - Style objects or `StyleDeck`
