@@ -19,6 +19,8 @@ export type { PseudoClassKey as '~PseudoClassKey' }
 export type { PseudoElementKey as '~PseudoElementKey' }
 export type { PseudoElementRecord as '~PseudoElementRecord' }
 export type { ResolvableValue as '~ResolvableValue' }
+export { resolveProps as '~resolveAttrs' }
+export { resolveAttrs as '~resolveProps' }
 export type { SourceValue as '~SourceValue' }
 export type { StyleCard as '~StyleCard' }
 export type { StyleConfig as '~StyleConfig' }
@@ -40,6 +42,36 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
  * @internal
  */
 type StylexAttributes = ReturnType<(typeof stylex)['attrs']>
+
+/**
+ * @internal
+ */
+function resolveProps(
+  original: Record<string, unknown>,
+  compiled: Record<string, unknown>,
+  classKey = 'className',
+) {
+  original[classKey] = [
+    ...(typeof original[classKey] === 'string' ? [] : [original[classKey]]),
+    ...(typeof compiled[classKey] === 'string' ? [] : [compiled[classKey]]),
+  ].join(' ')
+
+  return {
+    ...original,
+    style: compiled['style'],
+    'data-style-src': compiled['data-style-src'],
+  }
+}
+
+/**
+ * @internal
+ */
+function resolveAttrs(
+  original: Record<string, unknown>,
+  compiled: Record<string, unknown>,
+) {
+  return resolveProps(original, compiled, 'class')
+}
 
 /**
  * @internal
