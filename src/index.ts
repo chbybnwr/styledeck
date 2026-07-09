@@ -385,8 +385,7 @@ type LegacyPseudoElementKey =
 interface CompiledValue<K, V> {
   /** @deprecated not applicable */ _opaque: ClassNameFor<K, V>['_opaque']
   /** @deprecated not applicable */ _key: ClassNameFor<K, V>['_key']
-  // TODO: remove null, it is needed only by sheet
-  /** @deprecated not applicable */ _value: ClassNameFor<K, V>['_value'] | null
+  /** @deprecated not applicable */ _value: ClassNameFor<K, V>['_value']
 }
 
 /**
