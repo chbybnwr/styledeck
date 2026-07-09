@@ -2,17 +2,20 @@ export { apply }
 export { sheet }
 export type { StyleDeck }
 
-export { attrs as '~attrs' }
 export type { CommonProperties as '~CommonProperties' }
+export type { CompiledAttrs as '~CompiledAttrs' }
 export type { CompiledProperties as '~CompiledProperties' }
+export type { CompiledProps as '~CompiledProps' }
 export type { CompiledValue as '~CompiledValue' }
 export type { ContextualKey as '~ContextualKey' }
 export type { ContextualValue as '~ContextualValue' }
 export type { CustomProperties as '~CustomProperties' }
 export type { ElementAttrs as '~ElementAttrs' }
 export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
-export { mergeClassAttribute as '~mergeClassAttribute' }
-export { mergeClassProperty as '~mergeClassProperty' }
+export { mergeAttrs as '~mergeAttrs' }
+export { mergeClassAttr as '~mergeClassAttr' }
+export { mergeClassProp as '~mergeClassProp' }
+export { mergeProps as '~mergeProps' }
 export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' }
 export type { NonApplicableStringProperties as '~NonApplicableStringProperties' }
 export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' }
@@ -21,13 +24,10 @@ export type { PseudoClassKey as '~PseudoClassKey' }
 export type { PseudoElementKey as '~PseudoElementKey' }
 export type { PseudoElementRecord as '~PseudoElementRecord' }
 export type { ResolvableValue as '~ResolvableValue' }
-export { resolveProps as '~resolveAttrs' }
-export { resolveAttrs as '~resolveProps' }
 export type { SourceValue as '~SourceValue' }
 export type { StyleCard as '~StyleCard' }
 export type { StyleConfig as '~StyleConfig' }
-export type { StylexAttributes as '~StylexAttributes' }
-export type { StylexProperties as '~StylexProperties' }
+export { toAttrs as '~toAttrs' }
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
@@ -43,126 +43,127 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
 /**
  * @internal
  */
-type StylexAttributes = ReturnType<(typeof stylex)['attrs']>
+type CompiledAttrs = ReturnType<(typeof stylex)['attrs']>
 
 /**
  * @internal
  */
-function resolveProps(
+function mergeAttrs(
+  originalAttrs: Record<string, unknown>,
+  compiledAttrs: Record<string, unknown>,
+  classKey = 'class',
+): Record<string, unknown> {
+  const { [classKey]: originalClass } = originalAttrs
+  const { [classKey]: compiledClass, ...restCompiledAttrs } = compiledAttrs
+
+  if (typeof originalClass === 'string') {
+    return Object.fromEntries(
+      Object.entries(originalAttrs).flatMap(([key, value]) => {
+        if (key === classKey) {
+          return [
+            [
+              key,
+              typeof compiledClass === 'string'
+                ? `${originalClass} ${compiledClass}`
+                : originalClass,
+            ],
+            ...Object.entries(restCompiledAttrs),
+          ]
+        }
+
+        return [[key, value]]
+      }),
+    )
+  }
+
+  if (originalClass != null && typeof compiledClass === 'string') {
+    console.warn(
+      `[styledeck/unapplied-styles] "${compiledClass}": original class value is not a string`,
+    )
+
+    return originalAttrs
+  }
+
+  return {
+    ...originalAttrs,
+    ...compiledAttrs,
+  }
+}
+
+/**
+ * @internal
+ */
+function mergeProps(
   original: Record<string, unknown>,
   compiled: Record<string, unknown>,
-  classKey = 'className',
 ) {
-  original[classKey] = [
-    ...(typeof original[classKey] === 'string' ? [] : [original[classKey]]),
-    ...(typeof compiled[classKey] === 'string' ? [] : [compiled[classKey]]),
-  ].join(' ')
+  return mergeAttrs(original, compiled, 'className')
+}
+
+/**
+ * @internal
+ */
+function mergeClassAttr(
+  originalClass: string,
+  compiledAttrs: Record<string, unknown>,
+  classKey = 'class',
+): CompiledAttrs {
+  const { [classKey]: compiledClass, ...restCompiledAttrs } = compiledAttrs
 
   return {
-    ...original,
-    style: compiled['style'],
-    'data-style-src': compiled['data-style-src'],
+    [classKey]: [
+      originalClass,
+      ...(typeof compiledClass === 'string' ? [compiledClass] : []),
+    ].join(' '),
+    ...restCompiledAttrs,
   }
 }
 
 /**
  * @internal
  */
-function resolveAttrs(
-  original: Record<string, unknown>,
-  compiled: Record<string, unknown>,
+type CompiledProps = ReturnType<typeof toProps>
+
+/**
+ * @internal
+ */
+function mergeClassProp(
+  originalClass: string,
+  compiledProps: Record<string, unknown>,
 ) {
-  return resolveProps(original, compiled, 'class')
+  return mergeClassAttr(originalClass, compiledProps, 'className')
 }
 
 /**
  * @internal
  */
-function mergeClassAttribute(
-  originalClass: string,
-  { class: compiledClass, ...attributes }: StylexAttributes,
-): StylexAttributes {
-  return {
-    ...attributes,
-    class: [
-      originalClass,
-      ...(compiledClass == null ? [] : [compiledClass]),
-    ].join(' '),
-  }
-}
-
-/**
- * @internal
- */
-type StylexProperties = ReturnType<(typeof stylex)['props']>
-
-/**
- * @internal
- */
-function mergeClassProperty(
-  originalClass: string,
-  { className: compiledClass, ...properties }: StylexProperties,
-): StylexProperties {
-  return {
-    ...properties,
-    className: [
-      originalClass,
-      ...(compiledClass == null ? [] : [compiledClass]),
-    ].join(' '),
-  }
-}
-
-/**
- * @internal
- */
-function attrs(
+function toAttrs(
   this: unknown,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ...styles: any[]
-): ReturnType<(typeof stylex)['attrs']> extends infer T
-  ? { [Key in keyof T]: T[Key] | undefined }
-  : never {
-  const {
-    className,
-    style,
-    'data-style-src': styleSource,
-  } = props.apply(
-    // eslint-disable-next-line unicorn/no-this-outside-of-class
-    this,
-    styles,
-  )
+): { [Key in keyof CompiledAttrs]: CompiledAttrs[Key] } {
+  // eslint-disable-next-line unicorn/no-this-outside-of-class
+  const { className, style, ...rest } = toProps.apply(this, styles)
 
   return {
+    /* v8 ignore start -- @preserve */
     ...(className == null
       ? {}
       : {
           class: className,
         }),
+    /* v8 ignore stop -- @preserve */
 
     ...(style == null
       ? {}
       : {
           style: Object.entries(style)
-            .map(([key, value]) => {
-              if (key.startsWith('--')) {
-                return `${key}:${value.toString()}`
-              }
-
-              return `${toKebabCase(key)}:${value.toString()}`
-            })
+            .map(([key, value]) => `${key}:${value.toString()}`)
             .join(';'),
         }),
 
-    ...(styleSource == null
-      ? {}
-      : {
-          ['data-style-src']: styleSource,
-        }),
+    ...rest,
   }
-}
-
-function toKebabCase(text: string): string {
-  return text.replaceAll(/([A-Z])/g, '-$1').toLowerCase()
 }
 
 /**
@@ -191,7 +192,7 @@ function toKebabCase(text: string): string {
  *
  * @public
  */
-const apply: (...styledeck: StyleDeck[]) => StylexProperties = macro
+const apply: (...styledeck: StyleDeck[]) => CompiledProps = macro
 
 /**
  * Composes styles into a deck (`StyleDeck`) for component style props.
@@ -295,8 +296,8 @@ type ResolvableValue<T> = T | readonly T[] | (() => T | null) | null
  */
 type ContextualValue<T> =
   | ({
-  default: ResolvableValue<T>
-} & {
+      default: ResolvableValue<T>
+    } & {
       [Key in ContextualKey]?: ResolvableValue<T> | ContextualValue<T>
     })
   | NonApplicableObjectProperties
@@ -306,11 +307,11 @@ type ContextualValue<T> =
  * @internal
  */
 type ContextualKey =
-    | PseudoClassKey
+  | PseudoClassKey
   | `${PseudoClassKey}:${string}`
-    | `${ParameterizedPseudoClassKey}(${string})`
+  | `${ParameterizedPseudoClassKey}(${string})`
   | `${ParameterizedPseudoClassKey}(${string}):${string}`
-    | AtRules
+  | AtRules
   | `${AtRules} ${string}`
   | `[${ElementAttrs | 'aria'}]`
   | `[${Exclude<ElementAttrs, 'data'>}=${string}]${string}`
@@ -388,6 +389,7 @@ type LegacyPseudoElementKey =
 interface CompiledValue<K, V> {
   /** @deprecated not applicable */ _opaque: ClassNameFor<K, V>['_opaque']
   /** @deprecated not applicable */ _key: ClassNameFor<K, V>['_key']
+  // TODO: remove null, it is needed only by sheet
   /** @deprecated not applicable */ _value: ClassNameFor<K, V>['_value'] | null
 }
 
@@ -442,8 +444,8 @@ import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXT
 import type { HtmlAttributes } from 'csstype'
 import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
-import { props } from '@stylexjs/stylex'
 import type { Pseudos } from 'csstype'
 import type * as stylex from '@stylexjs/stylex'
 import type { StyleXVar } from '@stylexjs/stylex'
+import { props as toProps } from '@stylexjs/stylex'
 //
