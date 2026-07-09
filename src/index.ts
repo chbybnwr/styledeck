@@ -26,6 +26,7 @@ export type { ResolvableValue as '~ResolvableValue' }
 export type { SourceValue as '~SourceValue' }
 export type { StyleCard as '~StyleCard' }
 export type { StyleConfig as '~StyleConfig' }
+export type { StyleProperties as '~StyleProperties' }
 export type { StylingAttrs as '~StylingAttrs' }
 export { toAttrs as '~toAttrs' }
 
@@ -244,11 +245,7 @@ type StyleCard<T extends StyleConfig> = {
 /**
  * @internal
  */
-type StyleConfig =
-  | CommonProperties
-  | CustomProperties
-  | CompiledProperties
-  | PseudoElementRecord
+type StyleConfig = StyleProperties | PseudoElementRecord
 
 /**
  * @internal
@@ -257,9 +254,14 @@ type PseudoElementRecord = Partial<
   Record<
     | Exclude<PseudoElementKey, Exclude<ParameterizedPseudoElementKey, '::cue'>>
     | `${ParameterizedPseudoElementKey}(${string})`,
-    CommonProperties | CustomProperties | CompiledProperties
+    StyleProperties
   >
 >
+
+/**
+ * @internal
+ */
+type StyleProperties = CommonProperties | CustomProperties | CompiledProperties
 
 /**
  * @internal
