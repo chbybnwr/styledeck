@@ -115,8 +115,8 @@ export default defineConfig([
         {
           ignore: [
             'args',
-            /attrs/i,
-            /props/i,
+            /attr(s)?/i,
+            /prop(s)?/i,
             //
           ],
         },
