@@ -143,7 +143,7 @@ function toAttrs(
   ...styles: any[]
 ): { [Key in keyof StylingAttrs]: StylingAttrs[Key] } {
   // eslint-disable-next-line unicorn/no-this-outside-of-class
-  const { className, style, ...rest } = toProps.apply(this, styles)
+  const { className, style, ...restProps } = toProps.apply(this, styles)
 
   return {
     /* v8 ignore start -- @preserve */
@@ -158,7 +158,7 @@ function toAttrs(
         .join(';'),
     }),
 
-    ...rest,
+    ...restProps,
   }
 }
 
