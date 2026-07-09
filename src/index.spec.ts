@@ -84,19 +84,6 @@ describe(mergeAttrs, () => {
     expect(
       mergeAttrs(
         {
-          class: symbol,
-        },
-        {
-          class: 'bar',
-        },
-      ),
-    ).toStrictEqual({
-      class: symbol,
-    })
-
-    expect(
-      mergeAttrs(
-        {
           class: 'foo',
           id: symbol,
         },
@@ -108,6 +95,30 @@ describe(mergeAttrs, () => {
       class: 'foo bar',
       id: symbol,
     })
+  })
+
+  it('preserves original class and warns when class is not a string', () => {
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(noop)
+    const symbol = Symbol()
+
+    expect(
+      mergeAttrs(
+        {
+          class: symbol,
+        },
+        {
+          class: 'bar',
+        },
+      ),
+    ).toStrictEqual({
+      class: symbol,
+    })
+
+    expect(warnSpy).toHaveBeenCalledWith(
+      '[styledeck/unapplied-styles] "bar": original class value is not a string',
+    )
+
+    warnSpy.mockRestore()
   })
 })
 
@@ -150,5 +161,7 @@ import { '~mergeAttrs' as mergeAttrs } from './index.ts'
 import { '~mergeClassAttr' as mergeClassAttr } from './index.ts'
 import { '~mergeClassProp' as mergeClassProp } from './index.ts'
 import { '~mergeProps' as mergeProps } from './index.ts'
+import { noop } from 'es-toolkit'
 import { '~toAttrs' as toAttrs } from './index.ts'
+import { vi } from 'vitest'
 //
