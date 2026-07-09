@@ -237,13 +237,11 @@ type StyleCard<T extends StyleConfig> = {
     ? NonNullable<T[TKey]> extends infer U
       ?
           | {
-              [UKey in keyof U]: SourceValue<Exclude<U[UKey], undefined | null>>
+              [UKey in keyof U]: SourceValue<U[UKey]>
             }
           | CompiledValue<TKey, { [Key in keyof U]: U[Key] }>
       : never
-    :
-        | SourceValue<Exclude<T[TKey], undefined | null>>
-        | CompiledValue<TKey, Exclude<T[TKey], undefined | null>>
+    : SourceValue<T[TKey]> | CompiledValue<TKey, T[TKey]>
 }
 
 /**
@@ -290,12 +288,7 @@ type SourceValue<T> = false | ResolvableValue<T> | ContextualValue<T>
 /**
  * @internal
  */
-type ResolvableValue<T> =
-  | T
-  | readonly T[]
-  | (() => T | null | undefined)
-  | null
-  | undefined
+type ResolvableValue<T> = T | readonly T[] | (() => T | null) | null
 
 /**
  * @internal

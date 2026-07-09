@@ -277,6 +277,7 @@ describe('StyleDeck', () => {
     const { foo } = create({
       foo: {
         color: 'red',
+        backgroundColor: null,
       },
     })
 
