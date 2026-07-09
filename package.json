@@ -70,7 +70,6 @@
     "eslint-plugin-unicorn": "^65.0.1",
     "globals": "^17.7.0",
     "prettier": "^3.9.4",
-    "shx": "^0.4.0",
     "tsdown": "^0.22.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.63.0",
