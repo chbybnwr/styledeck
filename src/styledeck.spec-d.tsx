@@ -3,12 +3,10 @@ const tokens = defineVars({
 })
 
 describe('StyleDeck', () => {
-  it('accepts undefined', () => {
+  it('accepts undefined when using array', () => {
     const props: {
       styleDeck?: StyleDeck
     } = {}
-
-    assertType<StyleDeck>(props.styleDeck)
 
     assertType<StyleDeck>([
       { color: 'red' },

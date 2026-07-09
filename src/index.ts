@@ -33,10 +33,10 @@ export type { StylexProperties as '~StylexProperties' }
  * @public
  */
 type StyleDeck<T extends StyleConfig = StyleConfig> =
-  | StyleDeck<T>[]
+  | (StyleDeck<T> | undefined)[]
   | StyleCard<T>
   | readonly [StyleCard<T>, InlineStyles]
-  | undefined
+  | false
 
 /**
  * @internal
