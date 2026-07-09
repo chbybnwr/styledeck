@@ -4,9 +4,7 @@ export type { StyleDeck }
 
 export type { Attrs as '~Attrs' }
 export type { CommonProperties as '~CommonProperties' }
-export type { CompiledAttrs as '~CompiledAttrs' }
 export type { CompiledProperties as '~CompiledProperties' }
-export type { CompiledProps as '~CompiledProps' }
 export type { CompiledValue as '~CompiledValue' }
 export type { ContextualKey as '~ContextualKey' }
 export type { ContextualValue as '~ContextualValue' }
@@ -28,6 +26,7 @@ export type { ResolvableValue as '~ResolvableValue' }
 export type { SourceValue as '~SourceValue' }
 export type { StyleCard as '~StyleCard' }
 export type { StyleConfig as '~StyleConfig' }
+export type { StylingAttrs as '~StylingAttrs' }
 export { toAttrs as '~toAttrs' }
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
@@ -44,7 +43,7 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
 /**
  * @internal
  */
-type CompiledAttrs = ReturnType<(typeof stylex)['attrs']>
+type StylingAttrs = ReturnType<typeof stylex.attrs>
 
 /**
  * @internal
@@ -109,7 +108,7 @@ function mergeClassAttr(
   originalClass: string,
   compiledAttrs: Record<string, unknown>,
   classKey = 'class',
-): CompiledAttrs {
+): StylingAttrs {
   const { [classKey]: compiledClass, ...restCompiledAttrs } = compiledAttrs
 
   return {
@@ -124,7 +123,6 @@ function mergeClassAttr(
 /**
  * @internal
  */
-type CompiledProps = ReturnType<typeof toProps>
 
 /**
  * @internal
@@ -143,7 +141,7 @@ function toAttrs(
   this: unknown,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ...styles: any[]
-): { [Key in keyof CompiledAttrs]: CompiledAttrs[Key] } {
+): { [Key in keyof StylingAttrs]: StylingAttrs[Key] } {
   // eslint-disable-next-line unicorn/no-this-outside-of-class
   const { className, style, ...rest } = toProps.apply(this, styles)
 
@@ -190,7 +188,7 @@ function toAttrs(
  *
  * @public
  */
-const apply: (...styledeck: StyleDeck[]) => CompiledProps = macro
+const apply: (...styledeck: StyleDeck[]) => StylingAttrs = macro
 
 /**
  * Composes styles into a deck (`StyleDeck`) for component style props.
