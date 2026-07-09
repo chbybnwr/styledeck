@@ -264,12 +264,12 @@ type PseudoElementRecord = Partial<
 /**
  * @internal
  */
-type CustomProperties = Partial<Record<`--${string}`, {}>>
+type CustomProperties = Record<`--${string}`, {}>
 
 /**
  * @internal
  */
-type CompiledProperties = Partial<Record<StyleXVar<unknown>, {}>>
+type CompiledProperties = Record<StyleXVar<unknown>, {}>
 
 /**
  * @internal
