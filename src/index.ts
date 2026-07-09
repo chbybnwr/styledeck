@@ -232,13 +232,7 @@ function macro(): never {
  */
 type StyleCard<T extends StyleConfig> = {
   [TKey in keyof T]: TKey extends keyof PseudoElementRecord
-    ? NonNullable<T[TKey]> extends infer U
-      ?
-          | {
-              [UKey in keyof U]: SourceValue<U[UKey]>
-            }
-          | CompiledValue<TKey, { [Key in keyof U]: U[Key] }>
-      : never
+    ? StyleCard<NonNullable<T[TKey]>>
     : SourceValue<T[TKey]> | CompiledValue<TKey, T[TKey]>
 }
 
