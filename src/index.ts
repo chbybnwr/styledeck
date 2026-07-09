@@ -2,6 +2,7 @@ export { apply }
 export { sheet }
 export type { StyleDeck }
 
+export type { Attrs as '~Attrs' }
 export type { CommonProperties as '~CommonProperties' }
 export type { CompiledAttrs as '~CompiledAttrs' }
 export type { CompiledProperties as '~CompiledProperties' }
@@ -11,7 +12,6 @@ export type { ContextualKey as '~ContextualKey' }
 export type { ContextualValue as '~ContextualValue' }
 export type { CSSPropertiesWithExtras as '~CSSPropertiesWithExtras' }
 export type { CustomProperties as '~CustomProperties' }
-export type { ElementAttrs as '~ElementAttrs' }
 export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
 export { mergeAttrs as '~mergeAttrs' }
 export { mergeClassAttr as '~mergeClassAttr' }
@@ -311,8 +311,8 @@ type ContextualKey =
   | `${ParameterizedPseudoClassKey}(${string}):${string}`
   | AtRules
   | `${AtRules} ${string}`
-  | `[${ElementAttrs | 'aria'}]`
-  | `[${Exclude<ElementAttrs, 'data'>}=${string}]${string}`
+  | `[${Attrs | 'aria'}]`
+  | `[${Exclude<Attrs, 'data'>}=${string}]${string}`
   | `[${'data' | 'aria'}-${string}]${string}`
 
 /**
@@ -368,7 +368,7 @@ type ParameterizedPseudoElementKey =
 /**
  * @internal
  */
-type ElementAttrs = HtmlAttributes extends `[${infer U}]` ? U : never
+type Attrs = HtmlAttributes extends `[${infer U}]` ? U : never
 
 /**
  * @internal
