@@ -9,6 +9,7 @@ export type { CompiledProps as '~CompiledProps' }
 export type { CompiledValue as '~CompiledValue' }
 export type { ContextualKey as '~ContextualKey' }
 export type { ContextualValue as '~ContextualValue' }
+export type { CSSPropertiesWithExtras as '~CSSPropertiesWithExtras' }
 export type { CustomProperties as '~CustomProperties' }
 export type { ElementAttrs as '~ElementAttrs' }
 export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
@@ -393,6 +394,14 @@ interface CompiledValue<K, V> {
 /**
  * @internal
  */
+type CSSPropertiesWithExtras =
+  StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>>
+    ? U
+    : never
+
+/**
+ * @internal
+ */
 interface NonApplicableObjectProperties {
   /** @deprecated not applicable */ toString?: never
   /** @deprecated not applicable */ valueOf?: never
@@ -437,12 +446,12 @@ interface NonApplicableStringProperties {
 
 import type { AtRules } from 'csstype'
 import type { StyleXClassNameFor as ClassNameFor } from '@stylexjs/stylex'
-import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
 import type { HtmlAttributes } from 'csstype'
 import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
 import type { Pseudos } from 'csstype'
 import type * as stylex from '@stylexjs/stylex'
+import type { StyleXStyles } from '@stylexjs/stylex'
 import type { StyleXVar } from '@stylexjs/stylex'
 import { props as toProps } from '@stylexjs/stylex'
 //

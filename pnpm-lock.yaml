@@ -28,8 +28,8 @@ importers:
         specifier: ^7.58.9
         version: 7.58.9(@types/node@26.1.1)
       '@stylexjs/stylex':
-        specifier: ~0.18.3
-        version: 0.18.3
+        specifier: ~0.19.0
+        version: 0.19.0
       '@stylistic/eslint-plugin':
         specifier: ^5.10.0
         version: 5.10.0(eslint@10.6.0)
@@ -613,8 +613,8 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@stylexjs/stylex@0.18.3':
-    resolution: {integrity: sha512-15gDzAJAorOE0yzxaWLNxldW2aqdmCiLG5QcPD8nmVCVqvrWp0Asgv45zk7LtN86WJb/4Ym9eQ6qT5MJW59tWQ==}
+  '@stylexjs/stylex@0.19.0':
+    resolution: {integrity: sha512-CnUFp7YMaDLDeemsWOfJgoC/gKM5P/yBNMcpJaE6ChJmXr7s0DJwSeGTTlHJcqqwN9OW1qGtmARWLFhGZN1pTA==}
 
   '@stylistic/eslint-plugin@5.10.0':
     resolution: {integrity: sha512-nPK52ZHvot8Ju/0A4ucSX1dcPV2/1clx0kLcH5wDmrE4naKso7TUC/voUyU1O9OTKTrR6MYip6LP0ogEMQ9jPQ==}
@@ -2935,7 +2935,7 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@stylexjs/stylex@0.18.3':
+  '@stylexjs/stylex@0.19.0':
     dependencies:
       css-mediaquery: 0.1.2
       invariant: 2.2.4
