@@ -6,8 +6,10 @@ export { attrs as '~attrs' }
 export type { CommonProperties as '~CommonProperties' }
 export type { CompiledProperties as '~CompiledProperties' }
 export type { CompiledValue as '~CompiledValue' }
+export type { ContextualKey as '~ContextualKey' }
 export type { ContextualValue as '~ContextualValue' }
 export type { CustomProperties as '~CustomProperties' }
+export type { ElementAttrs as '~ElementAttrs' }
 export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
 export { mergeClassAttribute as '~mergeClassAttribute' }
 export { mergeClassProperty as '~mergeClassProperty' }
@@ -298,17 +300,28 @@ type ResolvableValue<T> =
 /**
  * @internal
  */
-type ContextualValue<T> = ({
+type ContextualValue<T> =
+  | ({
   default: ResolvableValue<T>
 } & {
-  [Key in
+      [Key in ContextualKey]?: ResolvableValue<T> | ContextualValue<T>
+    })
+  | NonApplicableObjectProperties
+  | NonApplicableStringProperties
+
+/**
+ * @internal
+ */
+type ContextualKey =
     | PseudoClassKey
+  | `${PseudoClassKey}:${string}`
     | `${ParameterizedPseudoClassKey}(${string})`
+  | `${ParameterizedPseudoClassKey}(${string}):${string}`
     | AtRules
-    | `${AtRules} ${string}`]?: ResolvableValue<T> | ContextualValue<T>
-}) &
-  NonApplicableObjectProperties &
-  NonApplicableStringProperties
+  | `${AtRules} ${string}`
+  | `[${ElementAttrs | 'aria'}]`
+  | `[${Exclude<ElementAttrs, 'data'>}=${string}]${string}`
+  | `[${'data' | 'aria'}-${string}]${string}`
 
 /**
  * @internal
@@ -363,6 +376,11 @@ type ParameterizedPseudoElementKey =
 /**
  * @internal
  */
+type ElementAttrs = HtmlAttributes extends `[${infer U}]` ? U : never
+
+/**
+ * @internal
+ */
 type LegacyPseudoElementKey =
   | ':after'
   | ':before'
@@ -384,8 +402,8 @@ interface CompiledValue<K, V> {
  * @internal
  */
 interface NonApplicableObjectProperties {
-  /** @deprecated not applicable */ toString?: object['toString'] | undefined
-  /** @deprecated not applicable */ valueOf?: object['valueOf'] | undefined
+  /** @deprecated not applicable */ toString?: never
+  /** @deprecated not applicable */ valueOf?: never
 }
 
 /**
@@ -428,6 +446,7 @@ interface NonApplicableStringProperties {
 import type { AtRules } from 'csstype'
 import type { StyleXClassNameFor as ClassNameFor } from '@stylexjs/stylex'
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes'
+import type { HtmlAttributes } from 'csstype'
 import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
 import { props } from '@stylexjs/stylex'

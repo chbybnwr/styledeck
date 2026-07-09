@@ -259,6 +259,20 @@ describe('StyleDeck', () => {
     })
   })
 
+  it('accepts attribute selectors', () => {
+    assertType<StyleDeck>({
+      color: {
+        default: null,
+        '[disabled]': null,
+        '[value="foo"]': null,
+        '[data-disabled]': null,
+        '[data-value="foo"]': null,
+        '[aria-disabled]': null,
+        '[aria-value="foo"]': null,
+      },
+    })
+  })
+
   it('accepts stylex styles', () => {
     const { foo } = create({
       foo: {
