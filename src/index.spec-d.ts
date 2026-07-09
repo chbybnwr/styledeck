@@ -44,27 +44,27 @@ describe('apply', () => {
 
   it('accepts conditional styles', () => {
     // eslint-disable-next-line no-unassigned-vars
-    let condition!: boolean
+    let isEnabled!: boolean
 
     apply({
-      color: condition && 'red',
-      textBoxEdge: condition && 'cap ex',
-      cornerShape: condition && 'squircle',
-      '--custom': condition && 'lorem',
-      [tokens.foo]: condition && 'ipsum',
+      color: isEnabled && 'red',
+      textBoxEdge: isEnabled && 'cap ex',
+      cornerShape: isEnabled && 'squircle',
+      '--custom': isEnabled && 'lorem',
+      [tokens.foo]: isEnabled && 'ipsum',
       '::before': {
-        color: condition && 'red',
+        color: isEnabled && 'red',
       },
     })
 
     apply({
-      color: condition ? 'red' : null,
-      textBoxEdge: condition ? 'cap ex' : null,
-      cornerShape: condition ? 'squircle' : null,
-      '--custom': condition ? 'lorem' : null,
-      [tokens.foo]: condition ? 'ipsum' : null,
+      color: isEnabled ? 'red' : null,
+      textBoxEdge: isEnabled ? 'cap ex' : null,
+      cornerShape: isEnabled ? 'squircle' : null,
+      '--custom': isEnabled ? 'lorem' : null,
+      [tokens.foo]: isEnabled ? 'ipsum' : null,
       '::before': {
-        color: condition ? 'red' : null,
+        color: isEnabled ? 'red' : null,
       },
     })
   })

@@ -53,6 +53,7 @@ function mergeAttrs(
   compiledAttrs: Record<string, unknown>,
   classKey = 'class',
 ): Record<string, unknown> {
+  // eslint-disable-next-line unicorn/no-unreadable-object-destructuring
   const { [classKey]: originalClass } = originalAttrs
   const { [classKey]: compiledClass, ...restCompiledAttrs } = compiledAttrs
 
@@ -147,20 +148,16 @@ function toAttrs(
 
   return {
     /* v8 ignore start -- @preserve */
-    ...(className == null
-      ? {}
-      : {
-          class: className,
-        }),
+    ...(className != null && {
+      class: className,
+    }),
     /* v8 ignore stop -- @preserve */
 
-    ...(style == null
-      ? {}
-      : {
-          style: Object.entries(style)
-            .map(([key, value]) => `${key}:${value.toString()}`)
-            .join(';'),
-        }),
+    ...(style != null && {
+      style: Object.entries(style)
+        .map(([key, value]) => `${key}:${value.toString()}`)
+        .join(';'),
+    }),
 
     ...rest,
   }
@@ -236,10 +233,11 @@ function macro(): never {
 type StyleCard<T extends StyleConfig> = {
   [TKey in keyof T]: TKey extends keyof PseudoElementRecord
     ? NonNullable<T[TKey]> extends infer U
-      ? | {
-            [UKey in keyof U]: SourceValue<U[UKey]>
-          }
-        | CompiledValue<TKey, { [Key in keyof U]: U[Key] }>
+      ?
+          | {
+              [UKey in keyof U]: SourceValue<U[UKey]>
+            }
+          | CompiledValue<TKey, { [Key in keyof U]: U[Key] }>
       : never
     : SourceValue<T[TKey]> | CompiledValue<TKey, T[TKey]>
 }
@@ -248,7 +246,10 @@ type StyleCard<T extends StyleConfig> = {
  * @internal
  */
 type StyleConfig =
-  CommonProperties | CustomProperties | CompiledProperties | PseudoElementRecord
+  | CommonProperties
+  | CustomProperties
+  | CompiledProperties
+  | PseudoElementRecord
 
 /**
  * @internal

@@ -110,7 +110,7 @@ export default defineConfig([
     rules: {
       'unicorn/no-named-default': 'off',
       'unicorn/no-null': 'off',
-      'unicorn/prevent-abbreviations': [
+      'unicorn/name-replacements': [
         'warn',
         {
           ignore: [
