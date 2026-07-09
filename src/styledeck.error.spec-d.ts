@@ -132,6 +132,19 @@ describe('StyleDeck', () => {
       // @ts-expect-error
       styledeck,
     )
+
+    assertType<
+      StyleDeck<{
+        '::before'?: {
+          color?: string
+        }
+      }>
+    >({
+      '::before': {
+        // @ts-expect-error
+        backgroundColor: 'red',
+      },
+    })
   })
 })
 
