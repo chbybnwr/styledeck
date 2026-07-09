@@ -43,8 +43,7 @@ describe('apply', () => {
   })
 
   it('accepts conditional styles', () => {
-    // eslint-disable-next-line no-unassigned-vars
-    let isEnabled!: boolean
+    const isEnabled = Math.random() > 0.8
 
     apply({
       color: isEnabled && 'red',
@@ -248,8 +247,7 @@ describe('apply', () => {
   })
 
   it('accepts StyleDeck', () => {
-    // eslint-disable-next-line no-unassigned-vars
-    let style!: StyleDeck
+    const style: StyleDeck = {}
 
     apply(style)
 
