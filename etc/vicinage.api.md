@@ -6,34 +6,35 @@
 
 import type { AtRules } from 'csstype';
 import type { CSSPropertiesWithExtras } from '@stylexjs/stylex/lib/types/StyleXTypes';
+import type { HtmlAttributes } from 'csstype';
 import type { InlineStyles } from '@stylexjs/stylex';
 import type { Properties } from 'csstype';
+import { props } from '@stylexjs/stylex';
 import type { Pseudos } from 'csstype';
 import type * as stylex from '@stylexjs/stylex';
 import type { StyleXClassNameFor } from '@stylexjs/stylex';
 import type { StyleXVar } from '@stylexjs/stylex';
-import type { Theme } from '@stylexjs/stylex';
-import type { VarGroup } from '@stylexjs/stylex';
 
 // @public
-export const apply: (...styledeck: StyleDeck[]) => ~StylexProperties;
+export const apply: (...styledeck: StyleDeck[]) => ~CompiledProps;
 
 // @public
 export const sheet: <T extends StyleDeck[]>(...styledeck: T) => T;
 
 // @public (undocumented)
-export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = StyleDeck<T>[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | Theme<VarGroup<{}>> | ~NonApplicableThemeProperties | ~NonApplicableObjectProperties | ~NonApplicableSymbolProperties | undefined;
-
-// @internal (undocumented)
-export function ~attrs(this: unknown, ...styles: any[]): ReturnType<(typeof stylex)['attrs']> extends infer T ? {
-    [Key in keyof T]: T[Key] | undefined;
-} : never;
+export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | undefined)[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | false;
 
 // @internal (undocumented)
 export type ~CommonProperties = Properties & Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
 
 // @internal (undocumented)
+export type ~CompiledAttrs = ReturnType<(typeof stylex)['attrs']>;
+
+// @internal (undocumented)
 export type ~CompiledProperties = Partial<Record<StyleXVar<unknown>, {}>>;
+
+// @internal (undocumented)
+export type ~CompiledProps = ReturnType<typeof props>;
 
 // @internal (undocumented)
 export interface ~CompiledValue<K, V> {
@@ -46,30 +47,46 @@ export interface ~CompiledValue<K, V> {
 }
 
 // @internal (undocumented)
+export type ~ContextualKey = ~PseudoClassKey | `${~PseudoClassKey}:${string}` | `${~ParameterizedPseudoClassKey}(${string})` | `${~ParameterizedPseudoClassKey}(${string}):${string}` | AtRules | `${AtRules} ${string}` | `[${~ElementAttrs | 'aria'}]` | `[${Exclude<~ElementAttrs, 'data'>}=${string}]${string}` | `[${'data' | 'aria'}-${string}]${string}`;
+
+// @internal (undocumented)
 export type ~ContextualValue<T> = ({
     default: ~ResolvableValue<T>;
 } & {
-    [Key in ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | AtRules | `${AtRules} ${string}`]?: ~ResolvableValue<T> | ~ContextualValue<T>;
-}) & ~NonApplicableObjectProperties & ~NonApplicableStringProperties;
+    [Key in ~ContextualKey]?: ~ResolvableValue<T> | ~ContextualValue<T>;
+}) | ~NonApplicableObjectProperties | ~NonApplicableStringProperties;
 
 // @internal (undocumented)
 export type ~CustomProperties = Partial<Record<`--${string}`, {}>>;
 
 // @internal (undocumented)
+export type ~ElementAttrs = HtmlAttributes extends `[${infer U}]` ? U : never;
+
+// @internal (undocumented)
 export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
 
 // @internal (undocumented)
-export function ~mergeClassAttribute(originalClass: string, input: ~StylexAttributes): ~StylexAttributes;
+export function ~mergeAttrs(originalAttrs: Record<string, unknown>, compiledAttrs: Record<string, unknown>, classKey?: string): Record<string, unknown>;
 
 // @internal (undocumented)
-export function ~mergeClassProperty(originalClass: string, input: ~StylexProperties): ~StylexProperties;
+export function ~mergeClassAttr(originalClass: string, compiledAttrs: Record<string, unknown>, classKey?: string): ~CompiledAttrs;
+
+// @internal (undocumented)
+export function ~mergeClassProp(originalClass: string, compiledProps: Record<string, unknown>): Readonly<{
+    class?: string;
+    'data-style-src'?: string;
+    style?: string;
+}>;
+
+// @internal (undocumented)
+export function ~mergeProps(original: Record<string, unknown>, compiled: Record<string, unknown>): Record<string, unknown>;
 
 // @internal (undocumented)
 export interface ~NonApplicableObjectProperties {
     // @deprecated (undocumented)
-    toString?: object['toString'] | undefined;
+    toString?: never;
     // @deprecated (undocumented)
-    valueOf?: object['valueOf'] | undefined;
+    valueOf?: never;
 }
 
 // @internal (undocumented)
@@ -139,18 +156,6 @@ export interface ~NonApplicableStringProperties {
 }
 
 // @internal (undocumented)
-export interface ~NonApplicableSymbolProperties {
-    // @deprecated (undocumented)
-    description?: never;
-}
-
-// @internal (undocumented)
-export interface ~NonApplicableThemeProperties {
-    // @deprecated (undocumented)
-    theme?: never;
-}
-
-// @internal (undocumented)
 export type ~ParameterizedPseudoClassKey = ':active-view-transition-type' | ':dir' | ':has' | ':heading' | ':host-context' | ':host' | ':is' | ':lang' | ':not' | ':nth-child' | ':nth-last-child' | ':nth-last-of-type' | ':nth-of-type' | ':state' | ':where';
 
 // @internal (undocumented)
@@ -166,7 +171,7 @@ export type ~PseudoElementKey = Extract<Pseudos, `::${string}`> | Extract<keyof 
 export type ~PseudoElementRecord = Partial<Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~CommonProperties | ~CustomProperties | ~CompiledProperties>>;
 
 // @internal (undocumented)
-export type ~ResolvableValue<T> = T | readonly T[] | (() => T | null | undefined) | null | undefined;
+export type ~ResolvableValue<T> = T | readonly T[] | (() => T | null) | null;
 
 // @internal (undocumented)
 export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T>;
@@ -174,20 +179,19 @@ export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T>;
 // @internal (undocumented)
 export type ~StyleCard<T extends ~StyleConfig> = {
     [TKey in keyof T]: TKey extends keyof ~PseudoElementRecord ? NonNullable<T[TKey]> extends infer U ? {
-        [UKey in keyof U]: ~SourceValue<Exclude<U[UKey], undefined | null>>;
+        [UKey in keyof U]: ~SourceValue<U[UKey]>;
     } | ~CompiledValue<TKey, {
         [Key in keyof U]: U[Key];
-    }> : never : ~SourceValue<Exclude<T[TKey], undefined | null>> | ~CompiledValue<TKey, Exclude<T[TKey], undefined | null>>;
+    }> : never : ~SourceValue<T[TKey]> | ~CompiledValue<TKey, T[TKey]>;
 };
 
 // @internal (undocumented)
 export type ~StyleConfig = ~CommonProperties | ~CustomProperties | ~CompiledProperties | ~PseudoElementRecord;
 
 // @internal (undocumented)
-export type ~StylexAttributes = ReturnType<(typeof stylex)['attrs']>;
-
-// @internal (undocumented)
-export type ~StylexProperties = ReturnType<(typeof stylex)['props']>;
+export function ~toAttrs(this: unknown, ...styles: any[]): {
+    [Key in keyof ~CompiledAttrs]: ~CompiledAttrs[Key];
+};
 
 // (No @packageDocumentation comment for this package)
 
