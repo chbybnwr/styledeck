@@ -1,50 +1,34 @@
 export { apply }
 export { sheet }
-export type { StyleDeck }
+export type { StyleDeck } from './types'
 
-export type { Attrs as '~Attrs' }
-export type { CommonProperties as '~CommonProperties' }
-export type { CompiledProperties as '~CompiledProperties' }
-export type { CompiledValue as '~CompiledValue' }
-export type { ContextualKey as '~ContextualKey' }
-export type { ContextualValue as '~ContextualValue' }
-export type { CSSPropertiesWithExtras as '~CSSPropertiesWithExtras' }
-export type { CustomProperties as '~CustomProperties' }
-export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' }
+export type { Attrs as '~Attrs' } from './types'
+export type { CommonProperties as '~CommonProperties' } from './types'
+export type { CompiledProperties as '~CompiledProperties' } from './types'
+export type { CompiledValue as '~CompiledValue' } from './types'
+export type { ContextualKey as '~ContextualKey' } from './types'
+export type { ContextualValue as '~ContextualValue' } from './types'
+export type { CSSPropertiesWithExtras as '~CSSPropertiesWithExtras' } from './types'
+export type { CustomProperties as '~CustomProperties' } from './types'
+export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' } from './types'
 export { mergeAttrs as '~mergeAttrs' }
 export { mergeClassAttr as '~mergeClassAttr' }
 export { mergeClassProp as '~mergeClassProp' }
 export { mergeProps as '~mergeProps' }
-export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' }
-export type { NonApplicableStringProperties as '~NonApplicableStringProperties' }
-export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' }
-export type { ParameterizedPseudoElementKey as '~ParameterizedPseudoElementKey' }
-export type { PseudoClassKey as '~PseudoClassKey' }
-export type { PseudoElementKey as '~PseudoElementKey' }
-export type { PseudoElementStyleConfig as '~PseudoElementStyleConfig' }
-export type { ResolvableValue as '~ResolvableValue' }
-export type { SourceValue as '~SourceValue' }
-export type { StyleCard as '~StyleCard' }
-export type { StyleConfig as '~StyleConfig' }
-export type { StyleProperties as '~StyleProperties' }
-export type { StylingAttrs as '~StylingAttrs' }
+export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' } from './types'
+export type { NonApplicableStringProperties as '~NonApplicableStringProperties' } from './types'
+export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' } from './types'
+export type { ParameterizedPseudoElementKey as '~ParameterizedPseudoElementKey' } from './types'
+export type { PseudoClassKey as '~PseudoClassKey' } from './types'
+export type { PseudoElementKey as '~PseudoElementKey' } from './types'
+export type { PseudoElementStyleConfig as '~PseudoElementStyleConfig' } from './types'
+export type { ResolvableValue as '~ResolvableValue' } from './types'
+export type { SourceValue as '~SourceValue' } from './types'
+export type { StyleCard as '~StyleCard' } from './types'
+export type { StyleConfig as '~StyleConfig' } from './types'
+export type { StyleProperties as '~StyleProperties' } from './types'
+export type { StylingAttrs as '~StylingAttrs' } from './types'
 export { toAttrs as '~toAttrs' }
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-
-/**
- * @public
- */
-type StyleDeck<T extends StyleConfig = StyleConfig> =
-  | (StyleDeck<T> | undefined)[]
-  | StyleCard<T>
-  | readonly [StyleCard<T>, InlineStyles]
-  | false
-
-/**
- * @internal
- */
-type StylingAttrs = ReturnType<typeof stylex.attrs>
 
 /**
  * @internal
@@ -227,224 +211,7 @@ function macro(): never {
   throw new Error('macro was called at runtime')
 }
 
-/**
- * @internal
- */
-type StyleCard<T extends StyleConfig> = {
-  [TKey in keyof T]: TKey extends keyof PseudoElementStyleConfig
-    ? StyleCard<NonNullable<T[TKey]>>
-    : SourceValue<T[TKey]> | CompiledValue<TKey, T[TKey]>
-}
-
-/**
- * @internal
- */
-type StyleConfig = StyleProperties | PseudoElementStyleConfig
-
-/**
- * @internal
- */
-type PseudoElementStyleConfig = Partial<
-  Record<
-    | Exclude<PseudoElementKey, Exclude<ParameterizedPseudoElementKey, '::cue'>>
-    | `${ParameterizedPseudoElementKey}(${string})`,
-    StyleProperties
-  >
->
-
-/**
- * @internal
- */
-type StyleProperties = CommonProperties | CustomProperties | CompiledProperties
-
-/**
- * @internal
- */
-type CustomProperties = Record<`--${string}`, {}>
-
-/**
- * @internal
- */
-type CompiledProperties = Record<StyleXVar<unknown>, {}>
-
-/**
- * @internal
- */
-type CommonProperties = Properties &
-  Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>
-
-/**
- * @internal
- */
-type SourceValue<T> = false | ResolvableValue<T> | ContextualValue<T>
-
-/**
- * @internal
- */
-type ResolvableValue<T> = T | readonly T[] | (() => T | null) | null
-
-/**
- * @internal
- */
-type ContextualValue<T> =
-  | ({
-      default: ResolvableValue<T>
-    } & {
-      [Key in ContextualKey]?: ResolvableValue<T> | ContextualValue<T>
-    })
-  | NonApplicableObjectProperties
-  | NonApplicableStringProperties
-
-/**
- * @internal
- */
-type ContextualKey =
-  | PseudoClassKey
-  | `${PseudoClassKey}:${string}`
-  | `${ParameterizedPseudoClassKey}(${string})`
-  | `${ParameterizedPseudoClassKey}(${string}):${string}`
-  | AtRules
-  | `${AtRules} ${string}`
-  | `[${Attrs | 'aria'}]`
-  | `[${Exclude<Attrs, 'data'>}=${string}]${string}`
-  | `[${'data' | 'aria'}-${string}]${string}`
-
-/**
- * @internal
- */
-type PseudoClassKey = Exclude<
-  Pseudos,
-  PseudoElementKey | LegacyPseudoElementKey
->
-
-/**
- * @internal
- */
-type ParameterizedPseudoClassKey =
-  | ':active-view-transition-type'
-  | ':dir'
-  | ':has'
-  | ':heading'
-  | ':host-context'
-  | ':host'
-  | ':is'
-  | ':lang'
-  | ':not'
-  | ':nth-child'
-  | ':nth-last-child'
-  | ':nth-last-of-type'
-  | ':nth-of-type'
-  | ':state'
-  | ':where'
-
-/**
- * @internal
- */
-type PseudoElementKey =
-  | Extract<Pseudos, `::${string}`>
-  | Extract<keyof CSSPropertiesWithExtras, `::${string}`>
-
-/**
- * @internal
- */
-type ParameterizedPseudoElementKey =
-  | '::cue'
-  | '::highlight'
-  | '::part'
-  | '::picker'
-  | '::scroll-button'
-  | '::slotted'
-  | '::view-transition-group'
-  | '::view-transition-image-pair'
-  | '::view-transition-new'
-  | '::view-transition-old'
-
-/**
- * @internal
- */
-type Attrs = HtmlAttributes extends `[${infer U}]` ? U : never
-
-/**
- * @internal
- */
-type LegacyPseudoElementKey =
-  | ':after'
-  | ':before'
-  | ':first-letter'
-  | ':first-line'
-  | ':-moz-placeholder'
-  | ':-ms-input-placeholder'
-
-/**
- * @internal
- */
-interface CompiledValue<K, V> {
-  /** @deprecated not applicable */ _opaque: ClassNameFor<K, V>['_opaque']
-  /** @deprecated not applicable */ _key: ClassNameFor<K, V>['_key']
-  /** @deprecated not applicable */ _value: ClassNameFor<K, V>['_value']
-}
-
-/**
- * @internal
- */
-type CSSPropertiesWithExtras =
-  StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>>
-    ? U
-    : never
-
-/**
- * @internal
- */
-interface NonApplicableObjectProperties {
-  /** @deprecated not applicable */ toString?: never
-  /** @deprecated not applicable */ valueOf?: never
-}
-
-/**
- * @internal
- */
-interface NonApplicableStringProperties {
-  /** @deprecated not applicable */ at?: never
-  /** @deprecated not applicable */ charAt?: never
-  /** @deprecated not applicable */ charCodeAt?: never
-  /** @deprecated not applicable */ codePointAt?: never
-  /** @deprecated not applicable */ concat?: never
-  /** @deprecated not applicable */ endsWith?: never
-  /** @deprecated not applicable */ includes?: never
-  /** @deprecated not applicable */ indexOf?: never
-  /** @deprecated not applicable */ lastIndexOf?: never
-  /** @deprecated not applicable */ length?: never
-  /** @deprecated not applicable */ localeCompare?: never
-  /** @deprecated not applicable */ match?: never
-  /** @deprecated not applicable */ matchAll?: never
-  /** @deprecated not applicable */ normalize?: never
-  /** @deprecated not applicable */ padEnd?: never
-  /** @deprecated not applicable */ padStart?: never
-  /** @deprecated not applicable */ repeat?: never
-  /** @deprecated not applicable */ replace?: never
-  /** @deprecated not applicable */ replaceAll?: never
-  /** @deprecated not applicable */ search?: never
-  /** @deprecated not applicable */ slice?: never
-  /** @deprecated not applicable */ split?: never
-  /** @deprecated not applicable */ startsWith?: never
-  /** @deprecated not applicable */ substring?: never
-  /** @deprecated not applicable */ toLocaleLowerCase?: never
-  /** @deprecated not applicable */ toLocaleUpperCase?: never
-  /** @deprecated not applicable */ toLowerCase?: never
-  /** @deprecated not applicable */ toUpperCase?: never
-  /** @deprecated not applicable */ trim?: never
-  /** @deprecated not applicable */ trimEnd?: never
-  /** @deprecated not applicable */ trimStart?: never
-}
-
-import type { AtRules } from 'csstype'
-import type { StyleXClassNameFor as ClassNameFor } from '@stylexjs/stylex'
-import type { HtmlAttributes } from 'csstype'
-import type { InlineStyles } from '@stylexjs/stylex'
-import type { Properties } from 'csstype'
-import type { Pseudos } from 'csstype'
-import type * as stylex from '@stylexjs/stylex'
-import type { StyleXStyles } from '@stylexjs/stylex'
-import type { StyleXVar } from '@stylexjs/stylex'
+import type { StyleDeck } from './types'
+import type { StylingAttrs } from './types'
 import { props as toProps } from '@stylexjs/stylex'
 //

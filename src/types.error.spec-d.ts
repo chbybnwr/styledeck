@@ -151,5 +151,5 @@ describe('StyleDeck', () => {
 import { assertType } from 'vitest'
 import { describe } from 'vitest'
 import { it } from 'vitest'
-import type { StyleDeck } from './index.ts'
+import type { StyleDeck } from './types.ts'
 //

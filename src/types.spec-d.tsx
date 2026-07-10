@@ -450,7 +450,7 @@ import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
-import type { StyleDeck } from './index.ts'
+import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
 import { when } from '@stylexjs/stylex'
 //
