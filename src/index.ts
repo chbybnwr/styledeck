@@ -11,10 +11,10 @@ export type { ContextualValue as '~ContextualValue' } from './types'
 export type { CSSPropertiesWithExtras as '~CSSPropertiesWithExtras' } from './types'
 export type { CustomProperties as '~CustomProperties' } from './types'
 export type { LegacyPseudoElementKey as '~LegacyPseudoElementKey' } from './types'
-export { mergeAttrs as '~mergeAttrs' }
-export { mergeClassAttr as '~mergeClassAttr' }
-export { mergeClassProp as '~mergeClassProp' }
-export { mergeProps as '~mergeProps' }
+export { mergeAttrs as '~mergeAttrs' } from './internals'
+export { mergeClassAttr as '~mergeClassAttr' } from './internals'
+export { mergeClassProp as '~mergeClassProp' } from './internals'
+export { mergeProps as '~mergeProps' } from './internals'
 export type { NonApplicableObjectProperties as '~NonApplicableObjectProperties' } from './types'
 export type { NonApplicableStringProperties as '~NonApplicableStringProperties' } from './types'
 export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' } from './types'
@@ -28,124 +28,7 @@ export type { StyleCard as '~StyleCard' } from './types'
 export type { StyleConfig as '~StyleConfig' } from './types'
 export type { StyleProperties as '~StyleProperties' } from './types'
 export type { StylingAttrs as '~StylingAttrs' } from './types'
-export { toAttrs as '~toAttrs' }
-
-/**
- * @internal
- */
-function mergeAttrs(
-  originalAttrs: Record<string, unknown>,
-  compiledAttrs: Record<string, unknown>,
-  classKey = 'class',
-): Record<string, unknown> {
-  // eslint-disable-next-line unicorn/no-unreadable-object-destructuring
-  const { [classKey]: originalClass } = originalAttrs
-  const { [classKey]: compiledClass, ...restCompiledAttrs } = compiledAttrs
-
-  if (typeof originalClass === 'string') {
-    return Object.fromEntries(
-      Object.entries(originalAttrs).flatMap(([key, value]) => {
-        if (key === classKey) {
-          return [
-            [
-              key,
-              typeof compiledClass === 'string'
-                ? `${originalClass} ${compiledClass}`
-                : originalClass,
-            ],
-            ...Object.entries(restCompiledAttrs),
-          ]
-        }
-
-        return [[key, value]]
-      }),
-    )
-  }
-
-  if (originalClass != null && typeof compiledClass === 'string') {
-    console.warn(
-      `[styledeck/unapplied-styles] "${compiledClass}": original class value is not a string`,
-    )
-
-    return originalAttrs
-  }
-
-  return {
-    ...originalAttrs,
-    ...compiledAttrs,
-  }
-}
-
-/**
- * @internal
- */
-function mergeProps(
-  original: Record<string, unknown>,
-  compiled: Record<string, unknown>,
-) {
-  return mergeAttrs(original, compiled, 'className')
-}
-
-/**
- * @internal
- */
-function mergeClassAttr(
-  originalClass: string,
-  compiledAttrs: Record<string, unknown>,
-  classKey = 'class',
-): StylingAttrs {
-  const { [classKey]: compiledClass, ...restCompiledAttrs } = compiledAttrs
-
-  return {
-    [classKey]: [
-      originalClass,
-      ...(typeof compiledClass === 'string' ? [compiledClass] : []),
-    ].join(' '),
-    ...restCompiledAttrs,
-  }
-}
-
-/**
- * @internal
- */
-
-/**
- * @internal
- */
-function mergeClassProp(
-  originalClass: string,
-  compiledProps: Record<string, unknown>,
-) {
-  return mergeClassAttr(originalClass, compiledProps, 'className')
-}
-
-/**
- * @internal
- */
-function toAttrs(
-  this: unknown,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ...styles: any[]
-): { [Key in keyof StylingAttrs]: StylingAttrs[Key] } {
-  // eslint-disable-next-line unicorn/no-this-outside-of-class
-  const { className, style, ...restProps } = toProps.apply(this, styles)
-
-  return {
-    /* v8 ignore start -- @preserve */
-    ...(className != null && {
-      class: className,
-    }),
-    /* v8 ignore stop -- @preserve */
-
-    ...(style != null && {
-      style: Object.entries(style)
-        .map(([key, value]) => `${key}:${value.toString()}`)
-        .join(';'),
-    }),
-
-    ...restProps,
-  }
-}
+export { toAttrs as '~toAttrs' } from './internals'
 
 /**
  * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.
@@ -213,5 +96,4 @@ function macro(): never {
 
 import type { StyleDeck } from './types'
 import type { StylingAttrs } from './types'
-import { props as toProps } from '@stylexjs/stylex'
 //
