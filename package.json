@@ -57,7 +57,7 @@
     "@txe/eslint-plugin-x": "~0.2.1",
     "@types/node": "^26.1.1",
     "@typescript-eslint/parser": "^8.63.0",
-    "@typescript/native-preview": "7.0.0-dev.20260614.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "@vitest/coverage-v8": "^4.1.10",
     "@vitest/eslint-plugin": "^1.6.21",
     "cspell": "^10.0.1",
@@ -71,7 +71,7 @@
     "globals": "^17.7.0",
     "prettier": "^3.9.4",
     "tsdown": "~0.22.4",
-    "typescript": "^6.0.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.63.0",
     "vite": "^8.1.3",
     "vitest": "^4.1.10"
