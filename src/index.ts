@@ -1,5 +1,5 @@
-export { apply }
-export { sheet }
+export { apply } from './macros'
+export { sheet } from './macros'
 export type { StyleDeck } from './types'
 
 export type { Attrs as '~Attrs' } from './types'
@@ -29,71 +29,3 @@ export type { StyleConfig as '~StyleConfig' } from './types'
 export type { StyleProperties as '~StyleProperties' } from './types'
 export type { StylingAttrs as '~StylingAttrs' } from './types'
 export { toAttrs as '~toAttrs' } from './internals'
-
-/**
- * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.
- *
- * @example
- * ```tsx
- * function App() {
- *   return (
- *     <div
- *       {...apply(
- *         { color: 'blue' },
- *         styles.italic,
- *       )}>
- *       hello
- *     </div>
- *   )
- * }
- *
- * const styles = stylex.create({
- *   italic: {
- *     fontStyle: 'italic',
- *   }
- * })
- * ```
- *
- * @public
- */
-const apply: (...styledeck: StyleDeck[]) => StylingAttrs = macro
-
-/**
- * Composes styles into a deck (`StyleDeck`) for component style props.
- *
- * @param styles - Style objects or `StyleDeck`
- * @returns Compiled deck (`StyleDeck`)
- *
- * @example
- * ```tsx
- * function Feed() {
- *   return (
- *     <Post styledeck={sheet({ color: 'blue' })} />
- *   )
- * }
- *
- * function Post({ styledeck }: { styledeck?: StyleDeck }) {
- *   return (
- *     <div
- *       {...apply(
- *         { color: 'black' },
- *         styledeck,
- *       )}
- *     >
- *       Lorem ipsum
- *     </div>
- *   )
- * }
- * ```
- *
- * @public
- */
-const sheet: <T extends StyleDeck[]>(...styledeck: T) => T = macro
-
-function macro(): never {
-  throw new Error('macro was called at runtime')
-}
-
-import type { StyleDeck } from './types'
-import type { StylingAttrs } from './types'
-//

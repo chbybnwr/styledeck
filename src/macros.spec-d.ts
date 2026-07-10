@@ -398,7 +398,7 @@ describe('sheet', () => {
   })
 })
 
-import { apply } from './index.ts'
+import { apply } from './macros.ts'
 import { create } from '@stylexjs/stylex'
 import { defaultMarker } from '@stylexjs/stylex'
 import { defineVars } from '@stylexjs/stylex'
@@ -406,8 +406,8 @@ import { describe } from 'vitest'
 import { expectTypeOf } from 'vitest'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
-import { sheet } from './index.ts'
-import type { StyleDeck } from './index.ts'
+import { sheet } from './macros.ts'
+import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
 import { when } from '@stylexjs/stylex'
 //

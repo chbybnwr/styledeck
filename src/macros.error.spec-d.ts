@@ -123,7 +123,7 @@ describe('apply', () => {
   })
 })
 
-import { apply } from './index.ts'
+import { apply } from './macros.ts'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
