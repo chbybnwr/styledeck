@@ -14,12 +14,6 @@ import type { StyleXClassNameFor } from '@stylexjs/stylex';
 import type { StyleXStyles } from '@stylexjs/stylex';
 import type { StyleXVar } from '@stylexjs/stylex';
 
-// @public
-export const apply: (...styledeck: StyleDeck[]) => ~StylingAttrs;
-
-// @public
-export const sheet: <T extends StyleDeck[]>(...styledeck: T) => T;
-
 // @public (undocumented)
 export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | undefined)[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | false;
 
