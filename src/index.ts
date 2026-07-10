@@ -1,5 +1,3 @@
-export { apply } from './macros'
-export { sheet } from './macros'
 export type { StyleDeck } from './types'
 
 export type { Attrs as '~Attrs' } from './types'
