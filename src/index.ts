@@ -21,7 +21,7 @@ export type { ParameterizedPseudoClassKey as '~ParameterizedPseudoClassKey' }
 export type { ParameterizedPseudoElementKey as '~ParameterizedPseudoElementKey' }
 export type { PseudoClassKey as '~PseudoClassKey' }
 export type { PseudoElementKey as '~PseudoElementKey' }
-export type { PseudoElementRecord as '~PseudoElementRecord' }
+export type { PseudoElementStyleConfig as '~PseudoElementStyleConfig' }
 export type { ResolvableValue as '~ResolvableValue' }
 export type { SourceValue as '~SourceValue' }
 export type { StyleCard as '~StyleCard' }
@@ -231,7 +231,7 @@ function macro(): never {
  * @internal
  */
 type StyleCard<T extends StyleConfig> = {
-  [TKey in keyof T]: TKey extends keyof PseudoElementRecord
+  [TKey in keyof T]: TKey extends keyof PseudoElementStyleConfig
     ? StyleCard<NonNullable<T[TKey]>>
     : SourceValue<T[TKey]> | CompiledValue<TKey, T[TKey]>
 }
@@ -239,12 +239,12 @@ type StyleCard<T extends StyleConfig> = {
 /**
  * @internal
  */
-type StyleConfig = StyleProperties | PseudoElementRecord
+type StyleConfig = StyleProperties | PseudoElementStyleConfig
 
 /**
  * @internal
  */
-type PseudoElementRecord = Partial<
+type PseudoElementStyleConfig = Partial<
   Record<
     | Exclude<PseudoElementKey, Exclude<ParameterizedPseudoElementKey, '::cue'>>
     | `${ParameterizedPseudoElementKey}(${string})`,
