@@ -164,7 +164,7 @@ export type ~PseudoClassKey = Exclude<Pseudos, ~PseudoElementKey | ~LegacyPseudo
 export type ~PseudoElementKey = Extract<Pseudos, `::${string}`> | Extract<keyof ~CSSPropertiesWithExtras, `::${string}`>;
 
 // @internal (undocumented)
-export type ~PseudoElementRecord = Partial<Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~StyleProperties>>;
+export type ~PseudoElementStyleConfig = Partial<Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~StyleProperties>>;
 
 // @internal (undocumented)
 export type ~ResolvableValue<T> = T | readonly T[] | (() => T | null) | null;
@@ -174,11 +174,11 @@ export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T>;
 
 // @internal (undocumented)
 export type ~StyleCard<T extends ~StyleConfig> = {
-    [TKey in keyof T]: TKey extends keyof ~PseudoElementRecord ? ~StyleCard<NonNullable<T[TKey]>> : ~SourceValue<T[TKey]> | ~CompiledValue<TKey, T[TKey]>;
+    [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : ~SourceValue<T[TKey]> | ~CompiledValue<TKey, T[TKey]>;
 };
 
 // @internal (undocumented)
-export type ~StyleConfig = ~StyleProperties | ~PseudoElementRecord;
+export type ~StyleConfig = ~StyleProperties | ~PseudoElementStyleConfig;
 
 // @internal (undocumented)
 export type ~StyleProperties = ~CommonProperties | ~CustomProperties | ~CompiledProperties;
