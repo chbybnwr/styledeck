@@ -37,14 +37,16 @@ export interface ~CompiledValue<K, V> {
 }
 
 // @internal (undocumented)
-export type ~ContextualKey = ~PseudoClassKey | `${~PseudoClassKey}:${string}` | `${~ParameterizedPseudoClassKey}(${string})` | `${~ParameterizedPseudoClassKey}(${string}):${string}` | AtRules | `${AtRules} ${string}` | `[${~Attrs | 'aria'}]` | `[${Exclude<~Attrs, 'data'>}=${string}]${string}` | `[${'data' | 'aria'}-${string}]${string}`;
+export type ~ContextualKey = ~Selector | AtRules | `${AtRules} ${string}`;
 
 // @internal (undocumented)
 export type ~ContextualValue<T> = ({
-    default: ~ResolvableValue<T>;
-} & {
+    default: ~ResolvableValue<T> | null;
+} & ({
     [Key in ~ContextualKey]?: ~ResolvableValue<T> | ~ContextualValue<T>;
-}) | ~NonApplicableObjectProperties | ~NonApplicableStringProperties;
+} & {
+    [Key in symbol]: ~ResolvableValue<T> | ~ContextualValue<T>;
+})) | ~NonApplicableObjectProperties | ~NonApplicableStringProperties;
 
 // @internal (undocumented)
 export type ~CSSPropertiesWithExtras = StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>> ? U : never;
@@ -161,14 +163,17 @@ export type ~PseudoElementKey = Extract<Pseudos, `::${string}`> | Extract<keyof 
 export type ~PseudoElementStyleConfig = Partial<Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~StyleProperties>>;
 
 // @internal (undocumented)
-export type ~ResolvableValue<T> = T | readonly T[] | (() => T | null) | null;
+export type ~ResolvableValue<T> = T | readonly T[] | (() => T);
 
 // @internal (undocumented)
-export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T>;
+export type ~Selector = ~PseudoClassKey | `${~PseudoClassKey}:${string}` | `${~PseudoClassKey}[${string}]${string}` | `${~ParameterizedPseudoClassKey}(${string})` | `${~ParameterizedPseudoClassKey}(${string}):${string}` | `${~ParameterizedPseudoClassKey}(${string})[${string}]${string}` | `[${~Attrs | 'aria'}]` | `[${~Attrs | 'aria'}]:${string}` | `[${Exclude<~Attrs, 'data'>}=${string}]${string}` | `[${'data' | 'aria'}-${string}]${string}`;
+
+// @internal (undocumented)
+export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T> | null;
 
 // @internal (undocumented)
 export type ~StyleCard<T extends ~StyleConfig> = {
-    [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : ~SourceValue<T[TKey]> | ~CompiledValue<TKey, T[TKey]>;
+    [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : ~SourceValue<Exclude<T[TKey], null | undefined>> | ~CompiledValue<TKey, Exclude<T[TKey], null | undefined>>;
 };
 
 // @internal (undocumented)
