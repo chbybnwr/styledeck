@@ -263,12 +263,33 @@ describe('StyleDeck', () => {
     assertType<StyleDeck>({
       color: {
         default: null,
-        '[disabled]': null,
-        '[value="foo"]': null,
-        '[data-disabled]': null,
-        '[data-value="foo"]': null,
-        '[aria-disabled]': null,
-        '[aria-value="foo"]': null,
+        '[disabled]': 'red',
+        '[value="foo"]': 'red',
+        '[data-disabled]': 'red',
+        '[data-value="foo"]': 'red',
+        '[aria-disabled]': 'red',
+        '[aria-value="foo"]': 'red',
+      },
+    })
+  })
+
+  it('accepts mixed selectors', () => {
+    assertType<StyleDeck>({
+      color: {
+        default: null,
+        '[disabled]:invalid': 'red',
+        ':invalid[disabled]': 'red',
+        '[value="foo"]:invalid': 'red',
+        ':invalid[value="foo"]': 'red',
+        '[data-disabled]:invalid': 'red',
+        ':invalid[data-disabled]': 'red',
+        '[data-value="foo"]:invalid': 'red',
+        ':invalid[data-value="foo"]': 'red',
+        '[aria-disabled]:invalid': 'red',
+        ':invalid[aria-disabled]': 'red',
+        '[aria-value="foo"]:invalid': 'red',
+        ':invalid[aria-value="foo"]': 'red',
+        ':dir(rtl)[aria-value="foo"]': 'red',
       },
     })
   })

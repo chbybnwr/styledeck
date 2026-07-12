@@ -110,14 +110,20 @@ type ContextualValue<T> =
 /**
  * @internal
  */
-type ContextualKey =
+type ContextualKey = Selector | AtRules | `${AtRules} ${string}`
+
+/**
+ * @internal
+ */
+type Selector =
   | PseudoClassKey
   | `${PseudoClassKey}:${string}`
+  | `${PseudoClassKey}[${string}]${string}`
   | `${ParameterizedPseudoClassKey}(${string})`
   | `${ParameterizedPseudoClassKey}(${string}):${string}`
-  | AtRules
-  | `${AtRules} ${string}`
+  | `${ParameterizedPseudoClassKey}(${string})[${string}]${string}`
   | `[${Attrs | 'aria'}]`
+  | `[${Attrs | 'aria'}]:${string}`
   | `[${Exclude<Attrs, 'data'>}=${string}]${string}`
   | `[${'data' | 'aria'}-${string}]${string}`
 
