@@ -86,7 +86,6 @@ describe('apply', () => {
       color: {
         default: null,
         ':focus': 'red',
-        [tokens.foo]: tokens.foo,
       },
       textBoxEdge: {
         default: null,
@@ -409,5 +408,5 @@ import { it } from 'vitest'
 import { sheet } from './macros.ts'
 import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
-import { when } from '@stylexjs/stylex'
+import { when } from './when.ts'
 //
