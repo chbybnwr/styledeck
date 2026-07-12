@@ -1,8 +1,8 @@
-# Vicinage &middot; [![npm version](https://img.shields.io/npm/v/vicinage.svg?style=flat-square)](https://www.npmjs.com/package/vicinage) [![build](https://img.shields.io/github/actions/workflow/status/chbybnwr/vicinage/publish.yml?label=build&style=flat-square)](https://github.com/chbybnwr/vicinage/actions/workflows/publish.yml) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/chbybnwr/vicinage-unplugin/blob/prototype/LICENSE) <!-- omit in toc -->
+# StyleDeck &middot; [![npm version](https://img.shields.io/npm/v/styledeck.svg?style=flat-square)](https://www.npmjs.com/package/styledeck) [![build](https://img.shields.io/github/actions/workflow/status/chbybnwr/styledeck/publish.yml?label=build&style=flat-square)](https://github.com/chbybnwr/styledeck/actions/workflows/publish.yml) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/chbybnwr/styledeck-unplugin/blob/prototype/LICENSE) <!-- omit in toc -->
 
 Type-safe and zero-runtime UI styling, right in the markup.
 
-Vicinage lets you write strongly-typed CSS objects directly on your markup. At build time, it preprocesses them into StyleX API calls, which StyleX then extracts into zero-runtime atomic CSS, with no style block naming required.
+StyleDeck lets you write strongly-typed CSS objects directly on your markup. At build time, it preprocesses them into StyleX API calls, which StyleX then extracts into zero-runtime atomic CSS, with no style block naming required.
 
 <details>
 
@@ -26,31 +26,29 @@ Vicinage lets you write strongly-typed CSS objects directly on your markup. At b
 
 ## Quick Start
 
-- [Next.js](https://github.com/chbybnwr/vicinage-nextjs-starter)
-- [React](https://github.com/chbybnwr/vicinage-react-starter)
-- [Solid](https://github.com/chbybnwr/vicinage-solid-starter)
-- [Vue](https://github.com/chbybnwr/vicinage-vue-starter)
+- [Next.js](https://github.com/chbybnwr/styledeck-nextjs-starter)
+- [React](https://github.com/chbybnwr/styledeck-react-starter)
+- [Solid](https://github.com/chbybnwr/styledeck-solid-starter)
+- [Vue](https://github.com/chbybnwr/styledeck-vue-starter)
 
 ## Setup
 
 Install the packages:
 
 ```bash
-npm install vicinage @stylexjs/stylex
-npm install --save-dev @vicinage/unplugin @stylexjs/unplugin
+npm install styledeck @stylexjs/stylex
+npm install --save-dev @styledeck/vite
 ```
 
 Add the plugin to your bundler configuration right before the StyleX plugin.
 
 ```js
 import { defineConfig } from 'vite'
-import vicinage from '@vicinage/unplugin'
-import stylex from '@stylexjs/unplugin'
+import styledeck from '@styledeck/vite'
 
 export default defineConfig({
   plugins: [
-    vicinage.vite(),
-    stylex.vite(),
+    styledeck(),
     // ...other plugins
   ],
 })
@@ -58,8 +56,9 @@ export default defineConfig({
 
 ## Ecosystem
 
-- [Universal bundler plugin](https://github.com/chbybnwr/vicinage-unplugin)
-- [ESLint plugin](https://github.com/chbybnwr/vicinage-eslint-plugin)
+- [Vite plugin](https://github.com/chbybnwr/styledeck-vite-plugin)
+- [Babel preset](https://github.com/chbybnwr/styledeck-babel-preset)
+- [ESLint plugin](https://github.com/chbybnwr/styledeck-eslint-plugin)
 - Design tokens from [SolarWind CSS](https://github.com/chbybnwr/solarwindcss)
 - Chrome Extension [StyleX DevTools](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem)
 - VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding)
@@ -92,15 +91,13 @@ export default defineConfig({
 Apply styles directly to HTML elements.
 
 ```tsx
-import { apply } from 'vicinage'
-
 function App() {
   return (
     <div
-      {...apply({
+      styleDeck={{
         color: 'green',
         backgroundColor: 'black',
-      })}
+      }}
     >
       hello, world
     </div>
@@ -110,30 +107,28 @@ function App() {
 
 ### Component styling
 
-Pass styles with the `sheet()` function to components that accept `StyleDeck`
-
 ```tsx
-import { apply, sheet, type StyleDeck } from 'vicinage'
+import type { StyleDeck } from 'styledeck'
 
 function Feed() {
   return (
     <Post
-      style={sheet({
+      styleDeck={{
         color: 'blue',
-      })}
+      }}
     />
   )
 }
 
-function Post({ style }: { style?: StyleDeck }) {
+function Post({ styleDeck }: { styleDeck?: StyleDeck }) {
   return (
     <div
-      {...apply(
+      styleDeck={[
         {
           color: 'black',
         },
-        style,
-      )}
+        styleDeck,
+      ]}
     >
       Lorem ipsum
     </div>
@@ -144,17 +139,15 @@ function Post({ style }: { style?: StyleDeck }) {
 ### Responsive styling
 
 ```tsx
-import { apply } from 'vicinage'
-
 function Hero() {
   return (
     <h1
-      {...apply({
+      styleDeck={{
         fontSize: {
           default: '1.5rem',
           '@media (min-width: 768px)': '2.25rem',
         },
-      })}
+      }}
     >
       Welcome back
     </h1>
@@ -165,17 +158,15 @@ function Hero() {
 ### Pseudo-classes
 
 ```tsx
-import { apply } from 'vicinage'
-
 function BillingLink() {
   return (
     <a
-      {...apply({
+      styleDeck={{
         color: {
           default: 'blue',
           ':visited': 'purple',
         },
-      })}
+      }}
       href="/billing/"
     >
       Open billing
@@ -187,18 +178,16 @@ function BillingLink() {
 ### Pseudo-elements
 
 ```tsx
-import { apply } from 'vicinage'
-
 function SearchInput() {
   return (
     <input
       placeholder="Search"
-      {...apply({
+      styleDeck={{
         color: 'black',
         '::placeholder': {
           color: 'gray',
         },
-      })}
+      }}
     />
   )
 }
@@ -217,16 +206,14 @@ Custom properties for app-level theming and inline overrides:
 ```
 
 ```tsx
-import { apply } from 'vicinage'
-
 function Sidebar() {
   return (
     <nav
-      {...apply({
+      styleDeck={{
         '--sidebar-width': '320px',
         width: 'var(--sidebar-width)',
         backgroundColor: 'var(--color-surface, blue)',
-      })}
+      }}
     >
       Navigation
     </nav>
@@ -237,7 +224,7 @@ function Sidebar() {
 StyleX variables for shared design tokens:
 
 ```ts
-// tokens.stylex.ts
+// color.stylex.ts
 import * as stylex from '@stylexjs/stylex'
 
 export const color = stylex.defineVars({
@@ -246,15 +233,14 @@ export const color = stylex.defineVars({
 ```
 
 ```tsx
-import { apply } from 'vicinage'
-import { color } from './tokens.stylex'
+import { color } from './color.stylex'
 
 function PrimaryButton({ label }: { label: string }) {
   return (
     <button
-      {...apply({
+      styleDeck={{
         backgroundColor: color.primary,
-      })}
+      }}
     >
       {label}
     </button>
@@ -265,7 +251,6 @@ function PrimaryButton({ label }: { label: string }) {
 ### Cascade with StyleX styles
 
 ```tsx
-import { apply } from 'vicinage'
 import * as stylex from '@stylexjs/stylex'
 
 const typography = stylex.create({
@@ -279,12 +264,12 @@ const typography = stylex.create({
 function Timestamp() {
   return (
     <time
-      {...apply(
+      styleDeck={[
         {
           color: 'black',
         },
         typography.caption,
-      )}
+      ]}
     >
       2 minutes ago
     </time>
@@ -295,15 +280,13 @@ function Timestamp() {
 ### Conditional styling
 
 ```tsx
-import { apply } from 'vicinage'
-
 function SaveButton({ isEnabled }: { isEnabled: boolean }) {
   return (
     <button
-      {...apply({
+      styleDeck={{
         fontWeight: isEnabled && 'bold',
         backgroundColor: isEnabled ? 'blue' : 'gray',
-      })}
+      }}
     >
       Save changes
     </button>
@@ -316,16 +299,14 @@ function SaveButton({ isEnabled }: { isEnabled: boolean }) {
 Use function to define runtime dynamic values.
 
 ```tsx
-import { apply } from 'vicinage'
-
 function ProgressBar({ percentage }: { percentage: number }) {
   return (
     <div
-      {...apply({
+      styleDeck={{
         width: () => `${percentage}%`,
         height: '16px',
         backgroundColor: 'blue',
-      })}
+      }}
     />
   )
 }
@@ -334,17 +315,15 @@ function ProgressBar({ percentage }: { percentage: number }) {
 Dynamic values can also be deeply nested.
 
 ```tsx
-import { apply } from 'vicinage'
-
 function Swatch({ hue }: { hue: number }) {
   return (
     <div
-      {...apply({
+      styleDeck={{
         backgroundColor: {
           default: () => `hsl(${hue}, 60%, 50%)`,
           ':hover': () => `hsl(${hue}, 80%, 40%)`,
         },
-      })}
+      }}
     />
   )
 }

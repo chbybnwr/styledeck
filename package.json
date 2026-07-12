@@ -1,15 +1,15 @@
 {
-  "name": "vicinage",
+  "name": "styledeck",
   "version": "0.7.22",
   "description": "Type-safe and zero-runtime UI styling, right in the markup.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chbybnwr/vicinage.git"
+    "url": "git+https://github.com/chbybnwr/styledeck.git"
   },
-  "homepage": "https://github.com/chbybnwr/vicinage",
+  "homepage": "https://github.com/chbybnwr/styledeck",
   "bugs": {
-    "url": "https://github.com/chbybnwr/vicinage/issues"
+    "url": "https://github.com/chbybnwr/styledeck/issues"
   },
   "funding": "https://github.com/sponsors/chbybnwr",
   "keywords": [
@@ -17,10 +17,10 @@
     "inline",
     "jsx",
     "style",
+    "styledeck",
     "stylex",
     "styling",
-    "ui",
-    "vicinage"
+    "ui"
   ],
   "type": "module",
   "exports": {

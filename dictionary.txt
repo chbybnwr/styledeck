@@ -9,5 +9,4 @@ stylex
 stylexjs
 txee
 unrs
-Vicinage
 zokugun
