@@ -60,6 +60,28 @@ describe('StyleDeck', () => {
     })
   })
 
+  it('rejects null value for non-default context', () => {
+    // @ts-expect-error
+    assertType<StyleDeck>({
+      color: {
+        default: 'red',
+        ':focus': null,
+      },
+    })
+
+    // @ts-expect-error
+    assertType<StyleDeck>({
+      cornerShape: null,
+      color: {
+        default: 'red',
+
+        // simulate
+        // [when.ancestor(':hover')]: null,
+        [Symbol()]: null,
+      },
+    })
+  })
+
   it('rejects unknown contexts', () => {
     assertType<StyleDeck>({
       color: {

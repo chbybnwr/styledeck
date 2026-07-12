@@ -473,5 +473,5 @@ import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
 import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
-import { when } from '@stylexjs/stylex'
+import { when } from './when.ts'
 //

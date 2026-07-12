@@ -22,6 +22,7 @@ export type { StyleCard }
 export type { StyleConfig }
 export type { StyleProperties }
 export type { StylingAttrs }
+export type { Selector }
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 
@@ -45,7 +46,8 @@ type StylingAttrs = ReturnType<typeof stylex.attrs>
 type StyleCard<T extends StyleConfig> = {
   [TKey in keyof T]: TKey extends keyof PseudoElementStyleConfig
     ? StyleCard<NonNullable<T[TKey]>>
-    : SourceValue<T[TKey]> | CompiledValue<TKey, T[TKey]>
+    : | SourceValue<Exclude<T[TKey], null | undefined>>
+      | CompiledValue<TKey, Exclude<T[TKey], null | undefined>>
 }
 
 /**
@@ -88,22 +90,24 @@ type CommonProperties = Properties &
 /**
  * @internal
  */
-type SourceValue<T> = false | ResolvableValue<T> | ContextualValue<T>
+type SourceValue<T> = false | ResolvableValue<T> | ContextualValue<T> | null
 
 /**
  * @internal
  */
-type ResolvableValue<T> = T | readonly T[] | (() => T | null) | null
+type ResolvableValue<T> = T | readonly T[] | (() => T)
 
 /**
  * @internal
  */
 type ContextualValue<T> =
   | ({
-      default: ResolvableValue<T>
-    } & {
+      default: ResolvableValue<T> | null
+    } & ({
       [Key in ContextualKey]?: ResolvableValue<T> | ContextualValue<T>
-    })
+    } & {
+      [Key in symbol]: ResolvableValue<T> | ContextualValue<T>
+    }))
   | NonApplicableObjectProperties
   | NonApplicableStringProperties
 
