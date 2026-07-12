@@ -114,7 +114,7 @@ export default defineConfig([
         'warn',
         {
           ignore: [
-            'args',
+            /arg(s)?/i,
             /attr(s)?/i,
             /prop(s)?/i,
             //
