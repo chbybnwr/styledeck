@@ -58,12 +58,10 @@ type StyleConfig = StyleProperties | PseudoElementStyleConfig
 /**
  * @internal
  */
-type PseudoElementStyleConfig = Partial<
-  Record<
-    | Exclude<PseudoElementKey, Exclude<ParameterizedPseudoElementKey, '::cue'>>
-    | `${ParameterizedPseudoElementKey}(${string})`,
-    StyleProperties
-  >
+type PseudoElementStyleConfig = Record<
+  | Exclude<PseudoElementKey, Exclude<ParameterizedPseudoElementKey, '::cue'>>
+  | `${ParameterizedPseudoElementKey}(${string})`,
+  StyleProperties
 >
 
 /**
