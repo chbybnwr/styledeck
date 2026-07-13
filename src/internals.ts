@@ -1,6 +1,6 @@
 export { mergeAttrs }
-export { mergeClassAttr }
-export { mergeClassProp }
+export { mergeClass }
+export { mergeClassName }
 export { mergeProps }
 export { toAttrs }
 
@@ -63,7 +63,7 @@ function mergeProps(
 /**
  * @internal
  */
-function mergeClassAttr(
+function mergeClass(
   originalClass: string,
   compiledAttrs: Record<string, unknown>,
   classKey = 'class',
@@ -82,11 +82,11 @@ function mergeClassAttr(
 /**
  * @internal
  */
-function mergeClassProp(
+function mergeClassName(
   originalClass: string,
   compiledProps: Record<string, unknown>,
 ) {
-  return mergeClassAttr(originalClass, compiledProps, 'className')
+  return mergeClass(originalClass, compiledProps, 'className')
 }
 
 /**

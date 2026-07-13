@@ -61,10 +61,10 @@ export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | '
 export function ~mergeAttrs(originalAttrs: Record<string, unknown>, compiledAttrs: Record<string, unknown>, classKey?: string): Record<string, unknown>;
 
 // @internal (undocumented)
-export function ~mergeClassAttr(originalClass: string, compiledAttrs: Record<string, unknown>, classKey?: string): ~StylingAttrs;
+export function ~mergeClass(originalClass: string, compiledAttrs: Record<string, unknown>, classKey?: string): ~StylingAttrs;
 
 // @internal (undocumented)
-export function ~mergeClassProp(originalClass: string, compiledProps: Record<string, unknown>): Readonly<{
+export function ~mergeClassName(originalClass: string, compiledProps: Record<string, unknown>): Readonly<{
     class?: string;
     'data-style-src'?: string;
     style?: string;

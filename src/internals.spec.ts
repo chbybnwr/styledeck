@@ -1,7 +1,7 @@
-describe(mergeClassAttr, () => {
+describe(mergeClass, () => {
   it('merges class attribute', () => {
     expect(
-      mergeClassAttr('foo bar', {
+      mergeClass('foo bar', {
         class: 'quux',
         style: 'color: red;',
         'data-style-src': 'xxx',
@@ -12,16 +12,16 @@ describe(mergeClassAttr, () => {
       'data-style-src': 'xxx',
     })
 
-    expect(mergeClassAttr('foo bar', {})).toStrictEqual({
+    expect(mergeClass('foo bar', {})).toStrictEqual({
       class: 'foo bar',
     })
   })
 })
 
-describe(mergeClassProp, () => {
+describe(mergeClassName, () => {
   it('merges class property', () => {
     expect(
-      mergeClassProp('foo bar', {
+      mergeClassName('foo bar', {
         className: 'quux',
         style: {
           color: 'red',
@@ -36,7 +36,7 @@ describe(mergeClassProp, () => {
       'data-style-src': 'xxx',
     })
 
-    expect(mergeClassProp('foo bar', {})).toStrictEqual({
+    expect(mergeClassName('foo bar', {})).toStrictEqual({
       className: 'foo bar',
     })
   })
@@ -158,8 +158,8 @@ import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
 import { mergeAttrs } from './internals.ts'
-import { mergeClassAttr } from './internals.ts'
-import { mergeClassProp } from './internals.ts'
+import { mergeClass } from './internals.ts'
+import { mergeClassName } from './internals.ts'
 import { mergeProps } from './internals.ts'
 import { noop } from 'es-toolkit'
 import { toAttrs } from './internals.ts'
