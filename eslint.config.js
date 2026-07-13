@@ -44,7 +44,7 @@ export default defineConfig([
 
   {
     name: 'ts',
-    files: ['**/*.?(c|m)ts?(x)'],
+    files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [
       tslintConfigs.strictTypeChecked,
       tslintConfigs.stylisticTypeChecked,
@@ -98,7 +98,7 @@ export default defineConfig([
     name: 'x',
     files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [
-      // @ts-ignore
+      // @ts-expect-error let me in please
       xPlugin.configs.recommended,
     ],
   },
@@ -214,7 +214,6 @@ export default defineConfig([
     language: 'markdown/gfm',
     files: ['**/*.md'],
     plugins: {
-      // @ts-ignore
       markdown: markdownPlugin,
     },
     extends: [markdownPlugin.configs.recommended],
