@@ -9,7 +9,6 @@ export type { ContextualValue }
 export type { CSSPropertiesWithExtras }
 export type { CustomProperties }
 export type { LegacyPseudoElementKey }
-export type { NonApplicableObjectProperties }
 export type { NonApplicableStringProperties }
 export type { ParameterizedPseudoClassKey }
 export type { ParameterizedPseudoElementKey }
@@ -106,8 +105,7 @@ type ContextualValue<T> =
     } & {
       [Key in symbol]: ResolvableValue<T> | ContextualValue<T>
     }))
-  | NonApplicableObjectProperties
-  | NonApplicableStringProperties
+  | (string extends T ? NonApplicableStringProperties : never)
 
 /**
  * @internal
@@ -215,14 +213,6 @@ type CSSPropertiesWithExtras =
 /**
  * @internal
  */
-interface NonApplicableObjectProperties {
-  /** @deprecated not applicable */ toString?: never
-  /** @deprecated not applicable */ valueOf?: never
-}
-
-/**
- * @internal
- */
 interface NonApplicableStringProperties {
   /** @deprecated not applicable */ at?: never
   /** @deprecated not applicable */ charAt?: never
@@ -255,6 +245,9 @@ interface NonApplicableStringProperties {
   /** @deprecated not applicable */ trim?: never
   /** @deprecated not applicable */ trimEnd?: never
   /** @deprecated not applicable */ trimStart?: never
+
+  /** @deprecated not applicable */ toString?: unknown
+  /** @deprecated not applicable */ valueOf?: unknown
 }
 
 import type { AtRules } from 'csstype'
