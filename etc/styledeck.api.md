@@ -46,7 +46,7 @@ export type ~ContextualValue<T> = ({
     [Key in ~ContextualKey]?: ~ResolvableValue<T> | ~ContextualValue<T>;
 } & {
     [Key in symbol]: ~ResolvableValue<T> | ~ContextualValue<T>;
-})) | ~NonApplicableObjectProperties | ~NonApplicableStringProperties;
+})) | (string extends T ? ~NonApplicableStringProperties : never);
 
 // @internal (undocumented)
 export type ~CSSPropertiesWithExtras = StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>> ? U : never;
@@ -72,14 +72,6 @@ export function ~mergeClassName(originalClass: string, compiledProps: Record<str
 
 // @internal (undocumented)
 export function ~mergeProps(original: Record<string, unknown>, compiled: Record<string, unknown>): Record<string, unknown>;
-
-// @internal (undocumented)
-export interface ~NonApplicableObjectProperties {
-    // @deprecated (undocumented)
-    toString?: never;
-    // @deprecated (undocumented)
-    valueOf?: never;
-}
 
 // @internal (undocumented)
 export interface ~NonApplicableStringProperties {
@@ -138,6 +130,8 @@ export interface ~NonApplicableStringProperties {
     // @deprecated (undocumented)
     toLowerCase?: never;
     // @deprecated (undocumented)
+    toString?: unknown;
+    // @deprecated (undocumented)
     toUpperCase?: never;
     // @deprecated (undocumented)
     trim?: never;
@@ -145,6 +139,8 @@ export interface ~NonApplicableStringProperties {
     trimEnd?: never;
     // @deprecated (undocumented)
     trimStart?: never;
+    // @deprecated (undocumented)
+    valueOf?: unknown;
 }
 
 // @internal (undocumented)
@@ -160,7 +156,7 @@ export type ~PseudoClassKey = Exclude<Pseudos, ~PseudoElementKey | ~LegacyPseudo
 export type ~PseudoElementKey = Extract<Pseudos, `::${string}`> | Extract<keyof ~CSSPropertiesWithExtras, `::${string}`>;
 
 // @internal (undocumented)
-export type ~PseudoElementStyleConfig = Partial<Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~StyleProperties>>;
+export type ~PseudoElementStyleConfig = Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~StyleProperties>;
 
 // @internal (undocumented)
 export type ~ResolvableValue<T> = T | readonly T[] | (() => T);
