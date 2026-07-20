@@ -1,5 +1,11 @@
 export { apply }
 export { sheet }
+export { defineStyleDeck }
+
+/**
+ * @public
+ */
+const defineStyleDeck: <T extends StyleDeck[]>(..._args: T) => T = macro
 
 /**
  * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.

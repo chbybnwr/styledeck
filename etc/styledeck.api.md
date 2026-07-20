@@ -15,6 +15,9 @@ import type { StyleXStyles } from '@stylexjs/stylex';
 import type { StyleXVar } from '@stylexjs/stylex';
 
 // @public (undocumented)
+export const defineStyleDeck: <T extends StyleDeck[]>(..._args: T) => T;
+
+// @public (undocumented)
 export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | undefined)[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | false;
 
 // @internal (undocumented)

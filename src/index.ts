@@ -1,3 +1,4 @@
+export { defineStyleDeck } from './macros'
 export type { StyleDeck } from './types'
 
 export type { Attrs as '~Attrs' } from './types'
