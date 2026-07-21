@@ -43,7 +43,7 @@ type StylingAttrs = ReturnType<typeof stylex.attrs>
  * @internal
  */
 type StyleCard<T extends StyleConfig> = {
-  [TKey in keyof T]: TKey extends keyof PseudoElementStyleConfig
+  readonly [TKey in keyof T]: TKey extends keyof PseudoElementStyleConfig
     ? StyleCard<NonNullable<T[TKey]>>
     : | SourceValue<Exclude<T[TKey], null | undefined>>
       | CompiledValue<TKey, Exclude<T[TKey], null | undefined>>

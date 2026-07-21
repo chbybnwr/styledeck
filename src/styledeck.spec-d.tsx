@@ -1,0 +1,540 @@
+const tokens = defineVars({
+  foo: 'blue',
+})
+
+describe(defineStyleDeck, () => {
+  it('accepts undefined when using array', () => {
+    const props: {
+      styleDeck?: StyleDeck
+    } = {}
+
+    assertType<StyleDeck>(
+      defineStyleDeck([
+        { color: 'red' },
+        props.styleDeck,
+        //
+      ]),
+    )
+  })
+
+  it('accepts standard properties', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: 'red',
+        textBoxEdge: 'cap ex',
+        cornerShape: 'squircle',
+      }),
+    )
+  })
+
+  it('accepts custom properties', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        '--custom': 'lorem',
+        [tokens.foo]: 'ipsum',
+      }),
+    )
+
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        '::before': {
+          '--custom': 'lorem',
+          [tokens.foo]: 'ipsum',
+        },
+      }),
+    )
+  })
+
+  it('accepts pseudo-elements', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        '::before': {
+          color: 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts pseudo-elements with params', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        '::part(foo)': {
+          color: 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts conditional styles', () => {
+    const isEnabled = Math.random() > 0.8
+
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: isEnabled && 'red',
+        textBoxEdge: isEnabled && 'cap ex',
+        cornerShape: isEnabled && 'squircle',
+        '--custom': isEnabled && 'lorem',
+        [tokens.foo]: isEnabled && 'ipsum',
+        '::before': {
+          color: isEnabled && 'red',
+        },
+      }),
+    )
+
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: isEnabled ? 'red' : null,
+        textBoxEdge: isEnabled ? 'cap ex' : null,
+        cornerShape: isEnabled ? 'squircle' : null,
+        '--custom': isEnabled ? 'lorem' : null,
+        [tokens.foo]: isEnabled ? 'ipsum' : null,
+        '::before': {
+          color: isEnabled ? 'red' : null,
+        },
+      }),
+    )
+  })
+
+  it('accepts dynamic styles', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: () => 'red',
+        textBoxEdge: () => 'cap ex',
+        cornerShape: () => 'squircle',
+        '--custom': () => 'lorem',
+        [tokens.foo]: () => 'ipsum',
+        '::before': {
+          color: () => 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts contextual styles', () => {
+    const atDark = '@media (prefer-color-scheme: dark)'
+
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          ':focus': 'red',
+          [atDark]: tokens.foo,
+        },
+        textBoxEdge: {
+          default: null,
+          ':focus': 'cap ex',
+        },
+        cornerShape: {
+          default: null,
+          ':focus': 'squircle',
+        },
+        '--custom': {
+          default: null,
+          ':focus': 'lorem',
+        },
+        [tokens.foo]: {
+          default: null,
+          ':focus': 'ipsum',
+        },
+        '::before': {
+          color: {
+            default: null,
+            ':focus': 'red',
+          },
+        },
+      }),
+    )
+  })
+
+  it('accepts combined contextual styles', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'red',
+          },
+        },
+        textBoxEdge: {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'cap ex',
+          },
+        },
+        cornerShape: {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'squircle',
+          },
+        },
+        '--custom': {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'lorem',
+          },
+        },
+        [tokens.foo]: {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'ipsum',
+          },
+        },
+        '::before': {
+          color: {
+            default: null,
+            '@container (width >= 1440px)': {
+              default: null,
+              ':focus': 'red',
+            },
+          },
+        },
+      }),
+    )
+  })
+
+  it('accepts deep dynamic contextual values', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: () => 'red',
+          '@container (width >= 1440px)': {
+            default: () => 'green',
+            ':focus': () => 'blue',
+          },
+        },
+        '::before': {
+          color: {
+            default: () => 'orange',
+            ':focus': () => 'yellow',
+          },
+        },
+      }),
+    )
+  })
+
+  it('accepts variable styles', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: tokens.foo,
+        textBoxEdge: tokens.foo,
+        cornerShape: tokens.foo,
+        '--custom': tokens.foo,
+        [tokens.foo]: tokens.foo,
+        '::before': {
+          color: () => tokens.foo,
+        },
+      }),
+    )
+  })
+
+  it('accepts strict-typed variable styles', () => {
+    const strictTokens = defineVars({
+      foo: types.angle('360deg'),
+    })
+
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: strictTokens.foo,
+        textBoxEdge: strictTokens.foo,
+        cornerShape: strictTokens.foo,
+        '--custom': strictTokens.foo,
+        [strictTokens.foo]: strictTokens.foo,
+        '::before': {
+          color: () => strictTokens.foo,
+        },
+      }),
+    )
+  })
+
+  it('accepts pseudo-classes', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          ':focus': 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts pseudo-classes with params', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          ':dir(rtl)': 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts at-rules', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          '@page': 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts at-rules with params', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          '@container (width >= 1440)': 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts attribute selectors', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          '[disabled]': 'red',
+          '[value="foo"]': 'red',
+          '[data-disabled]': 'red',
+          '[data-value="foo"]': 'red',
+          '[aria-disabled]': 'red',
+          '[aria-value="foo"]': 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts mixed selectors', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          '[disabled]:invalid': 'red',
+          ':invalid[disabled]': 'red',
+          '[value="foo"]:invalid': 'red',
+          ':invalid[value="foo"]': 'red',
+          '[data-disabled]:invalid': 'red',
+          ':invalid[data-disabled]': 'red',
+          '[data-value="foo"]:invalid': 'red',
+          ':invalid[data-value="foo"]': 'red',
+          '[aria-disabled]:invalid': 'red',
+          ':invalid[aria-disabled]': 'red',
+          '[aria-value="foo"]:invalid': 'red',
+          ':invalid[aria-value="foo"]': 'red',
+          ':dir(rtl)[aria-value="foo"]': 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts stylex styles', () => {
+    const { foo } = create({
+      foo: {
+        color: 'red',
+        backgroundColor: null,
+      },
+    })
+
+    assertType<StyleDeck>(defineStyleDeck(foo))
+    assertType<StyleDeck>(defineStyleDeck([foo, { color: 'red' }]))
+  })
+
+  it('accepts stylex marker', () => {
+    assertType<StyleDeck>(defineStyleDeck(defaultMarker()))
+  })
+
+  it('accepts stylex theme', () => {
+    const tokens = defineVars({ foo: 'bar' })
+
+    const theme = createTheme(tokens, {
+      foo: 'quux',
+    })
+
+    assertType<StyleDeck>(defineStyleDeck(theme))
+    assertType<StyleDeck>(defineStyleDeck([theme]))
+  })
+
+  it('accepts family tree access', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          [when.ancestor(':hover')]: 'red',
+        },
+      }),
+    )
+  })
+
+  it('accepts styles with fallback', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
+      }),
+    )
+  })
+
+  it('accepts defined properties', () => {
+    assertType<
+      StyleDeck<{
+        color?: string
+      }>
+    >(
+      defineStyleDeck({
+        color: 'red',
+      }),
+    )
+
+    assertType<
+      StyleDeck<{
+        color?: 'red'
+      }>
+    >(
+      defineStyleDeck({
+        color: () => 'red',
+      }),
+    )
+
+    assertType<
+      StyleDeck<{
+        color?: 'red' | 'blue'
+      }>
+    >(
+      defineStyleDeck({
+        color: {
+          default: null,
+          ':active': 'red',
+          ':focus': 'blue',
+        },
+      }),
+    )
+
+    assertType<
+      StyleDeck<{
+        color?: 'red' | 'blue'
+      }>
+    >(
+      defineStyleDeck({
+        color: {
+          default: null,
+          ':active': () => 'red',
+          ':focus': Math.random() > 0.8 ? 'blue' : 'red',
+        },
+      }),
+    )
+
+    assertType<
+      StyleDeck<{
+        color?: 'red' | 'green' | 'blue'
+      }>
+    >(
+      defineStyleDeck({
+        color: {
+          default: null,
+          '@container (width > 1440px)': {
+            default: 'green',
+            ':focus': 'blue',
+          },
+        },
+      }),
+    )
+
+    assertType<
+      StyleDeck<{
+        '--color'?: string
+      }>
+    >(
+      defineStyleDeck({
+        '--color': 'red',
+      }),
+    )
+
+    const { foo } = create({
+      foo: {
+        color: 'red',
+      },
+    })
+
+    assertType<
+      StyleDeck<{
+        color?: 'red'
+      }>
+    >(defineStyleDeck(foo))
+
+    assertType<
+      StyleDeck<{
+        color?: 'red'
+      }>
+    >(defineStyleDeck([foo, [foo]]))
+
+    const { bar } = create({
+      bar: (color: string) => ({
+        color,
+      }),
+    })
+
+    assertType<
+      StyleDeck<{
+        color?: string
+      }>
+    >(defineStyleDeck(bar('red')))
+
+    assertType<
+      StyleDeck<{
+        color?: string
+      }>
+    >(defineStyleDeck([bar('red'), [bar('red')]]))
+  })
+
+  it('accepts variadic style inputs', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck([
+        {
+          color: 'red',
+        },
+        {
+          backgroundColor: 'blue',
+        },
+      ]),
+    )
+
+    assertType<StyleDeck>(
+      defineStyleDeck([
+        {
+          color: 'red',
+        },
+        {
+          opacity: () => 0.5,
+        },
+      ]),
+    )
+  })
+
+  it('keeps array values as static leaf values', () => {
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        fontFamily: ['Inter', 'sans-serif'],
+      }),
+    )
+  })
+})
+
+import { assertType } from 'vitest'
+import { create } from '@stylexjs/stylex'
+import { createTheme } from '@stylexjs/stylex'
+import { defaultMarker } from '@stylexjs/stylex'
+import { defineStyleDeck } from './styledeck.ts'
+import { defineVars } from '@stylexjs/stylex'
+import { describe } from 'vitest'
+import { firstThatWorks } from '@stylexjs/stylex'
+import { it } from 'vitest'
+import type { StyleDeck } from './types.ts'
+import { types } from '@stylexjs/stylex'
+import { when } from './when.ts'
+//

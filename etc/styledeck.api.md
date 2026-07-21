@@ -15,7 +15,7 @@ import type { StyleXStyles } from '@stylexjs/stylex';
 import type { StyleXVar } from '@stylexjs/stylex';
 
 // @public (undocumented)
-export const defineStyleDeck: <T extends StyleDeck[]>(..._args: T) => T;
+export const defineStyleDeck: <const T extends StyleDeck>(styleDeck: T) => T;
 
 // @public (undocumented)
 export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | undefined)[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | false;
@@ -172,7 +172,7 @@ export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T> 
 
 // @internal (undocumented)
 export type ~StyleCard<T extends ~StyleConfig> = {
-    [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : ~SourceValue<Exclude<T[TKey], null | undefined>> | ~CompiledValue<TKey, Exclude<T[TKey], null | undefined>>;
+    readonly [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : ~SourceValue<Exclude<T[TKey], null | undefined>> | ~CompiledValue<TKey, Exclude<T[TKey], null | undefined>>;
 };
 
 // @internal (undocumented)
