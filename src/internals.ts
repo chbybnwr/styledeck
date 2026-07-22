@@ -36,7 +36,7 @@ function mergeAttrs(
     )
   }
 
-  if (originalClass != null && typeof compiledClass === 'string') {
+  if (typeof compiledClass === 'string' && originalClass != null) {
     console.warn(
       `[styledeck/unapplied-styles] "${compiledClass}": original class value is not a string`,
     )
