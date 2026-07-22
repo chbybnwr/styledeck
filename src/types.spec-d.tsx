@@ -1,8 +1,9 @@
+// oxlint-disable vitest/no-conditional-in-test
 const tokens = defineVars({
   foo: 'blue',
 })
 
-describe('StyleDeck', () => {
+describe('type StyleDeck', () => {
   it('accepts undefined when using array', () => {
     const props: {
       styleDeck?: StyleDeck
@@ -311,9 +312,9 @@ describe('StyleDeck', () => {
   })
 
   it('accepts stylex theme', () => {
-    const tokens = defineVars({ foo: 'bar' })
+    const themeVar = defineVars({ foo: 'bar' })
 
-    const theme = createTheme(tokens, {
+    const theme = createTheme(themeVar, {
       foo: 'quux',
     })
 

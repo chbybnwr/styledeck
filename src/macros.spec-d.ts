@@ -1,10 +1,11 @@
+// oxlint-disable vitest/no-conditional-in-test
 /* eslint-disable vitest/expect-expect */
 
 const tokens = defineVars({
   foo: null,
 })
 
-describe('apply', () => {
+describe(apply, () => {
   it('accepts standard properties', () => {
     apply({
       color: 'red',
@@ -275,7 +276,7 @@ describe('apply', () => {
   })
 })
 
-describe('sheet', () => {
+describe(sheet, () => {
   it('returns StyleDeck', () => {
     expectTypeOf(
       sheet({

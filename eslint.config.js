@@ -1,4 +1,8 @@
-export default defineConfig([
+// oxlint-disable import/max-dependencies
+
+export { eslintConfig as default }
+
+const eslintConfig = defineConfig([
   globalIgnores([
     '**/coverage/**',
     '**/dist/**',
@@ -114,9 +118,10 @@ export default defineConfig([
         'warn',
         {
           ignore: [
-            /arg(s)?/i,
-            /attr(s)?/i,
-            /prop(s)?/i,
+            /var(?<plural_suffix>s)?/iu,
+            /arg(?<plural_suffix>s)?/iu,
+            /attr(?<plural_suffix>s)?/iu,
+            /prop(?<plural_suffix>s)?/iu,
             //
           ],
         },
@@ -235,6 +240,7 @@ import nodePlugin from 'eslint-plugin-n'
 import prettierConfig from 'eslint-config-prettier/flat'
 import stylisticPlugin from '@stylistic/eslint-plugin'
 import { configs as tslintConfigs } from 'typescript-eslint'
+// oxlint-disable-next-line import/no-namespace
 import * as tslintParser from '@typescript-eslint/parser'
 import unicornPlugin from 'eslint-plugin-unicorn'
 import vitestPlugin from '@vitest/eslint-plugin'

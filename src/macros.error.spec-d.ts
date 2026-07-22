@@ -1,4 +1,5 @@
-describe('apply', () => {
+// oxlint-disable typescript/ban-ts-comment
+describe(apply, () => {
   it('rejects unknown non-custom properties', () => {
     expect(() => {
       apply({
@@ -12,7 +13,7 @@ describe('apply', () => {
           foo: 'bar',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown pseudo-elements', () => {
@@ -23,7 +24,7 @@ describe('apply', () => {
           color: 'red',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects invalid style values', () => {
@@ -44,7 +45,7 @@ describe('apply', () => {
           default: 'foo',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects contextual styles without default value', () => {
@@ -72,7 +73,7 @@ describe('apply', () => {
           ':focus': 'red',
         }),
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown contexts', () => {
@@ -84,7 +85,7 @@ describe('apply', () => {
           foo: 'bar',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown pseudo-elements)', () => {
@@ -96,7 +97,7 @@ describe('apply', () => {
           ':foo': 'bar',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown at-rules)', () => {
@@ -108,7 +109,7 @@ describe('apply', () => {
           '@foo': 'bar',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects closures as arguments', () => {
@@ -119,7 +120,7 @@ describe('apply', () => {
           color: 'red',
         }),
       )
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 })
 

@@ -1,3 +1,5 @@
+// oxlint-disable oxc/no-this-in-exported-function
+
 export { mergeAttrs }
 export { mergeClass }
 export { mergeClassName }
@@ -18,6 +20,7 @@ function mergeAttrs(
 
   if (typeof originalClass === 'string') {
     return Object.fromEntries(
+      // oxlint-disable-next-line oxc/no-map-spread
       Object.entries(originalAttrs).flatMap(([key, value]) => {
         if (key === classKey) {
           return [
@@ -37,6 +40,7 @@ function mergeAttrs(
   }
 
   if (typeof compiledClass === 'string' && originalClass != null) {
+    // oxlint-disable-next-line no-console
     console.warn(
       `[styledeck/unapplied-styles] "${compiledClass}": original class value is not a string`,
     )
@@ -56,7 +60,7 @@ function mergeAttrs(
 function mergeProps(
   original: Record<string, unknown>,
   compiled: Record<string, unknown>,
-) {
+): Record<string, unknown> {
   return mergeAttrs(original, compiled, 'className')
 }
 
@@ -67,7 +71,7 @@ function mergeClass(
   originalClass: string,
   compiledAttrs: Record<string, unknown>,
   classKey = 'class',
-): StylingAttrs {
+): Record<string, unknown> {
   const { [classKey]: compiledClass, ...restCompiledAttrs } = compiledAttrs
 
   return {
@@ -85,7 +89,7 @@ function mergeClass(
 function mergeClassName(
   originalClass: string,
   compiledProps: Record<string, unknown>,
-) {
+): Record<string, unknown> {
   return mergeClass(originalClass, compiledProps, 'className')
 }
 
@@ -96,7 +100,7 @@ function toAttrs(
   this: unknown,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ...styles: any[]
-): { [Key in keyof StylingAttrs]: StylingAttrs[Key] } {
+): Record<string, unknown> {
   // eslint-disable-next-line unicorn/no-this-outside-of-class
   const { className, style, ...restProps } = toProps.apply(this, styles)
 
@@ -117,6 +121,5 @@ function toAttrs(
   }
 }
 
-import type { StylingAttrs } from './types.ts'
 import { props as toProps } from '@stylexjs/stylex'
 //

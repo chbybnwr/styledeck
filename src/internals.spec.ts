@@ -79,13 +79,13 @@ describe(mergeAttrs, () => {
       class: 'bar',
     })
 
-    const symbol = Symbol()
+    const idSymbol = Symbol('id')
 
     expect(
       mergeAttrs(
         {
           class: 'foo',
-          id: symbol,
+          id: idSymbol,
         },
         {
           class: 'bar',
@@ -93,25 +93,25 @@ describe(mergeAttrs, () => {
       ),
     ).toStrictEqual({
       class: 'foo bar',
-      id: symbol,
+      id: idSymbol,
     })
   })
 
   it('preserves original class and warns when class is not a string', () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(noop)
-    const symbol = Symbol()
+    const classSymbol = Symbol('class')
 
     expect(
       mergeAttrs(
         {
-          class: symbol,
+          class: classSymbol,
         },
         {
           class: 'bar',
         },
       ),
     ).toStrictEqual({
-      class: symbol,
+      class: classSymbol,
     })
 
     expect(warnSpy).toHaveBeenCalledWith(

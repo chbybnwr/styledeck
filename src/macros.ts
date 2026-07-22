@@ -28,7 +28,7 @@ export { macro }
  *
  * @public
  */
-const apply: (...styledeck: StyleDeck[]) => StylingAttrs = macro
+const apply: (...styledeck: readonly StyleDeck[]) => StylingAttrs = macro
 
 /**
  * Composes styles into a deck (`StyleDeck`) for component style props.

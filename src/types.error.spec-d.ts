@@ -1,4 +1,4 @@
-describe('StyleDeck', () => {
+describe('type StyleDeck', () => {
   it('rejects unknown non-custom properties', () => {
     assertType<StyleDeck>({
       // @ts-expect-error
@@ -75,9 +75,8 @@ describe('StyleDeck', () => {
       color: {
         default: 'red',
 
-        // simulate
-        // [when.ancestor(':hover')]: null,
-        [Symbol()]: null,
+        // Simulate when
+        [Symbol("[when.ancestor(':hover')]")]: null,
       },
     })
   })

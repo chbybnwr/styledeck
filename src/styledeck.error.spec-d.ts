@@ -1,3 +1,4 @@
+// oxlint-disable typescript/ban-ts-comment
 const defineStyleDeck: typeof originalDefineStyleDeck = (styleDeck) => styleDeck
 
 describe(defineStyleDeck, () => {
@@ -95,9 +96,8 @@ describe(defineStyleDeck, () => {
         color: {
           default: 'red',
 
-          // simulate
-          // [when.ancestor(':hover')]: null,
-          [Symbol()]: null,
+          // simulate when
+          [Symbol("[when.ancestor(':hover')]")]: null,
         },
         // @ts-expect-error
       } satisfies StyleDeck),
