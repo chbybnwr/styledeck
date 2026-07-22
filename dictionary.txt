@@ -2,11 +2,13 @@ Chabib
 chbybnwr
 mjsx
 mtsx
+oxlint
 solarwindcss
 squircle
 styledeck
 stylex
 stylexjs
+tsgolint
 txee
 unrs
 zokugun
