@@ -112,6 +112,7 @@ const eslintConfig = defineConfig([
     files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [unicornPlugin.configs.recommended],
     rules: {
+      'unicorn/max-nested-calls': 'off',
       'unicorn/no-named-default': 'off',
       'unicorn/no-null': 'off',
       'unicorn/name-replacements': [

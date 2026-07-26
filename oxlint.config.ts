@@ -73,6 +73,7 @@ const oxlintConfig: OxlintConfig = {
     'typescript/prefer-readonly-parameter-types': 'off',
 
     'unicorn/no-null': 'off',
+    'unicorn/max-nested-calls': 'off',
 
     'oxc/no-rest-spread-properties': 'off',
   },
