@@ -372,7 +372,7 @@ describe('type StyleDeck', () => {
       color: {
         default: null,
         ':active': () => 'red',
-        ':focus': Math.random() > 0.8 ? 'blue' : 'red',
+        ':focus': faker.datatype.boolean() ? 'blue' : 'red',
       },
     })
 

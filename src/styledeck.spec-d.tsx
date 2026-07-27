@@ -423,7 +423,7 @@ describe('typeof defineStyleDeck', () => {
         color: {
           default: null,
           ':active': () => 'red',
-          ':focus': faker.datatype.boolean() > 0.8 ? 'blue' : 'red',
+          ':focus': faker.datatype.boolean() ? 'blue' : 'red',
         },
       }),
     )
