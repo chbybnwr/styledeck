@@ -444,7 +444,8 @@ describe('type StyleDeck', () => {
         color: 'red',
       },
       {
-        opacity: () => 0.5,
+        // oxlint-disable-next-line no-magic-numbers
+        opacity: () => faker.number.float(),
       },
     ])
   })

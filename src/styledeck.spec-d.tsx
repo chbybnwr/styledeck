@@ -519,7 +519,7 @@ describe('typeof defineStyleDeck', () => {
           color: 'red',
         },
         {
-          opacity: () => 0.5,
+          opacity: () => faker.number.float(),
         },
       ]),
     )
