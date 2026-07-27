@@ -55,7 +55,7 @@ type CreateAncestrySelector = (
  * @internal
  */
 type AncestrySelector = Selector & {
-  readonly [ANCESTRY_SELECTOR]?: never
+  readonly [ANCESTRY_SELECTOR]: never
 }
 
 /**
@@ -67,7 +67,7 @@ declare const ANCESTRY_SELECTOR: unique symbol
  * @internal
  */
 type Selector = symbol & {
-  readonly [SELECTOR]?: never
+  readonly [SELECTOR]: never
 }
 
 /**
