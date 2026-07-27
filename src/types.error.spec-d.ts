@@ -69,16 +69,16 @@ describe('type StyleDeck', () => {
       },
     })
 
-    // @ts-expect-error
-    assertType<StyleDeck>({
-      cornerShape: null,
-      color: {
-        default: 'red',
-
-        // Simulate when
-        [Symbol("[when.ancestor(':hover')]")]: null,
-      },
-    })
+    expect(() => {
+      // @ts-expect-error
+      assertType<StyleDeck>({
+        cornerShape: null,
+        color: {
+          default: 'red',
+          [selector(ancestor(defaultMarker()), ':focus')]: null,
+        },
+      })
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown contexts', () => {
@@ -169,8 +169,12 @@ describe('type StyleDeck', () => {
   })
 })
 
+import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
+import { defaultMarker } from '@stylexjs/stylex'
 import { describe } from 'vitest'
+import { expect } from 'vitest'
 import { it } from 'vitest'
+import { selector } from './selector.ts'
 import type { StyleDeck } from './types.ts'
 //

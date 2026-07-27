@@ -272,23 +272,17 @@ describe('type StyleDeck', () => {
     })
   })
 
-  it('accepts mixed selectors', () => {
+  it('accepts compound selectors', () => {
     assertType<StyleDeck>({
       color: {
         default: null,
-        '[disabled]:invalid': 'red',
-        ':invalid[disabled]': 'red',
-        '[value="foo"]:invalid': 'red',
-        ':invalid[value="foo"]': 'red',
-        '[data-disabled]:invalid': 'red',
-        ':invalid[data-disabled]': 'red',
-        '[data-value="foo"]:invalid': 'red',
-        ':invalid[data-value="foo"]': 'red',
-        '[aria-disabled]:invalid': 'red',
-        ':invalid[aria-disabled]': 'red',
-        '[aria-value="foo"]:invalid': 'red',
-        ':invalid[aria-value="foo"]': 'red',
-        ':dir(rtl)[aria-value="foo"]': 'red',
+        [selector('[disabled]', ':invalid')]: 'red',
+        [selector('[value="foo"]', ':invalid')]: 'red',
+        [selector('[data-disabled]', ':invalid')]: 'red',
+        [selector('[data-value="foo"]', ':invalid')]: 'red',
+        [selector('[aria-disabled]', ':invalid')]: 'red',
+        [selector('[aria-value="foo"]', ':invalid')]: 'red',
+        [selector(':dir(rtl)', ':invalid')]: 'red',
       },
     })
   })
@@ -320,11 +314,11 @@ describe('type StyleDeck', () => {
     assertType<StyleDeck>([theme])
   })
 
-  it('accepts family tree access', () => {
+  it('accepts selectors', () => {
     assertType<StyleDeck>({
       color: {
         default: null,
-        [when.ancestor(':hover')]: 'red',
+        [selector(ancestor(defaultMarker()), ':focus')]: 'red',
       },
     })
   })
@@ -462,6 +456,7 @@ describe('type StyleDeck', () => {
   })
 })
 
+import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
 import { createTheme } from '@stylexjs/stylex'
@@ -471,7 +466,7 @@ import { describe } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
+import { selector } from './selector.ts'
 import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
-import { when } from './when.ts'
 //

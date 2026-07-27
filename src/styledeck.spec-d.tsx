@@ -360,12 +360,22 @@ describe('typeof defineStyleDeck', () => {
     assertType<StyleDeck>(defineStyleDeck([theme]))
   })
 
-  it('accepts family tree access', () => {
+  it('can use selector', () => {
     assertType<StyleDeck>(
       defineStyleDeck({
         color: {
           default: null,
-          [when.ancestor(':hover')]: 'red',
+          [selector(ancestor(defaultMarker()), ':hover')]: 'red',
+        },
+      }),
+    )
+
+    assertType<StyleDeck>(
+      defineStyleDeck({
+        color: {
+          default: null,
+          [selector(ancestor(defaultMarker()), ':hover')]: 'red',
+          [selector(descendant(defaultMarker()), ':focus')]: 'blue',
         },
       }),
     )
@@ -524,17 +534,19 @@ describe('typeof defineStyleDeck', () => {
   })
 })
 
+import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
 import { createTheme } from '@stylexjs/stylex'
 import { defaultMarker } from '@stylexjs/stylex'
 import { defineStyleDeck } from './styledeck.ts'
 import { defineVars } from '@stylexjs/stylex'
+import { descendant } from './selector.ts'
 import { describe } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
+import { selector } from './selector.ts'
 import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
-import { when } from './when.ts'
 //

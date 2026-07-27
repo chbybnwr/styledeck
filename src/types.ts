@@ -21,7 +21,7 @@ export type { StyleCard }
 export type { StyleConfig }
 export type { StyleProperties }
 export type { StylingAttrs }
-export type { Selector }
+export type { SimpleSelector }
 
 /**
  * @public
@@ -104,26 +104,22 @@ type ContextualValue<T> =
         ResolvableValue<T> | ContextualValue<T>
         // oxlint-disable-next-line typescript/consistent-indexed-object-style
     } & {
-      [Key in symbol]: ResolvableValue<T> | ContextualValue<T>
+      [Key in Selector]?: ResolvableValue<T> | ContextualValue<T>
     }))
   | (string extends T ? NonApplicableStringProperties : never)
-/**
- * @internal
- */
-type ContextualKey = Selector | AtRules | `${AtRules} ${string}`
 
 /**
  * @internal
  */
-type Selector =
+type ContextualKey = SimpleSelector | AtRules | `${AtRules} ${string}`
+
+/**
+ * @internal
+ */
+type SimpleSelector =
   | PseudoClassKey
-  | `${PseudoClassKey}:${string}`
-  | `${PseudoClassKey}[${string}]${string}`
   | `${ParameterizedPseudoClassKey}(${string})`
-  | `${ParameterizedPseudoClassKey}(${string}):${string}`
-  | `${ParameterizedPseudoClassKey}(${string})[${string}]${string}`
   | `[${Attrs | 'aria'}]`
-  | `[${Attrs | 'aria'}]:${string}`
   | `[${Exclude<Attrs, 'data'>}=${string}]${string}`
   | `[${'data' | 'aria'}-${string}]${string}`
 
@@ -292,6 +288,7 @@ import type { HtmlAttributes } from 'csstype'
 import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
 import type { Pseudos } from 'csstype'
+import type { Selector } from './selector'
 import type { StyleXStyles } from '@stylexjs/stylex'
 import type { StyleXVar } from '@stylexjs/stylex'
 import type { attrs as super_toAttrs } from '@stylexjs/stylex'

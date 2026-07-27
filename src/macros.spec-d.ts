@@ -294,12 +294,12 @@ describe('typeof apply', () => {
     assertType<StylingAttrs>(apply(defaultMarker()))
   })
 
-  it('can access ancestor', () => {
+  it('can use selector', () => {
     assertType<StylingAttrs>(
       apply({
         color: {
           default: null,
-        [when.ancestor(':hover')]: 'red',
+          [selector(ancestor(defaultMarker()), ':hover')]: 'red',
         },
       }),
     )
@@ -442,6 +442,7 @@ describe('typeof sheet', () => {
   })
 })
 
+import { ancestor } from './selector.ts'
 import { apply } from './macros.ts'
 import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
@@ -452,9 +453,9 @@ import { expectTypeOf } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
+import { selector } from './selector.ts'
 import { sheet } from './macros.ts'
 import type { StyleDeck } from './types.ts'
 import type { StylingAttrs } from './types.ts'
 import { types } from '@stylexjs/stylex'
-import { when } from './when.ts'
 //

@@ -110,9 +110,21 @@ describe('typeof defineStyleDeck', () => {
         defineStyleDeck({
           color: {
             default: 'red',
+            [selector(ancestor(defaultMarker()), ':focus')]: null,
+          },
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
+  })
 
-          // simulate when
-          [Symbol("[when.ancestor(':hover')]")]: null,
+  it('rejects invalid selector', () => {
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            default: 'red',
+            [Symbol('invalid selector')]: null,
           },
           // @ts-expect-error
         } satisfies StyleDeck),
@@ -238,11 +250,13 @@ describe('typeof defineStyleDeck', () => {
   })
 })
 
+import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
+import { defaultMarker } from '@stylexjs/stylex'
 import { defineStyleDeck } from './styledeck.ts'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
-import type { defineStyleDeck as originalDefineStyleDeck } from './styledeck.ts'
+import { selector } from './selector.ts'
 import type { StyleDeck } from './types.ts'
 //

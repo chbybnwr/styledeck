@@ -5,20 +5,48 @@
 ```ts
 
 import type { AtRules } from 'csstype';
+import type { attrs } from '@stylexjs/stylex';
+import type { defaultMarker } from '@stylexjs/stylex';
+import type { defineMarker } from '@stylexjs/stylex';
 import type { HtmlAttributes } from 'csstype';
 import type { InlineStyles } from '@stylexjs/stylex';
 import type { Properties } from 'csstype';
 import type { Pseudos } from 'csstype';
-import type * as stylex from '@stylexjs/stylex';
 import type { StyleXClassNameFor } from '@stylexjs/stylex';
 import type { StyleXStyles } from '@stylexjs/stylex';
 import type { StyleXVar } from '@stylexjs/stylex';
 
 // @public (undocumented)
+export const ancestor: ~CreateAncestrySelector;
+
+// @public (undocumented)
+export const anySibling: ~CreateAncestrySelector;
+
+// @public (undocumented)
 export const defineStyleDeck: <const T extends StyleDeck>(styleDeck: T) => T;
 
 // @public (undocumented)
+export const descendant: ~CreateAncestrySelector;
+
+// @public (undocumented)
+export const selector: (selector: ~SimpleSelector | ~AncestrySelector, ...selectors: ~SimpleSelector[]) => ~Selector;
+
+// @public (undocumented)
+export const siblingAfter: ~CreateAncestrySelector;
+
+// @public (undocumented)
+export const siblingBefore: ~CreateAncestrySelector;
+
+// @public (undocumented)
 export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | undefined)[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | false;
+
+// @internal (undocumented)
+export const ~ANCESTRY_SELECTOR: unique symbol;
+
+// @internal (undocumented)
+export type ~AncestrySelector = ~Selector & {
+    readonly [~ANCESTRY_SELECTOR]?: never;
+};
 
 // @internal (undocumented)
 export type ~Attrs = HtmlAttributes extends `[${infer U}]` ? U : never;
@@ -27,7 +55,7 @@ export type ~Attrs = HtmlAttributes extends `[${infer U}]` ? U : never;
 export type ~CommonProperties = Properties & Omit<~CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
 
 // @internal (undocumented)
-export type ~CompiledProperties = Record<StyleXVar<unknown>, {}>;
+export type ~CompiledProperties = Record<StyleXVar<unknown>, unknown>;
 
 // @internal (undocumented)
 export interface ~CompiledValue<K, V> {
@@ -40,7 +68,7 @@ export interface ~CompiledValue<K, V> {
 }
 
 // @internal (undocumented)
-export type ~ContextualKey = ~Selector | AtRules | `${AtRules} ${string}`;
+export type ~ContextualKey = ~SimpleSelector | AtRules | `${AtRules} ${string}`;
 
 // @internal (undocumented)
 export type ~ContextualValue<T> = ({
@@ -48,14 +76,17 @@ export type ~ContextualValue<T> = ({
 } & ({
     [Key in ~ContextualKey]?: ~ResolvableValue<T> | ~ContextualValue<T>;
 } & {
-    [Key in symbol]: ~ResolvableValue<T> | ~ContextualValue<T>;
+    [Key in ~Selector]?: ~ResolvableValue<T> | ~ContextualValue<T>;
 })) | (string extends T ? ~NonApplicableStringProperties : never);
+
+// @internal (undocumented)
+export type ~CreateAncestrySelector = (marker: ReturnType<typeof defaultMarker> | ReturnType<typeof defineMarker>) => ~AncestrySelector;
 
 // @internal (undocumented)
 export type ~CSSPropertiesWithExtras = StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>> ? U : never;
 
 // @internal (undocumented)
-export type ~CustomProperties = Record<`--${string}`, {}>;
+export type ~CustomProperties = Record<`--${string}`, unknown>;
 
 // @internal (undocumented)
 export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
@@ -64,14 +95,10 @@ export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | '
 export function ~mergeAttrs(originalAttrs: Record<string, unknown>, compiledAttrs: Record<string, unknown>, classKey?: string): Record<string, unknown>;
 
 // @internal (undocumented)
-export function ~mergeClass(originalClass: string, compiledAttrs: Record<string, unknown>, classKey?: string): ~StylingAttrs;
+export function ~mergeClass(originalClass: string, compiledAttrs: Record<string, unknown>, classKey?: string): Record<string, unknown>;
 
 // @internal (undocumented)
-export function ~mergeClassName(originalClass: string, compiledProps: Record<string, unknown>): Readonly<{
-    class?: string;
-    'data-style-src'?: string;
-    style?: string;
-}>;
+export function ~mergeClassName(originalClass: string, compiledProps: Record<string, unknown>): Record<string, unknown>;
 
 // @internal (undocumented)
 export function ~mergeProps(original: Record<string, unknown>, compiled: Record<string, unknown>): Record<string, unknown>;
@@ -165,7 +192,15 @@ export type ~PseudoElementStyleConfig = Record<Exclude<~PseudoElementKey, Exclud
 export type ~ResolvableValue<T> = T | readonly T[] | (() => T);
 
 // @internal (undocumented)
-export type ~Selector = ~PseudoClassKey | `${~PseudoClassKey}:${string}` | `${~PseudoClassKey}[${string}]${string}` | `${~ParameterizedPseudoClassKey}(${string})` | `${~ParameterizedPseudoClassKey}(${string}):${string}` | `${~ParameterizedPseudoClassKey}(${string})[${string}]${string}` | `[${~Attrs | 'aria'}]` | `[${~Attrs | 'aria'}]:${string}` | `[${Exclude<~Attrs, 'data'>}=${string}]${string}` | `[${'data' | 'aria'}-${string}]${string}`;
+export const ~SELECTOR: unique symbol;
+
+// @internal (undocumented)
+export type ~Selector = symbol & {
+    readonly [~SELECTOR]?: never;
+};
+
+// @internal (undocumented)
+export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~Attrs | 'aria'}]` | `[${Exclude<~Attrs, 'data'>}=${string}]${string}` | `[${'data' | 'aria'}-${string}]${string}`;
 
 // @internal (undocumented)
 export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T> | null;
@@ -182,12 +217,10 @@ export type ~StyleConfig = ~StyleProperties | ~PseudoElementStyleConfig;
 export type ~StyleProperties = ~CommonProperties | ~CustomProperties | ~CompiledProperties;
 
 // @internal (undocumented)
-export type ~StylingAttrs = ReturnType<typeof stylex.attrs>;
+export type ~StylingAttrs = ReturnType<typeof attrs>;
 
 // @internal (undocumented)
-export function ~toAttrs(this: unknown, ...styles: any[]): {
-    [Key in keyof ~StylingAttrs]: ~StylingAttrs[Key];
-};
+export function ~toAttrs(this: unknown, ...styles: any[]): Record<string, unknown>;
 
 // (No @packageDocumentation comment for this package)
 
