@@ -74,7 +74,7 @@ type CustomProperties = Record<`--${string}`, string>
 /**
  * @internal
  */
-type CompiledProperties = Record<StyleXVar<unknown>, string>
+type CompiledProperties = Record<CompiledVar<unknown>, string>
 
 /**
  * @internal
@@ -284,12 +284,12 @@ interface NonApplicableStringProperties {
 
 import type { AtRules } from 'csstype'
 import type { StyleXClassNameFor as ClassNameFor } from '@stylexjs/stylex'
+import type { StyleXVar as CompiledVar } from '@stylexjs/stylex'
 import type { HtmlAttributes } from 'csstype'
 import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
 import type { Pseudos } from 'csstype'
 import type { Selector } from './selector'
 import type { StyleXStyles } from '@stylexjs/stylex'
-import type { StyleXVar } from '@stylexjs/stylex'
 import type { attrs as super_toAttrs } from '@stylexjs/stylex'
 //
