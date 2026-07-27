@@ -1,5 +1,4 @@
 // oxlint-disable vitest/no-conditional-in-test
-/* eslint-disable vitest/expect-expect */
 
 const tokens = defineVars({
   foo: null,
@@ -7,151 +6,132 @@ const tokens = defineVars({
 
 describe('typeof apply', () => {
   it('accepts standard properties', () => {
-    apply({
-      color: 'red',
-      textBoxEdge: 'cap ex',
-      cornerShape: 'squircle',
-    })
+    assertType<StylingAttrs>(
+      apply({
+        color: 'red',
+        textBoxEdge: 'cap ex',
+        cornerShape: 'squircle',
+      }),
+    )
   })
 
   it('accepts custom properties', () => {
-    apply({
-      '--custom': 'lorem',
-      [tokens.foo]: 'ipsum',
-    })
-    apply({
-      '::before': {
+    assertType<StylingAttrs>(
+      apply({
         '--custom': 'lorem',
         [tokens.foo]: 'ipsum',
-      },
-    })
+      }),
+    )
+
+    assertType<StylingAttrs>(
+      apply({
+        '::before': {
+          '--custom': 'lorem',
+          [tokens.foo]: 'ipsum',
+        },
+      }),
+    )
   })
 
   it('accepts pseudo-elements', () => {
-    apply({
-      '::before': {
-        color: 'red',
-      },
-    })
+    assertType<StylingAttrs>(
+      apply({
+        '::before': {
+          color: 'red',
+        },
+      }),
+    )
   })
 
   it('accepts pseudo-elements with params', () => {
-    apply({
-      '::part(foo)': {
-        color: 'red',
-      },
-    })
+    assertType<StylingAttrs>(
+      apply({
+        '::part(foo)': {
+          color: 'red',
+        },
+      }),
+    )
   })
 
   it('accepts conditional styles', () => {
     assertType<StylingAttrs>(
-    apply({
+      apply({
         color: faker.datatype.boolean() && 'red',
         textBoxEdge: faker.datatype.boolean() && 'cap ex',
         cornerShape: faker.datatype.boolean() && 'squircle',
         '--custom': faker.datatype.boolean() && 'lorem',
         [tokens.foo]: faker.datatype.boolean() && 'ipsum',
-      '::before': {
+        '::before': {
           color: faker.datatype.boolean() && 'red',
-      },
+        },
       }),
     )
 
-    apply({
-      color: faker.datatype.boolean() ? 'red' : null,
-      textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
-      cornerShape: faker.datatype.boolean() ? 'squircle' : null,
-      '--custom': faker.datatype.boolean() ? 'lorem' : null,
-      [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
-      '::before': {
+    assertType<StylingAttrs>(
+      apply({
         color: faker.datatype.boolean() ? 'red' : null,
-      },
-    }),
-)
+        textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
+        cornerShape: faker.datatype.boolean() ? 'squircle' : null,
+        '--custom': faker.datatype.boolean() ? 'lorem' : null,
+        [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
+        '::before': {
+          color: faker.datatype.boolean() ? 'red' : null,
+        },
+      }),
+    )
   })
 
   it('accepts dynamic styles', () => {
-    apply({
-      color: () => 'red',
-      textBoxEdge: () => 'cap ex',
-      cornerShape: () => 'squircle',
-      '--custom': () => 'lorem',
-      [tokens.foo]: () => 'ipsum',
-      '::before': {
+    assertType<StylingAttrs>(
+      apply({
         color: () => 'red',
-      },
-    })
+        textBoxEdge: () => 'cap ex',
+        cornerShape: () => 'squircle',
+        '--custom': () => 'lorem',
+        [tokens.foo]: () => 'ipsum',
+        '::before': {
+          color: () => 'red',
+        },
+      }),
+    )
   })
 
   it('accepts contextual styles', () => {
-    apply({
-      color: {
-        default: null,
-        ':focus': 'red',
-      },
-      textBoxEdge: {
-        default: null,
-        ':focus': 'cap ex',
-      },
-      cornerShape: {
-        default: null,
-        ':focus': 'squircle',
-      },
-      '--custom': {
-        default: null,
-        ':focus': 'lorem',
-      },
-      [tokens.foo]: {
-        default: null,
-        ':focus': 'ipsum',
-      },
-      '::before': {
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           ':focus': 'red',
         },
-      },
-    })
-  })
-
-  it('accepts combined contextual styles', () => {
-    apply({
-      color: {
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'red',
-        },
-      },
-      textBoxEdge: {
-        default: null,
-        '@container (width >= 1440px)': {
+        textBoxEdge: {
           default: null,
           ':focus': 'cap ex',
         },
-      },
-      cornerShape: {
-        default: null,
-        '@container (width >= 1440px)': {
+        cornerShape: {
           default: null,
           ':focus': 'squircle',
         },
-      },
-      '--custom': {
-        default: null,
-        '@container (width >= 1440px)': {
+        '--custom': {
           default: null,
           ':focus': 'lorem',
         },
-      },
-      [tokens.foo]: {
-        default: null,
-        '@container (width >= 1440px)': {
+        [tokens.foo]: {
           default: null,
           ':focus': 'ipsum',
         },
-      },
-      '::before': {
+        '::before': {
+          color: {
+            default: null,
+            ':focus': 'red',
+          },
+        },
+      }),
+    )
+  })
+
+  it('accepts combined contextual styles', () => {
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           '@container (width >= 1440px)': {
@@ -159,39 +139,80 @@ describe('typeof apply', () => {
             ':focus': 'red',
           },
         },
-      },
-    })
+        textBoxEdge: {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'cap ex',
+          },
+        },
+        cornerShape: {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'squircle',
+          },
+        },
+        '--custom': {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'lorem',
+          },
+        },
+        [tokens.foo]: {
+          default: null,
+          '@container (width >= 1440px)': {
+            default: null,
+            ':focus': 'ipsum',
+          },
+        },
+        '::before': {
+          color: {
+            default: null,
+            '@container (width >= 1440px)': {
+              default: null,
+              ':focus': 'red',
+            },
+          },
+        },
+      }),
+    )
   })
 
   it('accepts deep dynamic contextual values', () => {
-    apply({
-      color: {
-        default: () => 'red',
-        '@container (width >= 1440px)': {
-          default: () => 'green',
-          ':focus': () => 'blue',
-        },
-      },
-      '::before': {
+    assertType<StylingAttrs>(
+      apply({
         color: {
-          default: () => 'orange',
-          ':focus': () => 'yellow',
+          default: () => 'red',
+          '@container (width >= 1440px)': {
+            default: () => 'green',
+            ':focus': () => 'blue',
+          },
         },
-      },
-    })
+        '::before': {
+          color: {
+            default: () => 'orange',
+            ':focus': () => 'yellow',
+          },
+        },
+      }),
+    )
   })
 
   it('accepts variable styles', () => {
-    apply({
-      color: tokens.foo,
-      textBoxEdge: tokens.foo,
-      cornerShape: tokens.foo,
-      '--custom': tokens.foo,
-      [tokens.foo]: tokens.foo,
-      '::before': {
-        color: () => tokens.foo,
-      },
-    })
+    assertType<StylingAttrs>(
+      apply({
+        color: tokens.foo,
+        textBoxEdge: tokens.foo,
+        cornerShape: tokens.foo,
+        '--custom': tokens.foo,
+        [tokens.foo]: tokens.foo,
+        '::before': {
+          color: () => tokens.foo,
+        },
+      }),
+    )
   })
 
   it('accepts typed variable styles', () => {
@@ -199,81 +220,97 @@ describe('typeof apply', () => {
       foo: types.angle('360deg'),
     })
 
-    apply({
-      color: strictTokens.foo,
-      textBoxEdge: strictTokens.foo,
-      cornerShape: strictTokens.foo,
-      '--custom': strictTokens.foo,
-      [strictTokens.foo]: strictTokens.foo,
-      '::before': {
-        color: () => strictTokens.foo,
-      },
-    })
+    assertType<StylingAttrs>(
+      apply({
+        color: strictTokens.foo,
+        textBoxEdge: strictTokens.foo,
+        cornerShape: strictTokens.foo,
+        '--custom': strictTokens.foo,
+        [strictTokens.foo]: strictTokens.foo,
+        '::before': {
+          color: () => strictTokens.foo,
+        },
+      }),
+    )
   })
 
   it('accepts pseudo-classes', () => {
-    apply({
-      color: {
-        default: null,
-        ':focus': 'red',
-      },
-    })
+    assertType<StylingAttrs>(
+      apply({
+        color: {
+          default: null,
+          ':focus': 'red',
+        },
+      }),
+    )
   })
 
   it('accepts pseudo-classes with params', () => {
-    apply({
-      color: {
-        default: null,
-        ':dir(rtl)': 'red',
-      },
-    })
+    assertType<StylingAttrs>(
+      apply({
+        color: {
+          default: null,
+          ':dir(rtl)': 'red',
+        },
+      }),
+    )
   })
 
   it('accepts at-rules', () => {
-    apply({
-      color: {
-        default: null,
-        '@page': 'red',
-      },
-    })
+    assertType<StylingAttrs>(
+      apply({
+        color: {
+          default: null,
+          '@page': 'red',
+        },
+      }),
+    )
   })
 
   it('accepts at-rules with params', () => {
-    apply({
-      color: {
-        default: null,
-        '@container (width >= 1440)': 'red',
-      },
-    })
+    assertType<StylingAttrs>(
+      apply({
+        color: {
+          default: null,
+          '@container (width >= 1440)': 'red',
+        },
+      }),
+    )
   })
 
   it('accepts StyleDeck', () => {
     const style: StyleDeck = {}
 
-    apply(style)
+    assertType<StylingAttrs>(apply(style))
 
-    apply(style, {
-      color: 'red',
-    })
+    assertType<StylingAttrs>(
+      apply(style, {
+        color: 'red',
+      }),
+    )
   })
 
   it('accepts stylex marker', () => {
-    apply(defaultMarker())
+    assertType<StylingAttrs>(apply(defaultMarker()))
   })
 
   it('can access ancestor', () => {
-    apply({
-      color: {
-        default: null,
+    assertType<StylingAttrs>(
+      apply({
+        color: {
+          default: null,
         [when.ancestor(':hover')]: 'red',
-      },
-    })
+        },
+      }),
+    )
   })
 
   it('accepts styles with fallback', () => {
-    apply({
-      position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
-    })
+    assertType<StylingAttrs>(
+      apply({
+        position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
+      }),
+    )
   })
 })
 
@@ -367,34 +404,40 @@ describe('typeof sheet', () => {
   })
 
   it('accepts variadic style inputs', () => {
-    apply(
-      ...sheet(
-        {
-          color: 'red',
-        },
-        {
-          backgroundColor: 'blue',
-        },
+    assertType<StylingAttrs>(
+      apply(
+        ...sheet(
+          {
+            color: 'red',
+          },
+          {
+            backgroundColor: 'blue',
+          },
+        ),
       ),
     )
 
-    apply(
-      ...sheet(
-        {
-          color: 'red',
-        },
-        {
-          opacity: () => '0.5',
-        },
+    assertType<StylingAttrs>(
+      apply(
+        ...sheet(
+          {
+            color: 'red',
+          },
+          {
+            opacity: () => '0.5',
+          },
+        ),
       ),
     )
   })
 
   it('keeps array values as static leaf values', () => {
-    apply(
-      ...sheet({
-        fontFamily: ['Inter', 'sans-serif'],
-      }),
+    assertType<StylingAttrs>(
+      apply(
+        ...sheet({
+          fontFamily: ['Inter', 'sans-serif'],
+        }),
+      ),
     )
   })
 })
