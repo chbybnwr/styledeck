@@ -27,7 +27,7 @@ const oxlintConfig: OxlintConfig = {
     // 'react',
     'typescript',
     'unicorn',
-    'vitest',
+    // 'vitest',
     // 'vue',
   ],
   rules: {
@@ -40,9 +40,11 @@ const oxlintConfig: OxlintConfig = {
     'max-statements': 'off',
     'sort-keys': 'off',
     'no-duplicate-imports': 'off',
+    'no-magic-numbers': ['warn', { ignore: [0] }],
     'no-ternary': 'off',
     'no-use-before-define': 'off',
     'no-eq-null': 'off',
+    'no-void': 'off',
 
     'import/exports-last': 'off',
     'import/first': 'off',
@@ -51,24 +53,6 @@ const oxlintConfig: OxlintConfig = {
     'import/no-named-export': 'off',
     'import/no-default-export': 'off',
     'import/prefer-default-export': 'off',
-
-    'vitest/valid-title': 'off',
-    'vitest/no-importing-vitest-globals': 'off',
-    'vitest/consistent-test-filename': [
-      'warn',
-      {
-        pattern: '.*.spec(-d)?.ts(x)?$',
-      },
-    ],
-    'vitest/prefer-expect-assertions': [
-      'warn',
-      {
-        onlyFunctionsWithAsyncKeyword: true,
-        onlyFunctionsWithExpectInCallback: true,
-        onlyFunctionsWithExpectInLoop: true,
-      },
-    ],
-    'vitest/require-test-timeout': 'off',
 
     'typescript/prefer-readonly-parameter-types': 'off',
 
@@ -82,15 +66,34 @@ const oxlintConfig: OxlintConfig = {
       files: ['*'],
       rules: {
         'import/no-nodejs-modules': 'off',
+        'node/no-process-env': 'off',
       },
     },
 
     {
       files: ['*.spec*.*'],
+      plugins: ['vitest'],
       rules: {
-        'no-magic-numbers': 'off',
+        // 'no-magic-numbers': 'off',
         'import/no-nodejs-modules': 'off',
         'typescript/explicit-function-return-type': 'off',
+        'vitest/valid-title': 'off',
+        'vitest/no-importing-vitest-globals': 'off',
+        'vitest/consistent-test-filename': [
+          'warn',
+          {
+            pattern: '.*.spec(-d)?.ts(x)?$',
+          },
+        ],
+        'vitest/prefer-expect-assertions': [
+          'warn',
+          {
+            onlyFunctionsWithAsyncKeyword: true,
+            onlyFunctionsWithExpectInCallback: true,
+            onlyFunctionsWithExpectInLoop: true,
+          },
+        ],
+        'vitest/require-test-timeout': 'off',
       },
     },
 
