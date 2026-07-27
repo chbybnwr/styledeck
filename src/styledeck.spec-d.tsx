@@ -67,30 +67,28 @@ describe('typeof defineStyleDeck', () => {
   })
 
   it('accepts conditional styles', () => {
-    const isEnabled = Math.random() > 0.8
-
     assertType<StyleDeck>(
       defineStyleDeck({
-        color: isEnabled && 'red',
-        textBoxEdge: isEnabled && 'cap ex',
-        cornerShape: isEnabled && 'squircle',
-        '--custom': isEnabled && 'lorem',
-        [tokens.foo]: isEnabled && 'ipsum',
+        color: faker.datatype.boolean() && 'red',
+        textBoxEdge: faker.datatype.boolean() && 'cap ex',
+        cornerShape: faker.datatype.boolean() && 'squircle',
+        '--custom': faker.datatype.boolean() && 'lorem',
+        [tokens.foo]: faker.datatype.boolean() && 'ipsum',
         '::before': {
-          color: isEnabled && 'red',
+          color: faker.datatype.boolean() && 'red',
         },
       }),
     )
 
     assertType<StyleDeck>(
       defineStyleDeck({
-        color: isEnabled ? 'red' : null,
-        textBoxEdge: isEnabled ? 'cap ex' : null,
-        cornerShape: isEnabled ? 'squircle' : null,
-        '--custom': isEnabled ? 'lorem' : null,
-        [tokens.foo]: isEnabled ? 'ipsum' : null,
+        color: faker.datatype.boolean() ? 'red' : null,
+        textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
+        cornerShape: faker.datatype.boolean() ? 'squircle' : null,
+        '--custom': faker.datatype.boolean() ? 'lorem' : null,
+        [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
         '::before': {
-          color: isEnabled ? 'red' : null,
+          color: faker.datatype.boolean() ? 'red' : null,
         },
       }),
     )
@@ -425,7 +423,7 @@ describe('typeof defineStyleDeck', () => {
         color: {
           default: null,
           ':active': () => 'red',
-          ':focus': Math.random() > 0.8 ? 'blue' : 'red',
+          ':focus': faker.datatype.boolean() > 0.8 ? 'blue' : 'red',
         },
       }),
     )
@@ -533,6 +531,7 @@ import { defaultMarker } from '@stylexjs/stylex'
 import { defineStyleDeck } from './styledeck.ts'
 import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
+import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
 import type { StyleDeck } from './types.ts'

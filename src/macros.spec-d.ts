@@ -44,29 +44,30 @@ describe('typeof apply', () => {
   })
 
   it('accepts conditional styles', () => {
-    const isEnabled = Math.random() > 0.8
+    assertType<StylingAttrs>(
+    apply({
+        color: faker.datatype.boolean() && 'red',
+        textBoxEdge: faker.datatype.boolean() && 'cap ex',
+        cornerShape: faker.datatype.boolean() && 'squircle',
+        '--custom': faker.datatype.boolean() && 'lorem',
+        [tokens.foo]: faker.datatype.boolean() && 'ipsum',
+      '::before': {
+          color: faker.datatype.boolean() && 'red',
+      },
+      }),
+    )
 
     apply({
-      color: isEnabled && 'red',
-      textBoxEdge: isEnabled && 'cap ex',
-      cornerShape: isEnabled && 'squircle',
-      '--custom': isEnabled && 'lorem',
-      [tokens.foo]: isEnabled && 'ipsum',
+      color: faker.datatype.boolean() ? 'red' : null,
+      textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
+      cornerShape: faker.datatype.boolean() ? 'squircle' : null,
+      '--custom': faker.datatype.boolean() ? 'lorem' : null,
+      [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
       '::before': {
-        color: isEnabled && 'red',
+        color: faker.datatype.boolean() ? 'red' : null,
       },
-    })
-
-    apply({
-      color: isEnabled ? 'red' : null,
-      textBoxEdge: isEnabled ? 'cap ex' : null,
-      cornerShape: isEnabled ? 'squircle' : null,
-      '--custom': isEnabled ? 'lorem' : null,
-      [tokens.foo]: isEnabled ? 'ipsum' : null,
-      '::before': {
-        color: isEnabled ? 'red' : null,
-      },
-    })
+    }),
+)
   })
 
   it('accepts dynamic styles', () => {
@@ -399,15 +400,18 @@ describe('typeof sheet', () => {
 })
 
 import { apply } from './macros.ts'
+import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
 import { defaultMarker } from '@stylexjs/stylex'
 import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { expectTypeOf } from 'vitest'
+import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
 import { sheet } from './macros.ts'
 import type { StyleDeck } from './types.ts'
+import type { StylingAttrs } from './types.ts'
 import { types } from '@stylexjs/stylex'
 import { when } from './when.ts'
 //
