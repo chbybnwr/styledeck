@@ -1,5 +1,6 @@
-// oxlint-disable typescript/ban-ts-comment
-describe(apply, () => {
+// eslint-disable typescript/ban-ts-comment
+
+describe('typeof apply', () => {
   it('rejects unknown non-custom properties', () => {
     expect(() => {
       apply({

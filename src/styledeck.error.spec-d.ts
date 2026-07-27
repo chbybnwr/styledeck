@@ -1,7 +1,7 @@
 // oxlint-disable typescript/ban-ts-comment
 const defineStyleDeck: typeof originalDefineStyleDeck = (styleDeck) => styleDeck
 
-describe(defineStyleDeck, () => {
+describe('typeof defineStyleDeck', () => {
   it('rejects unknown non-custom properties', () => {
     assertType<StyleDeck>(
       defineStyleDeck({

@@ -3,7 +3,7 @@ const tokens = defineVars({
   foo: 'blue',
 })
 
-describe(defineStyleDeck, () => {
+describe('typeof defineStyleDeck', () => {
   it('accepts undefined when using array', () => {
     const props: {
       styleDeck?: StyleDeck

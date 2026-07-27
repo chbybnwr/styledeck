@@ -5,7 +5,7 @@ const tokens = defineVars({
   foo: null,
 })
 
-describe(apply, () => {
+describe('typeof apply', () => {
   it('accepts standard properties', () => {
     apply({
       color: 'red',
@@ -276,7 +276,7 @@ describe(apply, () => {
   })
 })
 
-describe(sheet, () => {
+describe('typeof sheet', () => {
   it('returns StyleDeck', () => {
     expectTypeOf(
       sheet({
