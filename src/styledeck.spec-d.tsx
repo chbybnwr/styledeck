@@ -1,4 +1,5 @@
 // oxlint-disable vitest/no-conditional-in-test
+
 const tokens = defineVars({
   foo: 'blue',
 })
