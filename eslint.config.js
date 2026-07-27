@@ -1,6 +1,15 @@
 // oxlint-disable import/max-dependencies
+/* eslint-disable unicorn/no-top-level-side-effects */
 
 export { eslintConfig as default }
+
+void 0
+
+configDotenv({
+  quiet: true,
+})
+
+const isQuickMode = process.env['ESLINT_QUICK_MODE'] === 'on'
 
 const eslintConfig = defineConfig([
   globalIgnores([
@@ -50,16 +59,12 @@ const eslintConfig = defineConfig([
     name: 'ts',
     files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [
-      tslintConfigs.strictTypeChecked,
-      tslintConfigs.stylisticTypeChecked,
+      tslintConfigs.strict,
+      tslintConfigs.stylistic,
+      //
     ],
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-      },
-    },
     rules: {
-      '@typescript-eslint/consistent-type-exports': 'warn',
+      // '@typescript-eslint/consistent-type-exports': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
@@ -69,18 +74,49 @@ const eslintConfig = defineConfig([
     },
   },
 
+  isQuickMode
+    ? {}
+    : {
+        name: 'ts-checked',
+        files: ['**/*.?(c|m)[jt]s?(x)'],
+        extends: [
+          tslintConfigs.strictTypeCheckedOnly,
+          tslintConfigs.stylisticTypeCheckedOnly,
+        ],
+        languageOptions: {
+          parserOptions: {
+            projectService: true,
+          },
+        },
+        rules: {
+          '@typescript-eslint/consistent-type-exports': 'warn',
+          '@typescript-eslint/no-unused-vars': [
+            'warn',
+            {
+              argsIgnorePattern: '^_',
+            },
+          ],
+        },
+      },
+
   {
     name: 'import-x',
     files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [importXPlugin.flatConfigs.recommended],
     rules: {
       'import-x/no-duplicates': 'off',
+      ...(isQuickMode && {
+        'import-x/default': 'off',
+        'import-x/namespace': 'off',
+        'import-x/no-named-as-default-member': 'off',
+        'import-x/no-named-as-default': 'off',
+      }),
     },
   },
 
   {
     name: 'import-x-typescript',
-    files: ['**/*.?(c|m)ts?(x)'],
+    files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [importXPlugin.flatConfigs.typescript],
     languageOptions: {
       parser: tslintParser,
@@ -134,9 +170,14 @@ const eslintConfig = defineConfig([
     name: 'vitest',
     files: ['**/*.{test,spec}*.?(c|m)[jt]s?(x)'],
     extends: [vitestPlugin.configs.recommended],
+    languageOptions: {
+      globals: {
+        ...vitestPlugin.environments.env.globals,
+      },
+    },
     settings: {
       vitest: {
-        typecheck: true,
+        typecheck: !isQuickMode,
       },
     },
     rules: {
@@ -146,6 +187,10 @@ const eslintConfig = defineConfig([
           pattern: '.*.spec(-d)?.ts(x)?$',
         },
       ],
+      ...(isQuickMode && {
+        'vitest/expect-expect': 'off',
+        'vitest/valid-title': 'off',
+      }),
     },
   },
 
@@ -228,6 +273,7 @@ const eslintConfig = defineConfig([
   prettierConfig,
 ])
 
+import { configDotenv } from 'dotenv'
 import { createNodeResolver } from 'eslint-plugin-import-x'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import { defineConfig } from 'eslint/config'

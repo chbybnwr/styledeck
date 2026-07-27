@@ -63,6 +63,7 @@
     "@vitest/coverage-v8": "^4.1.10",
     "@vitest/eslint-plugin": "^1.6.24",
     "cspell": "^10.0.1",
+    "dotenv": "^17.4.2",
     "es-toolkit": "^1.50.0",
     "eslint": "^10.8.0",
     "eslint-config-prettier": "^10.1.8",
