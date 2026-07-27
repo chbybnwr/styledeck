@@ -20,7 +20,6 @@ export type { SourceValue }
 export type { StyleCard }
 export type { StyleConfig }
 export type { StyleProperties }
-export type { StylingAttrs }
 export type { SimpleSelector }
 
 /**
@@ -31,11 +30,6 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
   | StyleCard<T>
   | readonly [StyleCard<T>, InlineStyles]
   | false
-
-/**
- * @internal
- */
-type StylingAttrs = ReturnType<typeof super_toAttrs>
 
 /**
  * @internal
@@ -291,5 +285,4 @@ import type { Properties } from 'csstype'
 import type { Pseudos } from 'csstype'
 import type { Selector } from './selector'
 import type { StyleXStyles } from '@stylexjs/stylex'
-import type { attrs as super_toAttrs } from '@stylexjs/stylex'
 //

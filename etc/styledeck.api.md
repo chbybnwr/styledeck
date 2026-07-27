@@ -5,7 +5,6 @@
 ```ts
 
 import type { AtRules } from 'csstype';
-import type { attrs } from '@stylexjs/stylex';
 import type { defaultMarker } from '@stylexjs/stylex';
 import type { defineMarker } from '@stylexjs/stylex';
 import type { HtmlAttributes } from 'csstype';
@@ -215,9 +214,6 @@ export type ~StyleConfig = ~StyleProperties | ~PseudoElementStyleConfig;
 
 // @internal (undocumented)
 export type ~StyleProperties = ~CommonProperties | ~CustomProperties | ~CompiledProperties;
-
-// @internal (undocumented)
-export type ~StylingAttrs = ReturnType<typeof attrs>;
 
 // @internal (undocumented)
 export function ~toAttrs(this: unknown, ...styles: any[]): Record<string, unknown>;

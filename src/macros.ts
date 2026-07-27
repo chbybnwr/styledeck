@@ -1,6 +1,7 @@
 export { apply }
 export { sheet }
 export { macro }
+export type { StylingAttrs }
 
 /**
  * Apply styles as props `{ className, style }`, or attrs `{ class, style }`.
@@ -66,6 +67,8 @@ function macro(): never {
   throw new Error('macro was called at runtime')
 }
 
+type StylingAttrs = ReturnType<typeof attrs>
+
+import type { attrs } from '@stylexjs/stylex'
 import type { StyleDeck } from './types.ts'
-import type { StylingAttrs } from './types.ts'
 //

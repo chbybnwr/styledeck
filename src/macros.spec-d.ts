@@ -456,6 +456,6 @@ import { it } from 'vitest'
 import { selector } from './selector.ts'
 import { sheet } from './macros.ts'
 import type { StyleDeck } from './types.ts'
-import type { StylingAttrs } from './types.ts'
+import type { StylingAttrs } from './macros.ts'
 import { types } from '@stylexjs/stylex'
 //
