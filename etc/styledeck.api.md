@@ -44,7 +44,7 @@ export const ~ANCESTRY_SELECTOR: unique symbol;
 
 // @internal (undocumented)
 export type ~AncestrySelector = ~Selector & {
-    readonly [~ANCESTRY_SELECTOR]?: never;
+    readonly [~ANCESTRY_SELECTOR]: never;
 };
 
 // @internal (undocumented)
@@ -195,7 +195,7 @@ export const ~SELECTOR: unique symbol;
 
 // @internal (undocumented)
 export type ~Selector = symbol & {
-    readonly [~SELECTOR]?: never;
+    readonly [~SELECTOR]: never;
 };
 
 // @internal (undocumented)
