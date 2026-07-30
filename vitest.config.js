@@ -13,6 +13,7 @@ const vitestConfig = {
     include: [
       '**/*.spec.?(c|m)[jt]s?(x)',
       '**/*.error.spec-d.?(c|m)[jt]s?(x)',
+      '**/*.manual.spec-d.?(c|m)[jt]s?(x)',
       //
     ],
     typecheck: {
