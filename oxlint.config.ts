@@ -10,7 +10,7 @@ const oxlintConfig: OxlintConfig = {
     pedantic: 'warn',
     perf: 'warn',
     style: 'warn',
-    restriction: 'warn',
+    // restriction: 'warn',
     // nursery: 'warn',
   },
   plugins: [
