@@ -63,12 +63,12 @@ type StyleProperties = CommonProperties | CustomProperties | CompiledProperties
 /**
  * @internal
  */
-type CustomProperties = Record<`--${string}`, unknown>
+type CustomProperties = Record<`--${string}`, Record<never, never>>
 
 /**
  * @internal
  */
-type CompiledProperties = Record<CompiledVar<unknown>, unknown>
+type CompiledProperties = Record<CompiledVar<unknown>, Record<never, never>>
 
 /**
  * @internal

@@ -167,11 +167,40 @@ describe('type StyleDeck', () => {
       },
     })
   })
+
+  // oxlint-disable-next-line vitest/warn-todo
+  it.todo('rejects unknown selector on custom properties', () => {
+    assertType<StyleDeck>({
+      '--foo': {
+        default: null,
+        // // @ts-expect-error
+        foo: 'bar',
+      },
+    })
+  })
+
+  // oxlint-disable-next-line vitest/warn-todo
+  it.todo('rejects unknown selector on compiled custom properties', () => {
+    expect(() => {
+      const themeVar = defineVars({
+        foo: 'red',
+      })
+
+      assertType<StyleDeck>({
+        [themeVar.foo]: {
+          default: null,
+          // // @ts-expect-error
+          foo: 'bar',
+        },
+      })
+    }).toThrow(expect.any(Error))
+  })
 })
 
 import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
 import { defaultMarker } from '@stylexjs/stylex'
+import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
