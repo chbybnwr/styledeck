@@ -1,4 +1,4 @@
-describe('typeof StyleDeck', () => {
+describe('typeof StyleDeck autocomplete', () => {
   it('accepts contextual styles for custom properties', async ({
     annotate,
   }) => {
@@ -21,6 +21,20 @@ describe('typeof StyleDeck', () => {
         [themeVar.foo]: {
           default: null,
           ':focus': 'ipsum',
+        },
+        '::before': {
+          color: {
+            default: null,
+            ':focus': 'red',
+          },
+          '--custom': {
+            default: null,
+            ':focus': 'lorem',
+          },
+          [themeVar.foo]: {
+            default: null,
+            ':focus': 'ipsum',
+          },
         },
       })
     }).toThrow(expect.any(Error))
