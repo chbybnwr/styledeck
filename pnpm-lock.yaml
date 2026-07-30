@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@stylexjs/stylex':
+        specifier: ~0.19.0
+        version: 0.19.0
       csstype:
         specifier: ^3.2.3
         version: 3.2.3
@@ -30,9 +33,6 @@ importers:
       '@microsoft/api-extractor':
         specifier: ^7.58.12
         version: 7.58.12(@types/node@26.1.1)
-      '@stylexjs/stylex':
-        specifier: ~0.19.0
-        version: 0.19.0
       '@stylistic/eslint-plugin':
         specifier: ^5.10.0
         version: 5.10.0(eslint@10.8.0)

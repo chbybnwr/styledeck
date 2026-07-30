@@ -46,7 +46,7 @@
     "csstype": "^3.2.3"
   },
   "peerDependencies": {
-    "@stylexjs/stylex": "~0.18.3"
+    "@stylexjs/stylex": "~0.19.0"
   },
   "devDependencies": {
     "@chbybnwr/tsconfig": "github:chbybnwr/tsconfig#v0.1.1",
@@ -55,7 +55,6 @@
     "@eslint/markdown": "^8.0.3",
     "@faker-js/faker": "^10.5.0",
     "@microsoft/api-extractor": "^7.58.12",
-    "@stylexjs/stylex": "~0.19.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@txe/eslint-plugin-x": "~0.2.1",
     "@types/node": "^26.1.1",
