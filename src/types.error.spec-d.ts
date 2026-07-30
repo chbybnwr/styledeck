@@ -91,6 +91,16 @@ describe('type StyleDeck', () => {
     })
   })
 
+  it('rejects literal compound selector', () => {
+    assertType<StyleDeck>({
+      color: {
+        default: null,
+        // @ts-expect-error
+        ':focus:hover': 'bar',
+      },
+    })
+  })
+
   it('rejects unknown pseudo-classes)', () => {
     assertType<StyleDeck>({
       color: {
