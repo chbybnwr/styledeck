@@ -114,8 +114,8 @@ type SimpleSelector =
   | PseudoClassKey
   | `${ParameterizedPseudoClassKey}(${string})`
   | `[${Attrs | 'aria'}]`
-  | `[${Exclude<Attrs, 'data'>}=${string}]${string}`
-  | `[${'data' | 'aria'}-${string}]${string}`
+  | `[${Exclude<Attrs, 'data'>}=${string}]`
+  | `[${'data' | 'aria'}-${string}]`
 
 /**
  * @internal
