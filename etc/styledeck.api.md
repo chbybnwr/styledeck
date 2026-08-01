@@ -54,7 +54,7 @@ export type ~Attrs = HtmlAttributes extends `[${infer U}]` ? U : never;
 export type ~CommonProperties = Properties & Omit<~CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
 
 // @internal (undocumented)
-export type ~CompiledProperties = Record<StyleXVar<unknown>, unknown>;
+export type ~CompiledProperties = Record<StyleXVar<unknown>, Record<never, never>>;
 
 // @internal (undocumented)
 export interface ~CompiledValue<K, V> {
@@ -85,7 +85,7 @@ export type ~CreateAncestrySelector = (marker: ReturnType<typeof defaultMarker> 
 export type ~CSSPropertiesWithExtras = StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>> ? U : never;
 
 // @internal (undocumented)
-export type ~CustomProperties = Record<`--${string}`, unknown>;
+export type ~CustomProperties = Record<`--${string}`, Record<never, never>>;
 
 // @internal (undocumented)
 export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
@@ -199,7 +199,7 @@ export type ~Selector = symbol & {
 };
 
 // @internal (undocumented)
-export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~Attrs | 'aria'}]` | `[${Exclude<~Attrs, 'data'>}=${string}]${string}` | `[${'data' | 'aria'}-${string}]${string}`;
+export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~Attrs | 'aria'}]` | `[${Exclude<~Attrs, 'data'>}=${string}]` | `[${'data' | 'aria'}-${string}]`;
 
 // @internal (undocumented)
 export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T> | null;
