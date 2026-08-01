@@ -93,7 +93,7 @@ describe('type StyleDeck', () => {
   })
 
   it('accepts contextual styles', () => {
-    const atDark = '@media (prefer-color-scheme: dark)'
+    const atDark = '@media (prefers-color-scheme: dark)'
 
     assertType<StyleDeck>({
       color: {
