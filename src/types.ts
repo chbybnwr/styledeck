@@ -50,8 +50,10 @@ type StyleConfig = StyleProperties | PseudoElementStyleConfig
  * @internal
  */
 type PseudoElementStyleConfig = Record<
-  | Exclude<PseudoElementKey, Exclude<ParameterizedPseudoElementKey, '::cue'>>
-  | `${ParameterizedPseudoElementKey}(${string})`,
+  | Exclude<PseudoElementKey, ParameterizedPseudoElementKey>
+  | `${ParameterizedPseudoElementKey}(${string})`
+  // ::cue can be used both with and without parameter
+  | '::cue',
   StyleProperties
 >
 
