@@ -179,9 +179,9 @@ describe('typeof defineStyleDeck', () => {
       assertType<StyleDeck>(
         defineStyleDeck(
           // @ts-expect-error
-          () => ({
+          (() => ({
             color: 'red',
-          }),
+          })) satisfies StyleDeck,
         ),
       )
     }).toThrow(expect.any(Error))
@@ -197,7 +197,7 @@ describe('typeof defineStyleDeck', () => {
         // @ts-expect-error
         defineStyleDeck({
           backgroundColor: 'red',
-        }),
+        } satisfies StyleDeck),
       )
     }).toThrow(expect.any(Error))
 
@@ -212,7 +212,7 @@ describe('typeof defineStyleDeck', () => {
           {
             backgroundColor: 'red',
           },
-        ]),
+        ] satisfies StyleDeck),
       )
     }).toThrow(expect.any(Error))
 
@@ -227,7 +227,7 @@ describe('typeof defineStyleDeck', () => {
         }>
       >(
         // @ts-expect-error
-        defineStyleDeck(styledeck),
+        defineStyleDeck(styledeck satisfies StyleDeck),
       )
     }).toThrow(expect.any(Error))
 
@@ -244,7 +244,7 @@ describe('typeof defineStyleDeck', () => {
           '::before': {
             backgroundColor: 'red',
           },
-        }),
+        } satisfies StyleDeck),
       )
     }).toThrow(expect.any(Error))
   })

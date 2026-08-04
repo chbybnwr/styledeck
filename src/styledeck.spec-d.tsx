@@ -15,7 +15,7 @@ describe('typeof defineStyleDeck', () => {
         { color: 'red' },
         props.styleDeck,
         //
-      ]),
+      ] satisfies StyleDeck),
     )
   })
 
@@ -25,7 +25,7 @@ describe('typeof defineStyleDeck', () => {
         color: 'red',
         textBoxEdge: 'cap ex',
         cornerShape: 'squircle',
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -34,7 +34,7 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         '--custom': 'lorem',
         [tokens.foo]: 'ipsum',
-      }),
+      } satisfies StyleDeck),
     )
 
     assertType<StyleDeck>(
@@ -43,7 +43,7 @@ describe('typeof defineStyleDeck', () => {
           '--custom': 'lorem',
           [tokens.foo]: 'ipsum',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -53,7 +53,7 @@ describe('typeof defineStyleDeck', () => {
         '::before': {
           color: 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -63,7 +63,7 @@ describe('typeof defineStyleDeck', () => {
         '::part(foo)': {
           color: 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -78,7 +78,7 @@ describe('typeof defineStyleDeck', () => {
         '::before': {
           color: faker.datatype.boolean() && 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
 
     assertType<StyleDeck>(
@@ -91,7 +91,7 @@ describe('typeof defineStyleDeck', () => {
         '::before': {
           color: faker.datatype.boolean() ? 'red' : null,
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -106,7 +106,7 @@ describe('typeof defineStyleDeck', () => {
         '::before': {
           color: () => 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -142,7 +142,7 @@ describe('typeof defineStyleDeck', () => {
             ':focus': 'red',
           },
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -193,7 +193,7 @@ describe('typeof defineStyleDeck', () => {
             },
           },
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -213,7 +213,7 @@ describe('typeof defineStyleDeck', () => {
             ':focus': () => 'yellow',
           },
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -228,7 +228,7 @@ describe('typeof defineStyleDeck', () => {
         '::before': {
           color: () => tokens.foo,
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -247,7 +247,7 @@ describe('typeof defineStyleDeck', () => {
         '::before': {
           color: () => strictTokens.foo,
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -258,7 +258,7 @@ describe('typeof defineStyleDeck', () => {
           default: null,
           ':focus': 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -269,7 +269,7 @@ describe('typeof defineStyleDeck', () => {
           default: null,
           ':dir(rtl)': 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -280,7 +280,7 @@ describe('typeof defineStyleDeck', () => {
           default: null,
           '@page': 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -291,7 +291,7 @@ describe('typeof defineStyleDeck', () => {
           default: null,
           '@container (width >= 1440)': 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -303,7 +303,7 @@ describe('typeof defineStyleDeck', () => {
           '[disabled]': 'red',
           '[value="foo"]': 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -315,12 +315,14 @@ describe('typeof defineStyleDeck', () => {
       },
     })
 
-    assertType<StyleDeck>(defineStyleDeck(foo))
-    assertType<StyleDeck>(defineStyleDeck([foo, { color: 'red' }]))
+    assertType<StyleDeck>(defineStyleDeck(foo satisfies StyleDeck))
+    assertType<StyleDeck>(
+      defineStyleDeck([foo, { color: 'red' }] satisfies StyleDeck),
+    )
   })
 
   it('accepts stylex marker', () => {
-    assertType<StyleDeck>(defineStyleDeck(defaultMarker()))
+    assertType<StyleDeck>(defineStyleDeck(defaultMarker() satisfies StyleDeck))
   })
 
   it('accepts stylex theme', () => {
@@ -330,8 +332,8 @@ describe('typeof defineStyleDeck', () => {
       foo: 'quux',
     })
 
-    assertType<StyleDeck>(defineStyleDeck(theme))
-    assertType<StyleDeck>(defineStyleDeck([theme]))
+    assertType<StyleDeck>(defineStyleDeck(theme satisfies StyleDeck))
+    assertType<StyleDeck>(defineStyleDeck([theme] satisfies StyleDeck))
   })
 
   it('can use selector', () => {
@@ -341,7 +343,7 @@ describe('typeof defineStyleDeck', () => {
           default: null,
           [selector(ancestor(defaultMarker()), ':hover')]: 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
 
     assertType<StyleDeck>(
@@ -351,7 +353,7 @@ describe('typeof defineStyleDeck', () => {
           [selector(ancestor(defaultMarker()), ':hover')]: 'red',
           [selector(descendant(defaultMarker()), ':focus')]: 'blue',
         },
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -359,7 +361,7 @@ describe('typeof defineStyleDeck', () => {
     assertType<StyleDeck>(
       defineStyleDeck({
         position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
-      }),
+      } satisfies StyleDeck),
     )
   })
 
@@ -371,7 +373,7 @@ describe('typeof defineStyleDeck', () => {
     >(
       defineStyleDeck({
         color: 'red',
-      }),
+      } satisfies StyleDeck),
     )
 
     assertType<
@@ -381,7 +383,7 @@ describe('typeof defineStyleDeck', () => {
     >(
       defineStyleDeck({
         color: () => 'red',
-      }),
+      } satisfies StyleDeck),
     )
 
     assertType<
@@ -395,7 +397,7 @@ describe('typeof defineStyleDeck', () => {
           ':active': 'red',
           ':focus': 'blue',
         },
-      }),
+      } satisfies StyleDeck),
     )
 
     assertType<
@@ -409,7 +411,7 @@ describe('typeof defineStyleDeck', () => {
           ':active': () => 'red',
           ':focus': faker.datatype.boolean() ? 'blue' : 'red',
         },
-      }),
+      } satisfies StyleDeck),
     )
 
     assertType<
@@ -425,7 +427,7 @@ describe('typeof defineStyleDeck', () => {
             ':focus': 'blue',
           },
         },
-      }),
+      } satisfies StyleDeck),
     )
 
     assertType<
@@ -435,7 +437,7 @@ describe('typeof defineStyleDeck', () => {
     >(
       defineStyleDeck({
         '--color': 'red',
-      }),
+      } satisfies StyleDeck),
     )
 
     const { foo } = create({
@@ -448,13 +450,13 @@ describe('typeof defineStyleDeck', () => {
       StyleDeck<{
         color?: 'red'
       }>
-    >(defineStyleDeck(foo))
+    >(defineStyleDeck(foo satisfies StyleDeck))
 
     assertType<
       StyleDeck<{
         color?: 'red'
       }>
-    >(defineStyleDeck([foo, [foo]]))
+    >(defineStyleDeck([foo, [foo]] satisfies StyleDeck))
 
     const { bar } = create({
       bar: (color: string) => ({
@@ -466,13 +468,13 @@ describe('typeof defineStyleDeck', () => {
       StyleDeck<{
         color?: string
       }>
-    >(defineStyleDeck(bar('red')))
+    >(defineStyleDeck(bar('red') satisfies StyleDeck))
 
     assertType<
       StyleDeck<{
         color?: string
       }>
-    >(defineStyleDeck([bar('red'), [bar('red')]]))
+    >(defineStyleDeck([bar('red'), [bar('red')]] satisfies StyleDeck))
   })
 
   it('accepts variadic style inputs', () => {
@@ -484,7 +486,7 @@ describe('typeof defineStyleDeck', () => {
         {
           backgroundColor: 'blue',
         },
-      ]),
+      ] satisfies StyleDeck),
     )
 
     assertType<StyleDeck>(
@@ -495,7 +497,7 @@ describe('typeof defineStyleDeck', () => {
         {
           opacity: () => faker.number.float(),
         },
-      ]),
+      ] satisfies StyleDeck),
     )
   })
 
@@ -503,7 +505,7 @@ describe('typeof defineStyleDeck', () => {
     assertType<StyleDeck>(
       defineStyleDeck({
         fontFamily: ['Inter', 'sans-serif'],
-      }),
+      } satisfies StyleDeck),
     )
   })
 })
