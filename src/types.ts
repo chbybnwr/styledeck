@@ -119,14 +119,11 @@ type SimpleSelector =
   | PseudoClassKey
   | `${ParameterizedPseudoClassKey}(${string})`
   | `[${AttributeSelector}]`
-  | `[${AttributeSelector}="${string}"]`
-  | `[${AttributeSelector}='${string}']`
+  | `[${AttributeSelector}=${string}]`
   | (`[aria-${string}]` & NonNullish)
-  | `[aria-${string}="${string}"]`
-  | `[aria-${string}='${string}']`
+  | `[aria-${string}=${string}]`
   | (`[data-${string}]` & NonNullish)
-  | `[data-${string}="${string}"]`
-  | `[data-${string}='${string}']`
+  | `[data-${string}=${string}]`
 
 /**
  * @internal

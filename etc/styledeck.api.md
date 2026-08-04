@@ -211,7 +211,7 @@ export type ~Selector = symbol & {
 };
 
 // @internal (undocumented)
-export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~AttributeSelector}]` | `[${~AttributeSelector}="${string}"]` | `[${~AttributeSelector}='${string}']` | (`[aria-${string}]` & ~NonNullish) | `[aria-${string}="${string}"]` | `[aria-${string}='${string}']` | (`[data-${string}]` & ~NonNullish) | `[data-${string}="${string}"]` | `[data-${string}='${string}']`;
+export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~AttributeSelector}]` | `[${~AttributeSelector}=${string}]` | (`[aria-${string}]` & ~NonNullish) | `[aria-${string}=${string}]` | (`[data-${string}]` & ~NonNullish) | `[data-${string}=${string}]`;
 
 // @internal (undocumented)
 export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T> | null;

@@ -463,14 +463,17 @@ describe('type SimpleSelector', () => {
     assertType<SimpleSelector>('[value]')
     assertType<SimpleSelector>('[value="foo"]')
     assertType<SimpleSelector>("[value='foo']")
+    assertType<SimpleSelector>('[value=foo]')
 
     assertType<SimpleSelector>('[aria-foo]')
     assertType<SimpleSelector>('[aria-foo="bar"]')
     assertType<SimpleSelector>("[aria-foo='bar']")
+    assertType<SimpleSelector>('[aria-foo=bar]')
 
     assertType<SimpleSelector>('[data-foo]')
     assertType<SimpleSelector>('[data-foo="bar"]')
     assertType<SimpleSelector>("[data-foo='bar']")
+    assertType<SimpleSelector>('[data-foo=bar]')
   })
 })
 
