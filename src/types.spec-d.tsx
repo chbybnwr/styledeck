@@ -458,6 +458,22 @@ describe('type StyleDeck', () => {
   })
 })
 
+describe('type SimpleSelector', () => {
+  it('accepts valid selector', () => {
+    assertType<SimpleSelector>('[value]')
+    assertType<SimpleSelector>('[value="foo"]')
+    assertType<SimpleSelector>("[value='foo']")
+
+    assertType<SimpleSelector>('[aria-foo]')
+    assertType<SimpleSelector>('[aria-foo="bar"]')
+    assertType<SimpleSelector>("[aria-foo='bar']")
+
+    assertType<SimpleSelector>('[data-foo]')
+    assertType<SimpleSelector>('[data-foo="bar"]')
+    assertType<SimpleSelector>("[data-foo='bar']")
+  })
+})
+
 import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
@@ -469,6 +485,7 @@ import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
 import { selector } from './selector.ts'
+import type { SimpleSelector } from './types.ts'
 import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
 //

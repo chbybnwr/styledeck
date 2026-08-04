@@ -207,6 +207,32 @@ describe('type StyleDeck', () => {
   })
 })
 
+describe('type SimpleSelector', () => {
+  it('rejects invalid selector', () => {
+    // @ts-expect-error
+    assertType<SimpleSelector>(':focus:active')
+    // @ts-expect-error
+    assertType<SimpleSelector>('foo')
+    // @ts-expect-error
+    assertType<SimpleSelector>('[aria=""]')
+    // @ts-expect-error
+    assertType<SimpleSelector>("[aria='']")
+    // @ts-expect-error
+    assertType<SimpleSelector>('[data=""]')
+    // @ts-expect-error
+    assertType<SimpleSelector>("[data='']")
+    // @ts-expect-error
+    assertType<SimpleSelector>('[aria]')
+    // @ts-expect-error
+    assertType<SimpleSelector>('[data]')
+  })
+
+  it('rejects compound selector', () => {
+    // @ts-expect-error
+    assertType<SimpleSelector>(':focus:active')
+  })
+})
+
 import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
 import { defaultMarker } from '@stylexjs/stylex'
@@ -215,5 +241,6 @@ import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
 import { selector } from './selector.ts'
+import type { SimpleSelector } from './types.ts'
 import type { StyleDeck } from './types.ts'
 //

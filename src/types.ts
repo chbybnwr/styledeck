@@ -1,5 +1,7 @@
 export type { StyleDeck }
 
+export type { AriaAttributes }
+export type { AttributeSelector }
 export type { Attrs }
 export type { CommonProperties }
 export type { CompiledProperties }
@@ -10,17 +12,18 @@ export type { CSSPropertiesWithExtras }
 export type { CustomProperties }
 export type { LegacyPseudoElementKey }
 export type { NonApplicableStringProperties }
+export type { NonNullish }
 export type { ParameterizedPseudoClassKey }
 export type { ParameterizedPseudoElementKey }
 export type { PseudoClassKey }
 export type { PseudoElementKey }
 export type { PseudoElementStyleConfig }
 export type { ResolvableValue }
+export type { SimpleSelector }
 export type { SourceValue }
 export type { StyleCard }
 export type { StyleConfig }
 export type { StyleProperties }
-export type { SimpleSelector }
 
 /**
  * @public
@@ -65,12 +68,12 @@ type StyleProperties = CommonProperties | CustomProperties | CompiledProperties
 /**
  * @internal
  */
-type CustomProperties = Record<`--${string}`, Record<never, never>>
+type CustomProperties = Record<`--${string}`, NonNullish>
 
 /**
  * @internal
  */
-type CompiledProperties = Record<CompiledVar<unknown>, Record<never, never>>
+type CompiledProperties = Record<CompiledVar<unknown>, NonNullish>
 
 /**
  * @internal
@@ -115,9 +118,27 @@ type ContextualKey = SimpleSelector | AtRules | `${AtRules} ${string}`
 type SimpleSelector =
   | PseudoClassKey
   | `${ParameterizedPseudoClassKey}(${string})`
-  | `[${Attrs | 'aria'}]`
-  | `[${Exclude<Attrs, 'data'>}=${string}]`
-  | `[${'data' | 'aria'}-${string}]`
+  | `[${AttributeSelector}]`
+  | `[${AttributeSelector}="${string}"]`
+  | `[${AttributeSelector}='${string}']`
+  | (`[aria-${string}]` & NonNullish)
+  | `[aria-${string}="${string}"]`
+  | `[aria-${string}='${string}']`
+  | (`[data-${string}]` & NonNullish)
+  | `[data-${string}="${string}"]`
+  | `[data-${string}='${string}']`
+
+/**
+ * @internal
+ */
+type AttributeSelector = Exclude<Attrs, 'data'> | 'data-' | keyof AriaAttributes
+
+/**
+ * @internal
+ */
+interface AriaAttributes {
+  'aria-': never
+}
 
 /**
  * @internal
@@ -204,6 +225,11 @@ type CSSPropertiesWithExtras =
   StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>>
     ? U
     : never
+
+/**
+ * @internal
+ */
+type NonNullish = Record<never, never>
 
 /**
  * @internal

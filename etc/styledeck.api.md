@@ -48,13 +48,22 @@ export type ~AncestrySelector = ~Selector & {
 };
 
 // @internal (undocumented)
+export interface ~AriaAttributes {
+    // (undocumented)
+    'aria-': never;
+}
+
+// @internal (undocumented)
+export type ~AttributeSelector = Exclude<~Attrs, 'data'> | 'data-' | keyof ~AriaAttributes;
+
+// @internal (undocumented)
 export type ~Attrs = HtmlAttributes extends `[${infer U}]` ? U : never;
 
 // @internal (undocumented)
 export type ~CommonProperties = Properties & Omit<~CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
 
 // @internal (undocumented)
-export type ~CompiledProperties = Record<StyleXVar<unknown>, Record<never, never>>;
+export type ~CompiledProperties = Record<StyleXVar<unknown>, ~NonNullish>;
 
 // @internal (undocumented)
 export interface ~CompiledValue<K, V> {
@@ -85,7 +94,7 @@ export type ~CreateAncestrySelector = (marker: ReturnType<typeof defaultMarker> 
 export type ~CSSPropertiesWithExtras = StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>> ? U : never;
 
 // @internal (undocumented)
-export type ~CustomProperties = Record<`--${string}`, Record<never, never>>;
+export type ~CustomProperties = Record<`--${string}`, ~NonNullish>;
 
 // @internal (undocumented)
 export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
@@ -173,6 +182,9 @@ export interface ~NonApplicableStringProperties {
 }
 
 // @internal (undocumented)
+export type ~NonNullish = Record<never, never>;
+
+// @internal (undocumented)
 export type ~ParameterizedPseudoClassKey = ':active-view-transition-type' | ':dir' | ':has' | ':heading' | ':host-context' | ':host' | ':is' | ':lang' | ':not' | ':nth-child' | ':nth-last-child' | ':nth-last-of-type' | ':nth-of-type' | ':state' | ':where';
 
 // @internal (undocumented)
@@ -185,7 +197,7 @@ export type ~PseudoClassKey = Exclude<Pseudos, ~PseudoElementKey | ~LegacyPseudo
 export type ~PseudoElementKey = Extract<Pseudos, `::${string}`> | Extract<keyof ~CSSPropertiesWithExtras, `::${string}`>;
 
 // @internal (undocumented)
-export type ~PseudoElementStyleConfig = Record<Exclude<~PseudoElementKey, Exclude<~ParameterizedPseudoElementKey, '::cue'>> | `${~ParameterizedPseudoElementKey}(${string})`, ~StyleProperties>;
+export type ~PseudoElementStyleConfig = Record<Exclude<~PseudoElementKey, ~ParameterizedPseudoElementKey> | `${~ParameterizedPseudoElementKey}(${string})` | '::cue', ~StyleProperties>;
 
 // @internal (undocumented)
 export type ~ResolvableValue<T> = T | readonly T[] | (() => T);
@@ -199,7 +211,7 @@ export type ~Selector = symbol & {
 };
 
 // @internal (undocumented)
-export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~Attrs | 'aria'}]` | `[${Exclude<~Attrs, 'data'>}=${string}]` | `[${'data' | 'aria'}-${string}]`;
+export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~AttributeSelector}]` | `[${~AttributeSelector}="${string}"]` | `[${~AttributeSelector}='${string}']` | (`[aria-${string}]` & ~NonNullish) | `[aria-${string}="${string}"]` | `[aria-${string}='${string}']` | (`[data-${string}]` & ~NonNullish) | `[data-${string}="${string}"]` | `[data-${string}='${string}']`;
 
 // @internal (undocumented)
 export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T> | null;
