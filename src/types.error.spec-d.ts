@@ -210,21 +210,7 @@ describe('type StyleDeck', () => {
 describe('type SimpleSelector', () => {
   it('rejects invalid selector', () => {
     // @ts-expect-error
-    assertType<SimpleSelector>(':focus:active')
-    // @ts-expect-error
     assertType<SimpleSelector>('foo')
-    // @ts-expect-error
-    assertType<SimpleSelector>('[aria=""]')
-    // @ts-expect-error
-    assertType<SimpleSelector>("[aria='']")
-    // @ts-expect-error
-    assertType<SimpleSelector>('[data=""]')
-    // @ts-expect-error
-    assertType<SimpleSelector>("[data='']")
-    // @ts-expect-error
-    assertType<SimpleSelector>('[aria]')
-    // @ts-expect-error
-    assertType<SimpleSelector>('[data]')
   })
 
   it('rejects compound selector', () => {

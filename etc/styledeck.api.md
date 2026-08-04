@@ -21,6 +21,14 @@ export const ancestor: ~CreateAncestrySelector;
 // @public (undocumented)
 export const anySibling: ~CreateAncestrySelector;
 
+// @internal (undocumented)
+export interface AriaAttributes {
+}
+
+// @internal (undocumented)
+export interface DataAttributes {
+}
+
 // @public (undocumented)
 export const defineStyleDeck: <const T extends StyleDeck>(styleDeck: T) => T;
 
@@ -48,13 +56,7 @@ export type ~AncestrySelector = ~Selector & {
 };
 
 // @internal (undocumented)
-export interface ~AriaAttributes {
-    // (undocumented)
-    'aria-': never;
-}
-
-// @internal (undocumented)
-export type ~AttributeSelector = Exclude<~Attrs, 'data'> | 'data-' | keyof ~AriaAttributes;
+export type ~AttributeSelector = Exclude<~Attrs, 'data'> | keyof AriaAttributes | keyof DataAttributes;
 
 // @internal (undocumented)
 export type ~Attrs = HtmlAttributes extends `[${infer U}]` ? U : never;
@@ -211,7 +213,7 @@ export type ~Selector = symbol & {
 };
 
 // @internal (undocumented)
-export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~AttributeSelector}]` | `[${~AttributeSelector}=${string}]` | (`[aria-${string}]` & ~NonNullish) | `[aria-${string}=${string}]` | (`[data-${string}]` & ~NonNullish) | `[data-${string}=${string}]`;
+export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~AttributeSelector}]` | `[${~AttributeSelector}=${string}]`;
 
 // @internal (undocumented)
 export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T> | null;

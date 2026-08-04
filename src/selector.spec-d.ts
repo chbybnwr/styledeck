@@ -14,22 +14,6 @@ describe('typeof selector', () => {
   it('accepts attribute selector with value', () => {
     assertType<Selector>(selector('[id="item-1"]'))
   })
-
-  it('accepts data attribute selector', () => {
-    assertType<Selector>(selector('[data-foo]'))
-  })
-
-  it('accepts data attribute selector with value', () => {
-    assertType<Selector>(selector('[data-foo="bar"]'))
-  })
-
-  it('accepts aria attribute selector', () => {
-    assertType<Selector>(selector('[aria-foo]'))
-  })
-
-  it('accepts aria attribute selector with value', () => {
-    assertType<Selector>(selector('[aria-foo="bar"]'))
-  })
 })
 
 describe('typeof ancestor', () => {

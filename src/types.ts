@@ -10,6 +10,7 @@ export type { ContextualKey }
 export type { ContextualValue }
 export type { CSSPropertiesWithExtras }
 export type { CustomProperties }
+export type { DataAttributes }
 export type { LegacyPseudoElementKey }
 export type { NonApplicableStringProperties }
 export type { NonNullish }
@@ -120,22 +121,31 @@ type SimpleSelector =
   | `${ParameterizedPseudoClassKey}(${string})`
   | `[${AttributeSelector}]`
   | `[${AttributeSelector}=${string}]`
-  | (`[aria-${string}]` & NonNullish)
-  | `[aria-${string}=${string}]`
-  | (`[data-${string}]` & NonNullish)
-  | `[data-${string}=${string}]`
 
 /**
  * @internal
  */
-type AttributeSelector = Exclude<Attrs, 'data'> | 'data-' | keyof AriaAttributes
+type AttributeSelector =
+  | Exclude<Attrs, 'data'>
+  // oxlint-disable typescript/no-duplicate-type-constituents typescript/no-redundant-type-constituents
+  | keyof AriaAttributes
+  | keyof DataAttributes
+
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+// oxlint-disable typescript/no-empty-interface, typescript/consistent-indexed-object-style
 
 /**
  * @internal
  */
-interface AriaAttributes {
-  'aria-': never
-}
+interface AriaAttributes {}
+
+/**
+ * @internal
+ */
+interface DataAttributes {}
+
+/* eslint-enable @typescript-eslint/no-empty-object-type */
+// oxlint-enable typescript/no-empty-interface, typescript/consistent-indexed-object-style
 
 /**
  * @internal

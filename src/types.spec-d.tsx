@@ -265,10 +265,6 @@ describe('type StyleDeck', () => {
         default: null,
         '[disabled]': 'red',
         '[value="foo"]': 'red',
-        '[data-disabled]': 'red',
-        '[data-value="foo"]': 'red',
-        '[aria-disabled]': 'red',
-        '[aria-value="foo"]': 'red',
       },
     })
   })
@@ -279,10 +275,6 @@ describe('type StyleDeck', () => {
         default: null,
         [selector('[disabled]', ':invalid')]: 'red',
         [selector('[value="foo"]', ':invalid')]: 'red',
-        [selector('[data-disabled]', ':invalid')]: 'red',
-        [selector('[data-value="foo"]', ':invalid')]: 'red',
-        [selector('[aria-disabled]', ':invalid')]: 'red',
-        [selector('[aria-value="foo"]', ':invalid')]: 'red',
         [selector(':dir(rtl)', ':invalid')]: 'red',
       },
     })
@@ -464,16 +456,6 @@ describe('type SimpleSelector', () => {
     assertType<SimpleSelector>('[value="foo"]')
     assertType<SimpleSelector>("[value='foo']")
     assertType<SimpleSelector>('[value=foo]')
-
-    assertType<SimpleSelector>('[aria-foo]')
-    assertType<SimpleSelector>('[aria-foo="bar"]')
-    assertType<SimpleSelector>("[aria-foo='bar']")
-    assertType<SimpleSelector>('[aria-foo=bar]')
-
-    assertType<SimpleSelector>('[data-foo]')
-    assertType<SimpleSelector>('[data-foo="bar"]')
-    assertType<SimpleSelector>("[data-foo='bar']")
-    assertType<SimpleSelector>('[data-foo=bar]')
   })
 })
 

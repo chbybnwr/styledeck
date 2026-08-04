@@ -1,5 +1,7 @@
 export { defineStyleDeck } from './styledeck'
 export type { StyleDeck } from './types'
+export type { AriaAttributes } from './types'
+export type { DataAttributes } from './types'
 
 export { selector } from './selector'
 export { ancestor } from './selector'
@@ -10,7 +12,6 @@ export { siblingBefore } from './selector'
 
 export type { ANCESTRY_SELECTOR as '~ANCESTRY_SELECTOR' } from './selector'
 export type { AncestrySelector as '~AncestrySelector' } from './selector'
-export type { AriaAttributes as '~AriaAttributes' } from './types'
 export type { AttributeSelector as '~AttributeSelector' } from './types'
 export type { Attrs as '~Attrs' } from './types'
 export type { CommonProperties as '~CommonProperties' } from './types'
