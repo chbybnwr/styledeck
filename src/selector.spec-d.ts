@@ -1,61 +1,59 @@
 describe('typeof selector', () => {
   it('returns selector', () => {
-    assertType<Selector>(selector(':focus'))
+    assertType<Hook>(selector(':focus', ':active'))
   })
 
   it('accepts ancestry selector', () => {
-    assertType<Selector>(selector(ancestor(defaultMarker()), ':focus'))
+    assertType<Hook>(ancestor(defaultMarker(), ':focus'))
   })
 
   it('accepts attribute selector', () => {
-    assertType<Selector>(selector('[disabled]'))
+    assertType<Hook>(selector('[disabled]', ':focus'))
   })
 
   it('accepts attribute selector with value', () => {
-    assertType<Selector>(selector('[id="item-1"]'))
+    assertType<Hook>(selector('[id="item-1"]', ':focus'))
   })
 })
 
 describe('typeof ancestor', () => {
   it('creates ancestry selector', () => {
-    assertType<CreateAncestrySelector>(ancestor)
+    assertType<CreateAncestryHook>(ancestor)
   })
 })
 
 describe('typeof descendant', () => {
   it('creates ancestry selector', () => {
-    assertType<CreateAncestrySelector>(descendant)
+    assertType<CreateAncestryHook>(descendant)
   })
 })
 
 describe('typeof anySibling', () => {
   it('creates ancestry selector', () => {
-    assertType<CreateAncestrySelector>(anySibling)
+    assertType<CreateAncestryHook>(anySibling)
   })
 })
 
 describe('typeof siblingBefore', () => {
   it('creates ancestry selector', () => {
-    assertType<CreateAncestrySelector>(siblingBefore)
+    assertType<CreateAncestryHook>(siblingBefore)
   })
 })
 
 describe('typeof siblingAfter', () => {
   it('creates ancestry selector', () => {
-    assertType<CreateAncestrySelector>(siblingAfter)
+    assertType<CreateAncestryHook>(siblingAfter)
   })
 })
 
-describe('typeof CreateAncestrySelector', () => {
-  it('returns ancestry selector', () => {
-    expectTypeOf<
-      ReturnType<CreateAncestrySelector>
-    >().toEqualTypeOf<AncestrySelector>()
+describe('typeof CreateAncestryHook', () => {
+  it('returns selector', () => {
+    expectTypeOf<ReturnType<CreateAncestryHook>>().toEqualTypeOf<Hook>()
   })
 
   it('accepts marker', () => {
-    expectTypeOf<Parameters<CreateAncestrySelector>>().toEqualTypeOf<
-      [ReturnType<typeof defaultMarker> | ReturnType<typeof defineMarker>]
+    expectTypeOf<Parameters<CreateAncestryHook>[0]>().toEqualTypeOf<
+      ReturnType<typeof defaultMarker> | ReturnType<typeof defineMarker>
     >()
   })
 })
@@ -63,18 +61,17 @@ describe('typeof CreateAncestrySelector', () => {
 void 0
 
 import { ancestor } from './selector'
-import type { AncestrySelector } from './selector'
 import { anySibling } from './selector'
 import { assertType } from 'vitest'
-import type { CreateAncestrySelector } from './selector'
+import type { CreateAncestryHook } from './selector'
 import { defaultMarker } from '@stylexjs/stylex'
 import type { defineMarker } from '@stylexjs/stylex'
 import { descendant } from './selector'
 import { describe } from 'vitest'
 import { expectTypeOf } from 'vitest'
+import type { Hook } from './selector'
 import { it } from 'vitest'
 import { selector } from './selector'
-import type { Selector } from './selector'
 import { siblingAfter } from './selector'
 import { siblingBefore } from './selector'
 //

@@ -75,7 +75,7 @@ describe('type StyleDeck', () => {
         cornerShape: null,
         color: {
           default: 'red',
-          [selector(ancestor(defaultMarker()), ':focus')]: null,
+          [selector(':focus', ':active')]: null,
         },
       })
     }).toThrow(expect.any(Error))
@@ -210,23 +210,21 @@ describe('type StyleDeck', () => {
 describe('type SimpleSelector', () => {
   it('rejects invalid selector', () => {
     // @ts-expect-error
-    assertType<SimpleSelector>('foo')
+    assertType<Selector>('foo')
   })
 
   it('rejects compound selector', () => {
     // @ts-expect-error
-    assertType<SimpleSelector>(':focus:active')
+    assertType<Selector>(':focus:active')
   })
 })
 
-import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
-import { defaultMarker } from '@stylexjs/stylex'
 import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
 import { selector } from './selector.ts'
-import type { SimpleSelector } from './types.ts'
+import type { Selector } from './types.ts'
 import type { StyleDeck } from './types.ts'
 //

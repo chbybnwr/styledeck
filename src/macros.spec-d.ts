@@ -299,7 +299,16 @@ describe('typeof apply', () => {
       apply({
         color: {
           default: null,
-          [selector(ancestor(defaultMarker()), ':hover')]: 'red',
+          [selector(':focus', ':active')]: 'red',
+        },
+      }),
+    )
+
+    assertType<StylingAttrs>(
+      apply({
+        color: {
+          default: null,
+          [ancestor(defaultMarker(), ':focus')]: 'red',
         },
       }),
     )

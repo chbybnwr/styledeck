@@ -110,7 +110,7 @@ describe('typeof defineStyleDeck', () => {
         defineStyleDeck({
           color: {
             default: 'red',
-            [selector(ancestor(defaultMarker()), ':focus')]: null,
+            [selector(':focus', ':active')]: null,
           },
           // @ts-expect-error
         } satisfies StyleDeck),
@@ -250,9 +250,7 @@ describe('typeof defineStyleDeck', () => {
   })
 })
 
-import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
-import { defaultMarker } from '@stylexjs/stylex'
 import { defineStyleDeck } from './styledeck.ts'
 import { describe } from 'vitest'
 import { expect } from 'vitest'

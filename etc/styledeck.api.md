@@ -16,16 +16,16 @@ import type { StyleXStyles } from '@stylexjs/stylex';
 import type { StyleXVar } from '@stylexjs/stylex';
 
 // @public (undocumented)
-export const ancestor: ~CreateAncestrySelector;
+export const ancestor: ~CreateAncestryHook;
 
 // @public (undocumented)
-export const anySibling: ~CreateAncestrySelector;
+export const anySibling: ~CreateAncestryHook;
 
-// @internal (undocumented)
+// @public (undocumented)
 export interface AriaAttributes {
 }
 
-// @internal (undocumented)
+// @public (undocumented)
 export interface DataAttributes {
 }
 
@@ -33,42 +33,42 @@ export interface DataAttributes {
 export const defineStyleDeck: <const T extends StyleDeck>(styleDeck: T) => T;
 
 // @public (undocumented)
-export const descendant: ~CreateAncestrySelector;
+export const descendant: ~CreateAncestryHook;
 
 // @public (undocumented)
-export const selector: (selector: ~SimpleSelector | ~AncestrySelector, ...selectors: ~SimpleSelector[]) => ~Selector;
+export const selector: (selector: ~Selector, ...selectors: ~Selector[]) => ~Hook;
 
 // @public (undocumented)
-export const siblingAfter: ~CreateAncestrySelector;
+export const siblingAfter: ~CreateAncestryHook;
 
 // @public (undocumented)
-export const siblingBefore: ~CreateAncestrySelector;
+export const siblingBefore: ~CreateAncestryHook;
 
 // @public (undocumented)
 export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | undefined)[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | false;
 
 // @internal (undocumented)
-export const ~ANCESTRY_SELECTOR: unique symbol;
+export type ~Attribute = Exclude<~CommonAttribute, 'data'> | keyof AriaAttributes | keyof DataAttributes;
 
 // @internal (undocumented)
-export type ~AncestrySelector = ~Selector & {
-    readonly [~ANCESTRY_SELECTOR]: never;
-};
+export type ~CommonAttribute = HtmlAttributes extends `[${infer U}]` ? U : never;
+
+// Warning: (ae-forgotten-export) The symbol "ExtraProperties" needs to be exported by the entry point index.d.ts
+//
+// @internal (undocumented)
+export type ~CommonProperties = Properties & ExtraProperties;
 
 // @internal (undocumented)
-export type ~AttributeSelector = Exclude<~Attrs, 'data'> | keyof AriaAttributes | keyof DataAttributes;
+export type ~CompiledProperties = Record<StyleXVar<unknown>, NonNullable<unknown>>;
 
 // @internal (undocumented)
-export type ~Attrs = HtmlAttributes extends `[${infer U}]` ? U : never;
+export type ~CreateAncestryHook = (marker: ReturnType<typeof defaultMarker> | ReturnType<typeof defineMarker>, ...selectors: ~Selector[]) => ~Hook;
 
 // @internal (undocumented)
-export type ~CommonProperties = Properties & Omit<~CSSPropertiesWithExtras, keyof Properties | `::${string}`>;
+export type ~CustomProperties = Record<`--${string}`, NonNullable<unknown>>;
 
 // @internal (undocumented)
-export type ~CompiledProperties = Record<StyleXVar<unknown>, ~NonNullish>;
-
-// @internal (undocumented)
-export interface ~CompiledValue<K, V> {
+export interface ~Hashed<K, V> {
     // @deprecated (undocumented)
     _key: StyleXClassNameFor<K, V>['_key'];
     // @deprecated (undocumented)
@@ -78,28 +78,19 @@ export interface ~CompiledValue<K, V> {
 }
 
 // @internal (undocumented)
-export type ~ContextualKey = ~SimpleSelector | AtRules | `${AtRules} ${string}`;
+export const ~HOOK: unique symbol;
 
 // @internal (undocumented)
-export type ~ContextualValue<T> = ({
-    default: ~ResolvableValue<T> | null;
-} & ({
-    [Key in ~ContextualKey]?: ~ResolvableValue<T> | ~ContextualValue<T>;
+export type ~Hook = symbol & {
+    readonly [~HOOK]: never;
+};
+
+// @internal (undocumented)
+export type ~Hooked<T> = ({
+    default: ~Source<T> | null;
 } & {
-    [Key in ~Selector]?: ~ResolvableValue<T> | ~ContextualValue<T>;
-})) | (string extends T ? ~NonApplicableStringProperties : never);
-
-// @internal (undocumented)
-export type ~CreateAncestrySelector = (marker: ReturnType<typeof defaultMarker> | ReturnType<typeof defineMarker>) => ~AncestrySelector;
-
-// @internal (undocumented)
-export type ~CSSPropertiesWithExtras = StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>> ? U : never;
-
-// @internal (undocumented)
-export type ~CustomProperties = Record<`--${string}`, ~NonNullish>;
-
-// @internal (undocumented)
-export type ~LegacyPseudoElementKey = ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder';
+    [Key in ~Selector | AtRules | `${AtRules} ${string}` | ~Hook]?: ~Source<T> | ~Hooked<T>;
+}) | (string extends T ? ~NonApplicableStringProperties : never);
 
 // @internal (undocumented)
 export function ~mergeAttrs(originalAttrs: Record<string, unknown>, compiledAttrs: Record<string, unknown>, classKey?: string): Record<string, unknown>;
@@ -184,43 +175,32 @@ export interface ~NonApplicableStringProperties {
 }
 
 // @internal (undocumented)
-export type ~NonNullish = Record<never, never>;
+export type ~ParameterizedPseudoClass = ':active-view-transition-type' | ':dir' | ':has' | ':heading' | ':host-context' | ':host' | ':is' | ':lang' | ':not' | ':nth-child' | ':nth-last-child' | ':nth-last-of-type' | ':nth-of-type' | ':state' | ':where';
 
 // @internal (undocumented)
-export type ~ParameterizedPseudoClassKey = ':active-view-transition-type' | ':dir' | ':has' | ':heading' | ':host-context' | ':host' | ':is' | ':lang' | ':not' | ':nth-child' | ':nth-last-child' | ':nth-last-of-type' | ':nth-of-type' | ':state' | ':where';
+export type ~ParameterizedPseudoElement = '::cue' | '::highlight' | '::part' | '::picker' | '::scroll-button' | '::slotted' | '::view-transition-group' | '::view-transition-image-pair' | '::view-transition-new' | '::view-transition-old';
 
 // @internal (undocumented)
-export type ~ParameterizedPseudoElementKey = '::cue' | '::highlight' | '::part' | '::picker' | '::scroll-button' | '::slotted' | '::view-transition-group' | '::view-transition-image-pair' | '::view-transition-new' | '::view-transition-old';
+export type ~PropertiesWithExtras = StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>> ? U : never;
 
 // @internal (undocumented)
-export type ~PseudoClassKey = Exclude<Pseudos, ~PseudoElementKey | ~LegacyPseudoElementKey>;
+export type ~PseudoClass = Exclude<Pseudos, ~PseudoElement | ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder'>;
 
 // @internal (undocumented)
-export type ~PseudoElementKey = Extract<Pseudos, `::${string}`> | Extract<keyof ~CSSPropertiesWithExtras, `::${string}`>;
+export type ~PseudoElement = Extract<Pseudos, `::${string}`> | Extract<keyof ~PropertiesWithExtras, `::${string}`>;
 
 // @internal (undocumented)
-export type ~PseudoElementStyleConfig = Record<Exclude<~PseudoElementKey, ~ParameterizedPseudoElementKey> | `${~ParameterizedPseudoElementKey}(${string})` | '::cue', ~StyleProperties>;
+export type ~PseudoElementStyleConfig = Record<Exclude<~PseudoElement, ~ParameterizedPseudoElement> | `${~ParameterizedPseudoElement}(${string})` | '::cue', ~StyleProperties>;
 
 // @internal (undocumented)
-export type ~ResolvableValue<T> = T | readonly T[] | (() => T);
+export type ~Selector = ~PseudoClass | `${~ParameterizedPseudoClass}(${string})` | `[${~Attribute}]` | `[${~Attribute}=${string}]`;
 
 // @internal (undocumented)
-export const ~SELECTOR: unique symbol;
-
-// @internal (undocumented)
-export type ~Selector = symbol & {
-    readonly [~SELECTOR]: never;
-};
-
-// @internal (undocumented)
-export type ~SimpleSelector = ~PseudoClassKey | `${~ParameterizedPseudoClassKey}(${string})` | `[${~AttributeSelector}]` | `[${~AttributeSelector}=${string}]`;
-
-// @internal (undocumented)
-export type ~SourceValue<T> = false | ~ResolvableValue<T> | ~ContextualValue<T> | null;
+export type ~Source<T> = T | readonly T[] | (() => T);
 
 // @internal (undocumented)
 export type ~StyleCard<T extends ~StyleConfig> = {
-    readonly [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : ~SourceValue<Exclude<T[TKey], null | undefined>> | ~CompiledValue<TKey, Exclude<T[TKey], null | undefined>>;
+    readonly [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : null | false | ~Source<T[TKey]> | ~Hooked<Exclude<T[TKey], null | undefined>> | ~Hashed<TKey, T[TKey]>;
 };
 
 // @internal (undocumented)

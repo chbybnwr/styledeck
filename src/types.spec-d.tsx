@@ -311,7 +311,7 @@ describe('type StyleDeck', () => {
     assertType<StyleDeck>({
       color: {
         default: null,
-        [selector(ancestor(defaultMarker()), ':focus')]: 'red',
+        [selector(':focus', ':active')]: 'red',
       },
     })
   })
@@ -452,14 +452,13 @@ describe('type StyleDeck', () => {
 
 describe('type SimpleSelector', () => {
   it('accepts valid selector', () => {
-    assertType<SimpleSelector>('[value]')
-    assertType<SimpleSelector>('[value="foo"]')
-    assertType<SimpleSelector>("[value='foo']")
-    assertType<SimpleSelector>('[value=foo]')
+    assertType<Selector>('[value]')
+    assertType<Selector>('[value="foo"]')
+    assertType<Selector>("[value='foo']")
+    assertType<Selector>('[value=foo]')
   })
 })
 
-import { ancestor } from './selector.ts'
 import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
 import { createTheme } from '@stylexjs/stylex'
@@ -470,7 +469,7 @@ import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
 import { selector } from './selector.ts'
-import type { SimpleSelector } from './types.ts'
+import type { Selector } from './types.ts'
 import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
 //

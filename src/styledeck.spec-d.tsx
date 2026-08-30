@@ -336,12 +336,12 @@ describe('typeof defineStyleDeck', () => {
     assertType<StyleDeck>(defineStyleDeck([theme] satisfies StyleDeck))
   })
 
-  it('can use selector', () => {
+  it('can use compound selector', () => {
     assertType<StyleDeck>(
       defineStyleDeck({
         color: {
           default: null,
-          [selector(ancestor(defaultMarker()), ':hover')]: 'red',
+          [selector(':focus', ':active')]: 'red',
         },
       } satisfies StyleDeck),
     )
@@ -350,8 +350,7 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         color: {
           default: null,
-          [selector(ancestor(defaultMarker()), ':hover')]: 'red',
-          [selector(descendant(defaultMarker()), ':focus')]: 'blue',
+          [(ancestor(defaultMarker()), ':focus')]: 'red',
         },
       } satisfies StyleDeck),
     )
@@ -422,6 +421,7 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         color: {
           default: null,
+          ':focus': 'red',
           '@container (width > 1440px)': {
             default: 'green',
             ':focus': 'blue',
@@ -517,7 +517,6 @@ import { createTheme } from '@stylexjs/stylex'
 import { defaultMarker } from '@stylexjs/stylex'
 import { defineStyleDeck } from './styledeck.ts'
 import { defineVars } from '@stylexjs/stylex'
-import { descendant } from './selector.ts'
 import { describe } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'

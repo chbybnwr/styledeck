@@ -5,77 +5,62 @@ export { descendant }
 export { siblingAfter }
 export { siblingBefore }
 
-export type { ANCESTRY_SELECTOR }
-export type { AncestrySelector }
-export type { CreateAncestrySelector }
-export type { Selector }
-export type { SELECTOR }
+export type { CreateAncestryHook }
+export type { Hook }
+export type { HOOK }
 
 /**
  * @public
  */
-const selector: (
-  selector: SimpleSelector | AncestrySelector,
-  ...selectors: SimpleSelector[]
-) => Selector = macro
+const selector: (selector: Selector, ...selectors: Selector[]) => Hook = macro
 
 /**
  * @public
  */
-const ancestor: CreateAncestrySelector = macro
+const ancestor: CreateAncestryHook = macro
 
 /**
  * @public
  */
-const anySibling: CreateAncestrySelector = macro
+const anySibling: CreateAncestryHook = macro
 
 /**
  * @public
  */
-const descendant: CreateAncestrySelector = macro
+const descendant: CreateAncestryHook = macro
 
 /**
  * @public
  */
-const siblingAfter: CreateAncestrySelector = macro
+const siblingAfter: CreateAncestryHook = macro
 
 /**
  * @public
  */
-const siblingBefore: CreateAncestrySelector = macro
+const siblingBefore: CreateAncestryHook = macro
 
 /**
  * @internal
  */
-type CreateAncestrySelector = (
+type CreateAncestryHook = (
   marker: ReturnType<typeof defaultMarker> | ReturnType<typeof defineMarker>,
-) => AncestrySelector
+  ...selectors: Selector[]
+) => Hook
 
 /**
  * @internal
  */
-type AncestrySelector = Selector & {
-  readonly [ANCESTRY_SELECTOR]: never
+type Hook = symbol & {
+  readonly [HOOK]: never
 }
 
 /**
  * @internal
  */
-declare const ANCESTRY_SELECTOR: unique symbol
-
-/**
- * @internal
- */
-type Selector = symbol & {
-  readonly [SELECTOR]: never
-}
-
-/**
- * @internal
- */
-declare const SELECTOR: unique symbol
+declare const HOOK: unique symbol
 
 import type { defaultMarker } from '@stylexjs/stylex'
 import type { defineMarker } from '@stylexjs/stylex'
 import { macro } from './macros'
-import type { SimpleSelector } from './types'
+import type { Selector } from './types'
+//

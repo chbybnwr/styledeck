@@ -1,29 +1,24 @@
-export type { StyleDeck }
-
 export type { AriaAttributes }
-export type { AttributeSelector }
-export type { Attrs }
+export type { Attribute }
+export type { CommonAttribute }
 export type { CommonProperties }
 export type { CompiledProperties }
-export type { CompiledValue }
-export type { ContextualKey }
-export type { ContextualValue }
-export type { CSSPropertiesWithExtras }
+export type { Hashed }
+export type { Hooked }
+export type { PropertiesWithExtras }
 export type { CustomProperties }
 export type { DataAttributes }
-export type { LegacyPseudoElementKey }
 export type { NonApplicableStringProperties }
-export type { NonNullish }
-export type { ParameterizedPseudoClassKey }
-export type { ParameterizedPseudoElementKey }
-export type { PseudoClassKey }
-export type { PseudoElementKey }
+export type { ParameterizedPseudoClass }
+export type { ParameterizedPseudoElement }
+export type { PseudoClass }
+export type { PseudoElement }
 export type { PseudoElementStyleConfig }
-export type { ResolvableValue }
-export type { SimpleSelector }
-export type { SourceValue }
+export type { Source }
+export type { Selector }
 export type { StyleCard }
 export type { StyleConfig }
+export type { StyleDeck }
 export type { StyleProperties }
 
 /**
@@ -41,8 +36,11 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
 type StyleCard<T extends StyleConfig> = {
   readonly [TKey in keyof T]: TKey extends keyof PseudoElementStyleConfig
     ? StyleCard<NonNullable<T[TKey]>>
-    : | SourceValue<Exclude<T[TKey], null | undefined>>
-      | CompiledValue<TKey, Exclude<T[TKey], null | undefined>>
+    : | null
+      | false
+      | Source<T[TKey]>
+      | Hooked<Exclude<T[TKey], null | undefined>>
+      | Hashed<TKey, T[TKey]>
 }
 
 /**
@@ -54,8 +52,8 @@ type StyleConfig = StyleProperties | PseudoElementStyleConfig
  * @internal
  */
 type PseudoElementStyleConfig = Record<
-  | Exclude<PseudoElementKey, ParameterizedPseudoElementKey>
-  | `${ParameterizedPseudoElementKey}(${string})`
+  | Exclude<PseudoElement, ParameterizedPseudoElement>
+  | `${ParameterizedPseudoElement}(${string})`
   // ::cue can be used both with and without parameter
   | '::cue',
   StyleProperties
@@ -69,64 +67,59 @@ type StyleProperties = CommonProperties | CustomProperties | CompiledProperties
 /**
  * @internal
  */
-type CustomProperties = Record<`--${string}`, NonNullish>
+type CustomProperties = Record<`--${string}`, NonNullable<unknown>>
 
 /**
  * @internal
  */
-type CompiledProperties = Record<CompiledVar<unknown>, NonNullish>
+type CompiledProperties = Record<CompiledVar<unknown>, NonNullable<unknown>>
 
 /**
  * @internal
  */
-type CommonProperties = Properties &
-  Omit<CSSPropertiesWithExtras, keyof Properties | `::${string}`>
+type CommonProperties = Properties & ExtraProperties
 
 /**
  * @internal
  */
-type SourceValue<T> = false | ResolvableValue<T> | ContextualValue<T> | null
+type ExtraProperties = Omit<
+  PropertiesWithExtras,
+  keyof Properties | `::${string}`
+>
 
 /**
  * @internal
  */
-type ResolvableValue<T> = T | readonly T[] | (() => T)
+type Source<T> = T | readonly T[] | (() => T)
+
+// oxlint-disable typescript/consistent-indexed-object-style
 
 /**
  * @internal
  */
-type ContextualValue<T> =
+type Hooked<T> =
   | ({
-      default: ResolvableValue<T> | null
-      // oxlint-disable-next-line typescript/consistent-indexed-object-style
-    } & ({
-      [Key in ContextualKey]?:
-        ResolvableValue<T> | ContextualValue<T>
-        // oxlint-disable-next-line typescript/consistent-indexed-object-style
+      default: Source<T> | null
     } & {
-      [Key in Selector]?: ResolvableValue<T> | ContextualValue<T>
-    }))
+      [Key in Selector | AtRules | `${AtRules} ${string}` | Hook]?:
+        Source<T> | Hooked<T>
+    })
   | (string extends T ? NonApplicableStringProperties : never)
 
 /**
  * @internal
  */
-type ContextualKey = SimpleSelector | AtRules | `${AtRules} ${string}`
+type Selector =
+  | PseudoClass
+  | `${ParameterizedPseudoClass}(${string})`
+  | `[${Attribute}]`
+  | `[${Attribute}=${string}]`
 
 /**
  * @internal
  */
-type SimpleSelector =
-  | PseudoClassKey
-  | `${ParameterizedPseudoClassKey}(${string})`
-  | `[${AttributeSelector}]`
-  | `[${AttributeSelector}=${string}]`
-
-/**
- * @internal
- */
-type AttributeSelector =
-  | Exclude<Attrs, 'data'>
+type Attribute =
+  | Exclude<CommonAttribute, 'data'>
   // oxlint-disable typescript/no-duplicate-type-constituents typescript/no-redundant-type-constituents
   | keyof AriaAttributes
   | keyof DataAttributes
@@ -135,12 +128,12 @@ type AttributeSelector =
 // oxlint-disable typescript/no-empty-interface, typescript/consistent-indexed-object-style
 
 /**
- * @internal
+ * @public
  */
 interface AriaAttributes {}
 
 /**
- * @internal
+ * @public
  */
 interface DataAttributes {}
 
@@ -150,15 +143,22 @@ interface DataAttributes {}
 /**
  * @internal
  */
-type PseudoClassKey = Exclude<
+type PseudoClass = Exclude<
   Pseudos,
-  PseudoElementKey | LegacyPseudoElementKey
+  | PseudoElement
+  // legacy pseudo elements
+  | ':after'
+  | ':before'
+  | ':first-letter'
+  | ':first-line'
+  | ':-moz-placeholder'
+  | ':-ms-input-placeholder'
 >
 
 /**
  * @internal
  */
-type ParameterizedPseudoClassKey =
+type ParameterizedPseudoClass =
   | ':active-view-transition-type'
   | ':dir'
   | ':has'
@@ -178,14 +178,14 @@ type ParameterizedPseudoClassKey =
 /**
  * @internal
  */
-type PseudoElementKey =
+type PseudoElement =
   | Extract<Pseudos, `::${string}`>
-  | Extract<keyof CSSPropertiesWithExtras, `::${string}`>
+  | Extract<keyof PropertiesWithExtras, `::${string}`>
 
 /**
  * @internal
  */
-type ParameterizedPseudoElementKey =
+type ParameterizedPseudoElement =
   | '::cue'
   | '::highlight'
   | '::part'
@@ -200,43 +200,27 @@ type ParameterizedPseudoElementKey =
 /**
  * @internal
  */
-type Attrs = HtmlAttributes extends `[${infer U}]` ? U : never
+type CommonAttribute = HtmlAttributes extends `[${infer U}]` ? U : never
 
 /**
  * @internal
  */
-type LegacyPseudoElementKey =
-  | ':after'
-  | ':before'
-  | ':first-letter'
-  | ':first-line'
-  | ':-moz-placeholder'
-  | ':-ms-input-placeholder'
-
-/**
- * @internal
- */
-interface CompiledValue<K, V> {
+interface Hashed<K, V> {
   /** @deprecated not applicable */
-  _opaque: ClassNameFor<K, V>['_opaque']
+  _opaque: CompiledClassName<K, V>['_opaque']
   /** @deprecated not applicable */
-  _key: ClassNameFor<K, V>['_key']
+  _key: CompiledClassName<K, V>['_key']
   /** @deprecated not applicable */
-  _value: ClassNameFor<K, V>['_value']
+  _value: CompiledClassName<K, V>['_value']
 }
 
 /**
  * @internal
  */
-type CSSPropertiesWithExtras =
-  StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>>
+type PropertiesWithExtras =
+  CompiledStyles extends CompiledStyles<infer U extends Record<string, unknown>>
     ? U
     : never
-
-/**
- * @internal
- */
-type NonNullish = Record<never, never>
 
 /**
  * @internal
@@ -312,12 +296,12 @@ interface NonApplicableStringProperties {
 }
 
 import type { AtRules } from 'csstype'
-import type { StyleXClassNameFor as ClassNameFor } from '@stylexjs/stylex'
+import type { StyleXClassNameFor as CompiledClassName } from '@stylexjs/stylex'
+import type { StyleXStyles as CompiledStyles } from '@stylexjs/stylex'
 import type { StyleXVar as CompiledVar } from '@stylexjs/stylex'
+import type { Hook } from './selector'
 import type { HtmlAttributes } from 'csstype'
 import type { InlineStyles } from '@stylexjs/stylex'
 import type { Properties } from 'csstype'
 import type { Pseudos } from 'csstype'
-import type { Selector } from './selector'
-import type { StyleXStyles } from '@stylexjs/stylex'
 //
