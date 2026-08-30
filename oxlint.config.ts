@@ -45,6 +45,7 @@ const oxlintConfig: OxlintConfig = {
     'no-use-before-define': 'off',
     'no-eq-null': 'off',
     'no-void': 'off',
+    'one-var': 'off',
 
     'import/exports-last': 'off',
     'import/first': 'off',
