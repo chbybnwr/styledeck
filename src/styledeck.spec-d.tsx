@@ -24,7 +24,6 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         color: 'red',
         textBoxEdge: 'cap ex',
-        cornerShape: 'squircle',
       } satisfies StyleDeck),
     )
   })
@@ -32,7 +31,6 @@ describe('typeof defineStyleDeck', () => {
   it('accepts custom properties', () => {
     assertType<StyleDeck>(
       defineStyleDeck({
-        '--custom': 'lorem',
         [tokens.foo]: 'ipsum',
       } satisfies StyleDeck),
     )
@@ -40,7 +38,6 @@ describe('typeof defineStyleDeck', () => {
     assertType<StyleDeck>(
       defineStyleDeck({
         '::before': {
-          '--custom': 'lorem',
           [tokens.foo]: 'ipsum',
         },
       } satisfies StyleDeck),
@@ -72,8 +69,6 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         color: faker.datatype.boolean() && 'red',
         textBoxEdge: faker.datatype.boolean() && 'cap ex',
-        cornerShape: faker.datatype.boolean() && 'squircle',
-        '--custom': faker.datatype.boolean() && 'lorem',
         [tokens.foo]: faker.datatype.boolean() && 'ipsum',
         '::before': {
           color: faker.datatype.boolean() && 'red',
@@ -85,8 +80,6 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         color: faker.datatype.boolean() ? 'red' : null,
         textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
-        cornerShape: faker.datatype.boolean() ? 'squircle' : null,
-        '--custom': faker.datatype.boolean() ? 'lorem' : null,
         [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
         '::before': {
           color: faker.datatype.boolean() ? 'red' : null,
@@ -100,8 +93,6 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         color: () => 'red',
         textBoxEdge: () => 'cap ex',
-        cornerShape: () => 'squircle',
-        '--custom': () => 'lorem',
         [tokens.foo]: () => 'ipsum',
         '::before': {
           color: () => 'red',
@@ -123,14 +114,6 @@ describe('typeof defineStyleDeck', () => {
         textBoxEdge: {
           default: null,
           ':focus': 'cap ex',
-        },
-        cornerShape: {
-          default: null,
-          ':focus': 'squircle',
-        },
-        '--custom': {
-          default: null,
-          ':focus': 'lorem',
         },
         [tokens.foo]: {
           default: null,
@@ -161,20 +144,6 @@ describe('typeof defineStyleDeck', () => {
           '@container (width >= 1440px)': {
             default: null,
             ':focus': 'cap ex',
-          },
-        },
-        cornerShape: {
-          default: null,
-          '@container (width >= 1440px)': {
-            default: null,
-            ':focus': 'squircle',
-          },
-        },
-        '--custom': {
-          default: null,
-          '@container (width >= 1440px)': {
-            default: null,
-            ':focus': 'lorem',
           },
         },
         [tokens.foo]: {
@@ -222,8 +191,6 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         color: tokens.foo,
         textBoxEdge: tokens.foo,
-        cornerShape: tokens.foo,
-        '--custom': tokens.foo,
         [tokens.foo]: tokens.foo,
         '::before': {
           color: () => tokens.foo,
@@ -241,8 +208,6 @@ describe('typeof defineStyleDeck', () => {
       defineStyleDeck({
         color: strictTokens.foo,
         textBoxEdge: strictTokens.foo,
-        cornerShape: strictTokens.foo,
-        '--custom': strictTokens.foo,
         [strictTokens.foo]: strictTokens.foo,
         '::before': {
           color: () => strictTokens.foo,
@@ -427,16 +392,6 @@ describe('typeof defineStyleDeck', () => {
             ':focus': 'blue',
           },
         },
-      } satisfies StyleDeck),
-    )
-
-    assertType<
-      StyleDeck<{
-        '--color'?: string
-      }>
-    >(
-      defineStyleDeck({
-        '--color': 'red',
       } satisfies StyleDeck),
     )
 

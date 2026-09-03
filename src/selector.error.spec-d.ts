@@ -1,7 +1,7 @@
 describe('typeof selector', () => {
   it('requires one or more selectors', () => {
     expect(() => {
-      assertType<Hook>(
+      assertType<CSSHook>(
         // @ts-expect-error
         selector(),
       )
@@ -10,7 +10,7 @@ describe('typeof selector', () => {
 
   it('rejects unknown selector', () => {
     expect(() => {
-      assertType<Hook>(
+      assertType<CSSHook>(
         selector(
           ':focus',
           // @ts-expect-error
@@ -22,7 +22,7 @@ describe('typeof selector', () => {
 
   it('rejects unknown symbolic selector', () => {
     expect(() => {
-      assertType<Hook>(
+      assertType<CSSHook>(
         selector(
           ':focus',
           // @ts-expect-error
@@ -34,7 +34,7 @@ describe('typeof selector', () => {
 
   it('rejects ancestry selector if it is not the first argument', () => {
     expect(() => {
-      assertType<Hook>(
+      assertType<CSSHook>(
         selector(
           ':focus',
           // @ts-expect-error
@@ -49,10 +49,10 @@ void 0
 
 import { ancestor } from './selector'
 import { assertType } from 'vitest'
+import type { CSSHook } from './types'
 import { defaultMarker } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
-import type { Hook } from './selector'
 import { it } from 'vitest'
 import { selector } from './selector'
 //

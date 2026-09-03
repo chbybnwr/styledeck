@@ -14,10 +14,6 @@ describe('typeof StyleDeck autocomplete', () => {
       })
 
       assertType<StyleDeck>({
-        '--custom': {
-          default: null,
-          ':focus': 'lorem',
-        },
         [themeVar.foo]: {
           default: null,
           ':focus': 'ipsum',
@@ -26,10 +22,6 @@ describe('typeof StyleDeck autocomplete', () => {
           color: {
             default: null,
             ':focus': 'red',
-          },
-          '--custom': {
-            default: null,
-            ':focus': 'lorem',
           },
           [themeVar.foo]: {
             default: null,

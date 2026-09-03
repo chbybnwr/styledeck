@@ -21,19 +21,16 @@ describe('type StyleDeck', () => {
     assertType<StyleDeck>({
       color: 'red',
       textBoxEdge: 'cap ex',
-      cornerShape: 'squircle',
     })
   })
 
   it('accepts custom properties', () => {
     assertType<StyleDeck>({
-      '--custom': 'lorem',
       [tokens.foo]: 'ipsum',
     })
 
     assertType<StyleDeck>({
       '::before': {
-        '--custom': 'lorem',
         [tokens.foo]: 'ipsum',
       },
     })
@@ -59,8 +56,6 @@ describe('type StyleDeck', () => {
     assertType<StyleDeck>({
       color: faker.datatype.boolean() && 'red',
       textBoxEdge: faker.datatype.boolean() && 'cap ex',
-      cornerShape: faker.datatype.boolean() && 'squircle',
-      '--custom': faker.datatype.boolean() && 'lorem',
       [tokens.foo]: faker.datatype.boolean() && 'ipsum',
       '::before': {
         color: faker.datatype.boolean() && 'red',
@@ -70,8 +65,6 @@ describe('type StyleDeck', () => {
     assertType<StyleDeck>({
       color: faker.datatype.boolean() ? 'red' : null,
       textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
-      cornerShape: faker.datatype.boolean() ? 'squircle' : null,
-      '--custom': faker.datatype.boolean() ? 'lorem' : null,
       [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
       '::before': {
         color: faker.datatype.boolean() ? 'red' : null,
@@ -83,8 +76,6 @@ describe('type StyleDeck', () => {
     assertType<StyleDeck>({
       color: () => 'red',
       textBoxEdge: () => 'cap ex',
-      cornerShape: () => 'squircle',
-      '--custom': () => 'lorem',
       [tokens.foo]: () => 'ipsum',
       '::before': {
         color: () => 'red',
@@ -104,14 +95,6 @@ describe('type StyleDeck', () => {
       textBoxEdge: {
         default: null,
         ':focus': 'cap ex',
-      },
-      cornerShape: {
-        default: null,
-        ':focus': 'squircle',
-      },
-      '--custom': {
-        default: null,
-        ':focus': 'lorem',
       },
       [tokens.foo]: {
         default: null,
@@ -140,20 +123,6 @@ describe('type StyleDeck', () => {
         '@container (width >= 1440px)': {
           default: null,
           ':focus': 'cap ex',
-        },
-      },
-      cornerShape: {
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'squircle',
-        },
-      },
-      '--custom': {
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'lorem',
         },
       },
       [tokens.foo]: {
@@ -197,8 +166,6 @@ describe('type StyleDeck', () => {
     assertType<StyleDeck>({
       color: tokens.foo,
       textBoxEdge: tokens.foo,
-      cornerShape: tokens.foo,
-      '--custom': tokens.foo,
       [tokens.foo]: tokens.foo,
       '::before': {
         color: () => tokens.foo,
@@ -214,8 +181,6 @@ describe('type StyleDeck', () => {
     assertType<StyleDeck>({
       color: strictTokens.foo,
       textBoxEdge: strictTokens.foo,
-      cornerShape: strictTokens.foo,
-      '--custom': strictTokens.foo,
       [strictTokens.foo]: strictTokens.foo,
       '::before': {
         color: () => strictTokens.foo,
@@ -377,14 +342,6 @@ describe('type StyleDeck', () => {
       },
     })
 
-    assertType<
-      StyleDeck<{
-        '--color'?: string
-      }>
-    >({
-      '--color': 'red',
-    })
-
     const { foo } = create({
       foo: {
         color: 'red',
@@ -452,10 +409,10 @@ describe('type StyleDeck', () => {
 
 describe('type SimpleSelector', () => {
   it('accepts valid selector', () => {
-    assertType<Selector>('[value]')
-    assertType<Selector>('[value="foo"]')
-    assertType<Selector>("[value='foo']")
-    assertType<Selector>('[value=foo]')
+    assertType<CSSSelector>('[value]')
+    assertType<CSSSelector>('[value="foo"]')
+    assertType<CSSSelector>("[value='foo']")
+    assertType<CSSSelector>('[value=foo]')
   })
 })
 
@@ -469,7 +426,7 @@ import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
 import { selector } from './selector.ts'
-import type { Selector } from './types.ts'
+import type { CSSSelector } from './types.ts'
 import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
 //

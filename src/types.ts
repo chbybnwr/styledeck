@@ -1,25 +1,23 @@
-export type { AriaAttributes }
-export type { Attribute }
-export type { CommonAttribute }
-export type { CommonProperties }
-export type { CompiledProperties }
-export type { Hashed }
-export type { Hooked }
-export type { PropertiesWithExtras }
-export type { CustomProperties }
-export type { DataAttributes }
+/* eslint-disable @typescript-eslint/no-empty-object-type */
+// oxlint-disable typescript/no-empty-interface typescript/ban-types
+
+export type { CompiledCSSValue }
+export type { CSSFeatures }
+export type { CSSProperties }
+export type { CSSHook }
+export type { CSS_HOOK }
+export type { HookedCSSValue }
 export type { NonApplicableStringProperties }
-export type { ParameterizedPseudoClass }
-export type { ParameterizedPseudoElement }
-export type { PseudoClass }
-export type { PseudoElement }
 export type { PseudoElementStyleConfig }
-export type { Source }
-export type { Selector }
+export type { CSSSelector }
+export type { SourcedCSSValue }
 export type { StyleCard }
 export type { StyleConfig }
 export type { StyleDeck }
-export type { StyleProperties }
+export type { AttributeSelector }
+export type { PseudoClass }
+export type { PseudoElement }
+export type { AtRule }
 
 /**
  * @public
@@ -29,6 +27,17 @@ type StyleDeck<T extends StyleConfig = StyleConfig> =
   | StyleCard<T>
   | readonly [StyleCard<T>, InlineStyles]
   | false
+  | Theme<VarGroup<{}>>
+  | {
+      /** @deprecated not applicable */
+      theme?: Theme<VarGroup<{}>>['theme']
+      /** @deprecated not applicable */
+      description?: Theme<VarGroup<{}>>['description']
+      /** @deprecated not applicable */
+      toString?: Theme<VarGroup<{}>>['toString']
+      /** @deprecated not applicable */
+      valueOf?: Theme<VarGroup<{}>>['valueOf']
+    }
 
 /**
  * @internal
@@ -38,189 +47,125 @@ type StyleCard<T extends StyleConfig> = {
     ? StyleCard<NonNullable<T[TKey]>>
     : | null
       | false
-      | Source<T[TKey]>
-      | Hooked<Exclude<T[TKey], null | undefined>>
-      | Hashed<TKey, T[TKey]>
+      | SourcedCSSValue<T[TKey]>
+      | HookedCSSValue<Exclude<T[TKey], null | undefined>>
+      | CompiledCSSValue<TKey, T[TKey]>
 }
 
 /**
  * @internal
  */
-type StyleConfig = StyleProperties | PseudoElementStyleConfig
+type StyleConfig = CSSProperties | PseudoElementStyleConfig
 
 /**
  * @internal
  */
-type PseudoElementStyleConfig = Record<
-  | Exclude<PseudoElement, ParameterizedPseudoElement>
-  | `${ParameterizedPseudoElement}(${string})`
-  // ::cue can be used both with and without parameter
-  | '::cue',
-  StyleProperties
->
+type PseudoElementStyleConfig = Partial<Record<PseudoElement, CSSProperties>>
+
+/**
+ * @public
+ */
+interface CSSProperties {
+  [CSSPropertiesKey]?: never
+}
+
+/**
+ * @public
+ */
+interface CSSFeatures {
+  // attributeSelector: string
+  // pseudoClass: string
+  // pseudoElement: string
+  // atRule: string
+}
+
+declare const CSSPropertiesKey: unique symbol
 
 /**
  * @internal
  */
-type StyleProperties = CommonProperties | CustomProperties | CompiledProperties
-
-/**
- * @internal
- */
-type CustomProperties = Record<`--${string}`, NonNullable<unknown>>
-
-/**
- * @internal
- */
-type CompiledProperties = Record<CompiledVar<unknown>, NonNullable<unknown>>
-
-/**
- * @internal
- */
-type CommonProperties = Properties & ExtraProperties
-
-/**
- * @internal
- */
-type ExtraProperties = Omit<
-  PropertiesWithExtras,
-  keyof Properties | `::${string}`
->
-
-/**
- * @internal
- */
-type Source<T> = T | readonly T[] | (() => T)
+type SourcedCSSValue<T> = T | readonly T[] | (() => T)
 
 // oxlint-disable typescript/consistent-indexed-object-style
 
 /**
  * @internal
  */
-type Hooked<T> =
+type HookedCSSValue<T> =
   | ({
-      default: Source<T> | null
+      default: SourcedCSSValue<T> | null
     } & {
-      [Key in Selector | AtRules | `${AtRules} ${string}` | Hook]?:
-        Source<T> | Hooked<T>
+      // oxlint-disable-next-line typescript/no-redundant-type-constituents typescript/no-duplicate-type-constituents
+      [Key in CSSSelector | AtRule | CSSHook]?:
+        SourcedCSSValue<T> | HookedCSSValue<T>
     })
   | (string extends T ? NonApplicableStringProperties : never)
 
 /**
  * @internal
  */
-type Selector =
-  | PseudoClass
-  | `${ParameterizedPseudoClass}(${string})`
-  | `[${Attribute}]`
-  | `[${Attribute}=${string}]`
+// oxlint-disable-next-line typescript/no-duplicate-type-constituents typescript/no-redundant-type-constituents
+type CSSSelector = AttributeSelector | PseudoClass
 
 /**
  * @internal
  */
-type Attribute =
-  | Exclude<CommonAttribute, 'data'>
-  // oxlint-disable typescript/no-duplicate-type-constituents typescript/no-redundant-type-constituents
-  | keyof AriaAttributes
-  | keyof DataAttributes
-
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-// oxlint-disable typescript/no-empty-interface, typescript/consistent-indexed-object-style
-
-/**
- * @public
- */
-interface AriaAttributes {}
-
-/**
- * @public
- */
-interface DataAttributes {}
-
-/* eslint-enable @typescript-eslint/no-empty-object-type */
-// oxlint-enable typescript/no-empty-interface, typescript/consistent-indexed-object-style
+type AttributeSelector = CSSFeatures extends {
+  attributeSelector: infer T extends string
+}
+  ? T
+  : never
 
 /**
  * @internal
  */
-type PseudoClass = Exclude<
-  Pseudos,
-  | PseudoElement
-  // legacy pseudo elements
-  | ':after'
-  | ':before'
-  | ':first-letter'
-  | ':first-line'
-  | ':-moz-placeholder'
-  | ':-ms-input-placeholder'
->
+type PseudoClass = CSSFeatures extends {
+  pseudoClass: infer T extends string
+}
+  ? T
+  : never
 
 /**
  * @internal
  */
-type ParameterizedPseudoClass =
-  | ':active-view-transition-type'
-  | ':dir'
-  | ':has'
-  | ':heading'
-  | ':host-context'
-  | ':host'
-  | ':is'
-  | ':lang'
-  | ':not'
-  | ':nth-child'
-  | ':nth-last-child'
-  | ':nth-last-of-type'
-  | ':nth-of-type'
-  | ':state'
-  | ':where'
+type PseudoElement = CSSFeatures extends {
+  pseudoElement: infer P extends string
+}
+  ? P
+  : never
 
 /**
  * @internal
  */
-type PseudoElement =
-  | Extract<Pseudos, `::${string}`>
-  | Extract<keyof PropertiesWithExtras, `::${string}`>
+type AtRule = CSSFeatures extends {
+  atRule: infer T extends string
+}
+  ? T
+  : never
 
 /**
  * @internal
  */
-type ParameterizedPseudoElement =
-  | '::cue'
-  | '::highlight'
-  | '::part'
-  | '::picker'
-  | '::scroll-button'
-  | '::slotted'
-  | '::view-transition-group'
-  | '::view-transition-image-pair'
-  | '::view-transition-new'
-  | '::view-transition-old'
-
-/**
- * @internal
- */
-type CommonAttribute = HtmlAttributes extends `[${infer U}]` ? U : never
-
-/**
- * @internal
- */
-interface Hashed<K, V> {
-  /** @deprecated not applicable */
-  _opaque: CompiledClassName<K, V>['_opaque']
-  /** @deprecated not applicable */
-  _key: CompiledClassName<K, V>['_key']
-  /** @deprecated not applicable */
-  _value: CompiledClassName<K, V>['_value']
+type CSSHook = symbol & {
+  readonly [CSS_HOOK]: never
 }
 
 /**
  * @internal
  */
-type PropertiesWithExtras =
-  CompiledStyles extends CompiledStyles<infer U extends Record<string, unknown>>
-    ? U
-    : never
+declare const CSS_HOOK: unique symbol
+
+/**
+ * @internal
+ */
+interface CompiledCSSValue<K, V> {
+  /** @deprecated not applicable */
+  _opaque: StyleXClassNameFor<K, V>['_opaque']
+  /** @deprecated not applicable */
+  _key: StyleXClassNameFor<K, V>['_key']
+  /** @deprecated not applicable */
+  _value: StyleXClassNameFor<K, V>['_value']
+}
 
 /**
  * @internal
@@ -295,13 +240,8 @@ interface NonApplicableStringProperties {
   valueOf?: unknown
 }
 
-import type { AtRules } from 'csstype'
-import type { StyleXClassNameFor as CompiledClassName } from '@stylexjs/stylex'
-import type { StyleXStyles as CompiledStyles } from '@stylexjs/stylex'
-import type { StyleXVar as CompiledVar } from '@stylexjs/stylex'
-import type { Hook } from './selector'
-import type { HtmlAttributes } from 'csstype'
 import type { InlineStyles } from '@stylexjs/stylex'
-import type { Properties } from 'csstype'
-import type { Pseudos } from 'csstype'
+import type { StyleXClassNameFor } from '@stylexjs/stylex'
+import type { Theme } from '@stylexjs/stylex'
+import type { VarGroup } from '@stylexjs/stylex'
 //

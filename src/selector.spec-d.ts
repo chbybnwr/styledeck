@@ -1,18 +1,18 @@
 describe('typeof selector', () => {
   it('returns selector', () => {
-    assertType<Hook>(selector(':focus', ':active'))
+    assertType<CSSHook>(selector(':focus', ':active'))
   })
 
   it('accepts ancestry selector', () => {
-    assertType<Hook>(ancestor(defaultMarker(), ':focus'))
+    assertType<CSSHook>(ancestor(defaultMarker(), ':focus'))
   })
 
   it('accepts attribute selector', () => {
-    assertType<Hook>(selector('[disabled]', ':focus'))
+    assertType<CSSHook>(selector('[disabled]', ':focus'))
   })
 
   it('accepts attribute selector with value', () => {
-    assertType<Hook>(selector('[id="item-1"]', ':focus'))
+    assertType<CSSHook>(selector('[id="item-1"]', ':focus'))
   })
 })
 
@@ -48,7 +48,7 @@ describe('typeof siblingAfter', () => {
 
 describe('typeof CreateAncestryHook', () => {
   it('returns selector', () => {
-    expectTypeOf<ReturnType<CreateAncestryHook>>().toEqualTypeOf<Hook>()
+    expectTypeOf<ReturnType<CreateAncestryHook>>().toEqualTypeOf<CSSHook>()
   })
 
   it('accepts marker', () => {
@@ -64,12 +64,12 @@ import { ancestor } from './selector'
 import { anySibling } from './selector'
 import { assertType } from 'vitest'
 import type { CreateAncestryHook } from './selector'
+import type { CSSHook } from './types'
 import { defaultMarker } from '@stylexjs/stylex'
 import type { defineMarker } from '@stylexjs/stylex'
 import { descendant } from './selector'
 import { describe } from 'vitest'
 import { expectTypeOf } from 'vitest'
-import type { Hook } from './selector'
 import { it } from 'vitest'
 import { selector } from './selector'
 import { siblingAfter } from './selector'

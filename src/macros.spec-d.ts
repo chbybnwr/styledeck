@@ -10,7 +10,6 @@ describe('typeof apply', () => {
       apply({
         color: 'red',
         textBoxEdge: 'cap ex',
-        cornerShape: 'squircle',
       }),
     )
   })
@@ -18,7 +17,6 @@ describe('typeof apply', () => {
   it('accepts custom properties', () => {
     assertType<StylingAttrs>(
       apply({
-        '--custom': 'lorem',
         [tokens.foo]: 'ipsum',
       }),
     )
@@ -26,7 +24,6 @@ describe('typeof apply', () => {
     assertType<StylingAttrs>(
       apply({
         '::before': {
-          '--custom': 'lorem',
           [tokens.foo]: 'ipsum',
         },
       }),
@@ -58,8 +55,6 @@ describe('typeof apply', () => {
       apply({
         color: faker.datatype.boolean() && 'red',
         textBoxEdge: faker.datatype.boolean() && 'cap ex',
-        cornerShape: faker.datatype.boolean() && 'squircle',
-        '--custom': faker.datatype.boolean() && 'lorem',
         [tokens.foo]: faker.datatype.boolean() && 'ipsum',
         '::before': {
           color: faker.datatype.boolean() && 'red',
@@ -71,8 +66,6 @@ describe('typeof apply', () => {
       apply({
         color: faker.datatype.boolean() ? 'red' : null,
         textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
-        cornerShape: faker.datatype.boolean() ? 'squircle' : null,
-        '--custom': faker.datatype.boolean() ? 'lorem' : null,
         [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
         '::before': {
           color: faker.datatype.boolean() ? 'red' : null,
@@ -86,8 +79,6 @@ describe('typeof apply', () => {
       apply({
         color: () => 'red',
         textBoxEdge: () => 'cap ex',
-        cornerShape: () => 'squircle',
-        '--custom': () => 'lorem',
         [tokens.foo]: () => 'ipsum',
         '::before': {
           color: () => 'red',
@@ -106,14 +97,6 @@ describe('typeof apply', () => {
         textBoxEdge: {
           default: null,
           ':focus': 'cap ex',
-        },
-        cornerShape: {
-          default: null,
-          ':focus': 'squircle',
-        },
-        '--custom': {
-          default: null,
-          ':focus': 'lorem',
         },
         [tokens.foo]: {
           default: null,
@@ -144,20 +127,6 @@ describe('typeof apply', () => {
           '@container (width >= 1440px)': {
             default: null,
             ':focus': 'cap ex',
-          },
-        },
-        cornerShape: {
-          default: null,
-          '@container (width >= 1440px)': {
-            default: null,
-            ':focus': 'squircle',
-          },
-        },
-        '--custom': {
-          default: null,
-          '@container (width >= 1440px)': {
-            default: null,
-            ':focus': 'lorem',
           },
         },
         [tokens.foo]: {
@@ -205,8 +174,6 @@ describe('typeof apply', () => {
       apply({
         color: tokens.foo,
         textBoxEdge: tokens.foo,
-        cornerShape: tokens.foo,
-        '--custom': tokens.foo,
         [tokens.foo]: tokens.foo,
         '::before': {
           color: () => tokens.foo,
@@ -224,8 +191,6 @@ describe('typeof apply', () => {
       apply({
         color: strictTokens.foo,
         textBoxEdge: strictTokens.foo,
-        cornerShape: strictTokens.foo,
-        '--custom': strictTokens.foo,
         [strictTokens.foo]: strictTokens.foo,
         '::before': {
           color: () => strictTokens.foo,

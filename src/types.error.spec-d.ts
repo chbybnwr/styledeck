@@ -72,7 +72,6 @@ describe('type StyleDeck', () => {
     expect(() => {
       // @ts-expect-error
       assertType<StyleDeck>({
-        cornerShape: null,
         color: {
           default: 'red',
           [selector(':focus', ':active')]: null,
@@ -179,17 +178,6 @@ describe('type StyleDeck', () => {
   })
 
   // oxlint-disable-next-line vitest/warn-todo
-  it.todo('rejects unknown selector on custom properties', () => {
-    assertType<StyleDeck>({
-      '--foo': {
-        default: null,
-        // // @ts-expect-error
-        foo: 'bar',
-      },
-    })
-  })
-
-  // oxlint-disable-next-line vitest/warn-todo
   it.todo('rejects unknown selector on compiled custom properties', () => {
     expect(() => {
       const themeVar = defineVars({
@@ -210,12 +198,12 @@ describe('type StyleDeck', () => {
 describe('type SimpleSelector', () => {
   it('rejects invalid selector', () => {
     // @ts-expect-error
-    assertType<Selector>('foo')
+    assertType<CSSSelector>('foo')
   })
 
   it('rejects compound selector', () => {
     // @ts-expect-error
-    assertType<Selector>(':focus:active')
+    assertType<CSSSelector>(':focus:active')
   })
 })
 
@@ -225,6 +213,6 @@ import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
 import { selector } from './selector.ts'
-import type { Selector } from './types.ts'
+import type { CSSSelector } from './types.ts'
 import type { StyleDeck } from './types.ts'
 //

@@ -4,16 +4,12 @@
 
 ```ts
 
-import type { AtRules } from 'csstype';
 import type { defaultMarker } from '@stylexjs/stylex';
 import type { defineMarker } from '@stylexjs/stylex';
-import type { HtmlAttributes } from 'csstype';
 import type { InlineStyles } from '@stylexjs/stylex';
-import type { Properties } from 'csstype';
-import type { Pseudos } from 'csstype';
 import type { StyleXClassNameFor } from '@stylexjs/stylex';
-import type { StyleXStyles } from '@stylexjs/stylex';
-import type { StyleXVar } from '@stylexjs/stylex';
+import type { Theme } from '@stylexjs/stylex';
+import type { VarGroup } from '@stylexjs/stylex';
 
 // @public (undocumented)
 export const ancestor: ~CreateAncestryHook;
@@ -22,11 +18,13 @@ export const ancestor: ~CreateAncestryHook;
 export const anySibling: ~CreateAncestryHook;
 
 // @public (undocumented)
-export interface AriaAttributes {
+export interface CSSFeatures {
 }
 
 // @public (undocumented)
-export interface DataAttributes {
+export interface CSSProperties {
+    // (undocumented)
+    [CSSPropertiesKey]?: never;
 }
 
 // @public (undocumented)
@@ -36,7 +34,7 @@ export const defineStyleDeck: <const T extends StyleDeck>(styleDeck: T) => T;
 export const descendant: ~CreateAncestryHook;
 
 // @public (undocumented)
-export const selector: (selector: ~Selector, ...selectors: ~Selector[]) => ~Hook;
+export const selector: (selector: ~CSSSelector, ...selectors: ~CSSSelector[]) => ~CSSHook;
 
 // @public (undocumented)
 export const siblingAfter: ~CreateAncestryHook;
@@ -45,30 +43,25 @@ export const siblingAfter: ~CreateAncestryHook;
 export const siblingBefore: ~CreateAncestryHook;
 
 // @public (undocumented)
-export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | undefined)[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | false;
+export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | undefined)[] | ~StyleCard<T> | readonly [~StyleCard<T>, InlineStyles] | false | Theme<VarGroup<{}>> | {
+    theme?: Theme<VarGroup<{}>>['theme'];
+    description?: Theme<VarGroup<{}>>['description'];
+    toString?: Theme<VarGroup<{}>>['toString'];
+    valueOf?: Theme<VarGroup<{}>>['valueOf'];
+};
 
 // @internal (undocumented)
-export type ~Attribute = Exclude<~CommonAttribute, 'data'> | keyof AriaAttributes | keyof DataAttributes;
+export type ~AtRule = CSSFeatures extends {
+    atRule: infer T extends string;
+} ? T : never;
 
 // @internal (undocumented)
-export type ~CommonAttribute = HtmlAttributes extends `[${infer U}]` ? U : never;
-
-// Warning: (ae-forgotten-export) The symbol "ExtraProperties" needs to be exported by the entry point index.d.ts
-//
-// @internal (undocumented)
-export type ~CommonProperties = Properties & ExtraProperties;
+export type ~AttributeSelector = CSSFeatures extends {
+    attributeSelector: infer T extends string;
+} ? T : never;
 
 // @internal (undocumented)
-export type ~CompiledProperties = Record<StyleXVar<unknown>, NonNullable<unknown>>;
-
-// @internal (undocumented)
-export type ~CreateAncestryHook = (marker: ReturnType<typeof defaultMarker> | ReturnType<typeof defineMarker>, ...selectors: ~Selector[]) => ~Hook;
-
-// @internal (undocumented)
-export type ~CustomProperties = Record<`--${string}`, NonNullable<unknown>>;
-
-// @internal (undocumented)
-export interface ~Hashed<K, V> {
+export interface ~CompiledCSSValue<K, V> {
     // @deprecated (undocumented)
     _key: StyleXClassNameFor<K, V>['_key'];
     // @deprecated (undocumented)
@@ -78,18 +71,24 @@ export interface ~Hashed<K, V> {
 }
 
 // @internal (undocumented)
-export const ~HOOK: unique symbol;
+export type ~CreateAncestryHook = (marker: ReturnType<typeof defaultMarker> | ReturnType<typeof defineMarker>, ...selectors: ~CSSSelector[]) => ~CSSHook;
 
 // @internal (undocumented)
-export type ~Hook = symbol & {
-    readonly [~HOOK]: never;
+export const ~CSS_HOOK: unique symbol;
+
+// @internal (undocumented)
+export type ~CSSHook = symbol & {
+    readonly [~CSS_HOOK]: never;
 };
 
 // @internal (undocumented)
-export type ~Hooked<T> = ({
-    default: ~Source<T> | null;
+export type ~CSSSelector = ~AttributeSelector | ~PseudoClass;
+
+// @internal (undocumented)
+export type ~HookedCSSValue<T> = ({
+    default: ~SourcedCSSValue<T> | null;
 } & {
-    [Key in ~Selector | AtRules | `${AtRules} ${string}` | ~Hook]?: ~Source<T> | ~Hooked<T>;
+    [Key in ~CSSSelector | ~AtRule | ~CSSHook]?: ~SourcedCSSValue<T> | ~HookedCSSValue<T>;
 }) | (string extends T ? ~NonApplicableStringProperties : never);
 
 // @internal (undocumented)
@@ -175,39 +174,28 @@ export interface ~NonApplicableStringProperties {
 }
 
 // @internal (undocumented)
-export type ~ParameterizedPseudoClass = ':active-view-transition-type' | ':dir' | ':has' | ':heading' | ':host-context' | ':host' | ':is' | ':lang' | ':not' | ':nth-child' | ':nth-last-child' | ':nth-last-of-type' | ':nth-of-type' | ':state' | ':where';
+export type ~PseudoClass = CSSFeatures extends {
+    pseudoClass: infer T extends string;
+} ? T : never;
 
 // @internal (undocumented)
-export type ~ParameterizedPseudoElement = '::cue' | '::highlight' | '::part' | '::picker' | '::scroll-button' | '::slotted' | '::view-transition-group' | '::view-transition-image-pair' | '::view-transition-new' | '::view-transition-old';
+export type ~PseudoElement = CSSFeatures extends {
+    pseudoElement: infer P extends string;
+} ? P : never;
 
 // @internal (undocumented)
-export type ~PropertiesWithExtras = StyleXStyles extends StyleXStyles<infer U extends Record<string, unknown>> ? U : never;
+export type ~PseudoElementStyleConfig = Partial<Record<~PseudoElement, CSSProperties>>;
 
 // @internal (undocumented)
-export type ~PseudoClass = Exclude<Pseudos, ~PseudoElement | ':after' | ':before' | ':first-letter' | ':first-line' | ':-moz-placeholder' | ':-ms-input-placeholder'>;
-
-// @internal (undocumented)
-export type ~PseudoElement = Extract<Pseudos, `::${string}`> | Extract<keyof ~PropertiesWithExtras, `::${string}`>;
-
-// @internal (undocumented)
-export type ~PseudoElementStyleConfig = Record<Exclude<~PseudoElement, ~ParameterizedPseudoElement> | `${~ParameterizedPseudoElement}(${string})` | '::cue', ~StyleProperties>;
-
-// @internal (undocumented)
-export type ~Selector = ~PseudoClass | `${~ParameterizedPseudoClass}(${string})` | `[${~Attribute}]` | `[${~Attribute}=${string}]`;
-
-// @internal (undocumented)
-export type ~Source<T> = T | readonly T[] | (() => T);
+export type ~SourcedCSSValue<T> = T | readonly T[] | (() => T);
 
 // @internal (undocumented)
 export type ~StyleCard<T extends ~StyleConfig> = {
-    readonly [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : null | false | ~Source<T[TKey]> | ~Hooked<Exclude<T[TKey], null | undefined>> | ~Hashed<TKey, T[TKey]>;
+    readonly [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : null | false | ~SourcedCSSValue<T[TKey]> | ~HookedCSSValue<Exclude<T[TKey], null | undefined>> | ~CompiledCSSValue<TKey, T[TKey]>;
 };
 
 // @internal (undocumented)
-export type ~StyleConfig = ~StyleProperties | ~PseudoElementStyleConfig;
-
-// @internal (undocumented)
-export type ~StyleProperties = ~CommonProperties | ~CustomProperties | ~CompiledProperties;
+export type ~StyleConfig = CSSProperties | ~PseudoElementStyleConfig;
 
 // @internal (undocumented)
 export function ~toAttrs(this: unknown, ...styles: any[]): Record<string, unknown>;
