@@ -1,4 +1,3 @@
-export { selector }
 export { ancestor }
 export { anySibling }
 export { descendant }
@@ -6,14 +5,6 @@ export { siblingAfter }
 export { siblingBefore }
 
 export type { CreateAncestryHook }
-
-/**
- * @public
- */
-const selector: (
-  selector: CSSSelector,
-  ...selectors: CSSSelector[]
-) => CSSHook = macro
 
 /**
  * @public
@@ -48,9 +39,9 @@ type CreateAncestryHook = (
   ...selectors: CSSSelector[]
 ) => CSSHook
 
-import type { CSSHook } from './types'
-import type { CSSSelector } from './types'
+import type { CSSHook } from '#/types'
+import type { CSSSelector } from '#/types'
 import type { defaultMarker } from '@stylexjs/stylex'
 import type { defineMarker } from '@stylexjs/stylex'
-import { macro } from './macros'
+import { macro } from '#/macros'
 //

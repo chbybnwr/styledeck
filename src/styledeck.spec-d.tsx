@@ -465,7 +465,7 @@ describe('typeof defineStyleDeck', () => {
   })
 })
 
-import { ancestor } from './selector.ts'
+import { ancestor } from './hooks/ancestry.ts'
 import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
 import { createTheme } from '@stylexjs/stylex'
@@ -476,7 +476,7 @@ import { describe } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
-import { selector } from './selector.ts'
+import { selector } from './hooks/selector.ts'
 import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
 //

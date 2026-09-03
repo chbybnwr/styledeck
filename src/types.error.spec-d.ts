@@ -208,11 +208,11 @@ describe('type SimpleSelector', () => {
 })
 
 import { assertType } from 'vitest'
+import type { CSSSelector } from './types.ts'
 import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
-import { selector } from './selector.ts'
-import type { CSSSelector } from './types.ts'
+import { selector } from './hooks/selector.ts'
 import type { StyleDeck } from './types.ts'
 //

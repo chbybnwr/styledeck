@@ -47,9 +47,9 @@ describe('typeof selector', () => {
 
 void 0
 
-import { ancestor } from './selector'
+import { ancestor } from './ancestry'
 import { assertType } from 'vitest'
-import type { CSSHook } from './types'
+import type { CSSHook } from '../types'
 import { defaultMarker } from '@stylexjs/stylex'
 import { describe } from 'vitest'
 import { expect } from 'vitest'

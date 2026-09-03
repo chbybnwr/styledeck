@@ -255,6 +255,6 @@ import { defineStyleDeck } from './styledeck.ts'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'
-import { selector } from './selector.ts'
+import { selector } from './hooks/selector.ts'
 import type { StyleDeck } from './types.ts'
 //

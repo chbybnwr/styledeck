@@ -416,7 +416,7 @@ describe('typeof sheet', () => {
   })
 })
 
-import { ancestor } from './selector.ts'
+import { ancestor } from './hooks/ancestry.ts'
 import { apply } from './macros.ts'
 import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
@@ -427,7 +427,7 @@ import { expectTypeOf } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
-import { selector } from './selector.ts'
+import { selector } from './hooks/selector.ts'
 import { sheet } from './macros.ts'
 import type { StyleDeck } from './types.ts'
 import type { StylingAttrs } from './macros.ts'
