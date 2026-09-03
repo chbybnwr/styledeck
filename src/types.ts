@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 // oxlint-disable typescript/no-empty-interface typescript/ban-types
 
+export type { AtRule }
+export type { AttributeSelector }
 export type { CompiledCSSValue }
-export type { CSSFeatures }
-export type { CSSProperties }
-export type { CSSHook }
 export type { CSS_HOOK }
+export type { CSSFeatures }
+export type { CSSHook }
+export type { CSSProperties }
+export type { CSSSelector }
 export type { HookedCSSValue }
 export type { NonApplicableStringProperties }
+export type { PseudoClass }
+export type { PseudoElement }
 export type { PseudoElementStyleConfig }
-export type { CSSSelector }
 export type { SourcedCSSValue }
 export type { StyleCard }
 export type { StyleConfig }
 export type { StyleDeck }
-export type { AttributeSelector }
-export type { PseudoClass }
-export type { PseudoElement }
-export type { AtRule }
 
 /**
  * @public

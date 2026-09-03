@@ -17,5 +17,5 @@ import type { CSSSelector } from '../types'
 import { describe } from 'vitest'
 import { expectTypeOf } from 'vitest'
 import { it } from 'vitest'
-import { selector } from './selector'
+import type { selector } from './selector'
 //

@@ -39,9 +39,9 @@ type CreateAncestryHook = (
   ...selectors: CSSSelector[]
 ) => CSSHook
 
-import type { CSSHook } from '#/types'
-import type { CSSSelector } from '#/types'
+import type { CSSHook } from '../types'
+import type { CSSSelector } from '../types'
 import type { defaultMarker } from '@stylexjs/stylex'
 import type { defineMarker } from '@stylexjs/stylex'
-import { macro } from '#/macros'
+import { macro } from '../macros'
 //

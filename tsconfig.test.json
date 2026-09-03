@@ -9,7 +9,6 @@
     "skipLibCheck": true,
     "types": ["node"],
     "paths": {
-      "#/*": ["./src/*"],
       "styledeck": ["./src/index.ts"]
     }
   }

@@ -4,11 +4,6 @@ export { vitestConfig as default }
 
 /** @type {import("vite").UserConfig} */
 const vitestConfig = {
-  resolve: {
-    alias: {
-      '#': fileURLToPath(new URL('src', import.meta.url)),
-    },
-  },
   test: {
     name: 'unit',
     passWithNoTests: true,
@@ -28,5 +23,6 @@ const vitestConfig = {
   },
 }
 
-import { fileURLToPath } from 'node:url'
+void 0
+
 //

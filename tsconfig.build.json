@@ -15,10 +15,6 @@
     "noUnusedLocals": false,
 
     "emitDeclarationOnly": true,
-    "declarationDir": "./lib/",
-
-    "paths": {
-      "#/*": ["./src/*"]
-    }
+    "declarationDir": "./lib/"
   }
 }
