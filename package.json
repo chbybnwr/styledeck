@@ -28,17 +28,17 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "prepack": "pn build && pn pkg delete scripts packageManager devDependencies",
-    "check": "run-s 'test --coverage' typecheck lint 'format --check' spellcheck",
+    "prepack": "pn run build && pn pkg delete scripts packageManager devDependencies",
+    "check": "pn run test --coverage && pn run type-check && pn run lint && pn run format --check && pn run spell-check",
     "build": "tsdown",
     "extract": "tsc --project tsconfig.build.json && api-extractor run",
     "test": "vitest run",
-    "typecheck": "tsc --build",
-    "lint": "run-s oxlint eslint",
+    "type-check": "tsc --build",
+    "lint": "pn run oxlint && pn run eslint",
     "eslint": "eslint ./",
     "oxlint": "oxlint ./",
     "format": "prettier ./",
-    "spellcheck": "cspell ./"
+    "spell-check": "cspell ./"
   },
   "packageManager": "pnpm@11.10.0",
   "peerDependencies": {
@@ -69,7 +69,6 @@
     "eslint-plugin-n": "^18.3.0",
     "eslint-plugin-unicorn": "^72.0.0",
     "globals": "^17.11.0",
-    "npm-run-all2": "^9.0.3",
     "oxlint": "^1.80.0",
     "oxlint-tsgolint": "^7.0.2001",
     "prettier": "^3.9.6",
