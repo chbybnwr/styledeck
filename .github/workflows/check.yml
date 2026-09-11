@@ -13,8 +13,8 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run build
+      - run: pn install
+      - run: pn run build
 
   extract:
     runs-on: ubuntu-latest
@@ -25,8 +25,8 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run extract
+      - run: pn install
+      - run: pn run extract
 
   test:
     runs-on: ubuntu-latest
@@ -37,10 +37,10 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run test -- --coverage
+      - run: pn install
+      - run: pn run test -- --coverage
 
-  lint:
+  type-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -49,5 +49,8 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run lint
+      - run: pn install
+      - run: pn run type-check
+
+  lint:
+    uses: ./.github/workflows/lint.yml

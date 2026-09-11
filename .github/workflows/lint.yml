@@ -1,10 +1,10 @@
-name: copyedit
+name: lint
 
 on:
   workflow_call:
 
 jobs:
-  format:
+  eslint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -13,10 +13,10 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run format -- --check
+      - run: pn install
+      - run: pn run eslint
 
-  spellcheck:
+  oxlint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -25,5 +25,5 @@ jobs:
         with:
           node-version-file: '.node-version'
           cache: 'pnpm'
-      - run: pnpm install
-      - run: npm run spellcheck
+      - run: pn install
+      - run: pn run oxlint
