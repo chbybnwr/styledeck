@@ -54,6 +54,41 @@ export default defineConfig({
 })
 ```
 
+Augment StyleDeck type definitions into your project.
+Place augmentation below snippet in some declaration file that is included in typescript configuration.
+
+```typescript
+export {}
+
+declare module 'styledeck' {
+  interface CSSProperties extends CSS.Properties {
+    [key: StyleXVar<unknown>]: NonNullable<unknown>
+  }
+
+  interface CSSFeatures {
+    attributeSelector: CSS.HtmlAttributes
+    pseudoClass: PseudoClass
+    pseudoElement: PseudoElement
+    atRule: CSS.AtRules
+  }
+}
+
+type PseudoClass = Exclude<CSS.Pseudos, PseudoElement>
+
+type PseudoElement =
+  | Extract<CSS.Pseudos, `::${string}`>
+  // one-colon pseudo-element
+  | ':after'
+  | ':before'
+  | ':first-letter'
+  | ':first-line'
+  | ':-moz-placeholder'
+  | ':-ms-input-placeholder'
+
+import type * as CSS from 'csstype'
+import type { StyleXVar } from '@stylexjs/stylex'
+```
+
 ## Ecosystem
 
 - [Vite plugin](https://github.com/chbybnwr/styledeck-vite-plugin)
