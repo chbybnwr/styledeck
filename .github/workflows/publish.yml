@@ -21,7 +21,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
           package-manager-cache: false
       - run: pn install
-      - run: pn publish
+      - run: pn stage publish
 
   check:
     uses: ./.github/workflows/check.yml
