@@ -1,6 +1,6 @@
-# StyleDeck &middot; [![npm version](https://img.shields.io/npm/v/styledeck.svg?style=flat-square)](https://www.npmjs.com/package/styledeck) [![build](https://img.shields.io/github/actions/workflow/status/chbybnwr/styledeck/publish.yml?label=build&style=flat-square)](https://github.com/chbybnwr/styledeck/actions/workflows/publish.yml) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/chbybnwr/styledeck-unplugin/blob/prototype/LICENSE) <!-- omit in toc -->
+# StyleDeck &middot; [![npm version](https://img.shields.io/npm/v/styledeck.svg?style=flat-square)](https://www.npmjs.com/package/styledeck) [![build](https://img.shields.io/github/actions/workflow/status/chbybnwr/styledeck/publish.yml?label=build&style=flat-square)](https://github.com/chbybnwr/styledeck/actions/workflows/publish.yml) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/chbybnwr/styledeck-unplugin/blob/main/LICENSE) <!-- omit in toc -->
 
-Type-safe and zero-runtime UI styling, right in the markup.
+Type-safe, zero-runtime inline CSS in JSX.
 
 StyleDeck lets you write strongly-typed CSS objects directly on your markup. At build time, it preprocesses them into StyleX API calls, which StyleX then extracts into zero-runtime atomic CSS, with no style block naming required.
 
@@ -37,10 +37,10 @@ Install the packages:
 
 ```bash
 npm install styledeck @stylexjs/stylex
-npm install --save-dev @styledeck/vite
+npm install --save-dev @styledeck/vite-plugin
 ```
 
-Add the plugin to your bundler configuration right before the StyleX plugin.
+Add the plugin to your bundler configuration.
 
 ```js
 import { defineConfig } from 'vite'
@@ -54,10 +54,21 @@ export default defineConfig({
 })
 ```
 
-Augment StyleDeck type definitions into your project.
-Place augmentation below snippet in some declaration file that is included in typescript configuration.
+StyleDeck is shipped with barebone CSS type definitions. This allows design constraints to be baked directly into the type system.
+
+Here's a starting point example.
+
+Install some off-the-shelf CSS type definitions like csstype.
+
+```sh
+npm install --save-dev csstype
+```
+
+Augment this package module to use it.
 
 ```typescript
+// styledeck.d.ts
+
 export {}
 
 declare module 'styledeck' {
@@ -66,10 +77,10 @@ declare module 'styledeck' {
   }
 
   interface CSSFeatures {
+    atRule: CSS.AtRules
     attributeSelector: CSS.HtmlAttributes
     pseudoClass: PseudoClass
     pseudoElement: PseudoElement
-    atRule: CSS.AtRules
   }
 }
 
@@ -87,6 +98,32 @@ type PseudoElement =
 
 import type * as CSS from 'csstype'
 import type { StyleXVar } from '@stylexjs/stylex'
+```
+
+Finally, augment the library/framework module to add `styleDeck` attribute to HTML elements.
+
+Here is an example for React.
+
+```typescript
+// styledeck.d.ts
+
+declare module 'react' {
+  interface HTMLAttributes {
+    styleDeck?: StyleDeck | undefined
+    /**
+     * @deprecated
+     */
+    style?: never
+  }
+
+  interface SVGAttributes {
+    styleDeck?: StyleDeck | undefined
+    /**
+     * @deprecated
+     */
+    style?: never
+  }
+}
 ```
 
 ## Ecosystem
@@ -230,34 +267,6 @@ function SearchInput() {
 
 ### Variables
 
-Custom properties for app-level theming and inline overrides:
-
-```css
-/* main.css */
-:root {
-  --sidebar-width: 240px;
-  --color-surface: lightblue;
-}
-```
-
-```tsx
-function Sidebar() {
-  return (
-    <nav
-      styleDeck={{
-        '--sidebar-width': '320px',
-        width: 'var(--sidebar-width)',
-        backgroundColor: 'var(--color-surface, blue)',
-      }}
-    >
-      Navigation
-    </nav>
-  )
-}
-```
-
-StyleX variables for shared design tokens:
-
 ```ts
 // color.stylex.ts
 import * as stylex from '@stylexjs/stylex'
@@ -283,18 +292,18 @@ function PrimaryButton({ label }: { label: string }) {
 }
 ```
 
-### Cascade with StyleX styles
+### Cascade with Stand-alone styles
 
 ```tsx
-import * as stylex from '@stylexjs/stylex'
+import { defineStyleDeck } from 'styledeck'
 
-const typography = stylex.create({
-  caption: {
+const typography = {
+  caption: defineStyleDeck({
     fontSize: '0.75rem',
     lineHeight: '1rem',
     fontStyle: 'italic',
-  },
-})
+  } satisfies StyleDeck),
+}
 
 function Timestamp() {
   return (
