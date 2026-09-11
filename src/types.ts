@@ -99,7 +99,7 @@ type HookedCSSValue<T> =
   | ({
       default: SourcedCSSValue<T> | null
     } & {
-      // oxlint-disable-next-line typescript/no-redundant-type-constituents typescript/no-duplicate-type-constituents
+      // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents, @typescript-eslint/no-duplicate-type-constituents
       [Key in CSSSelector | AtRule | CSSHook]?:
         SourcedCSSValue<T> | HookedCSSValue<T>
     })
@@ -108,7 +108,7 @@ type HookedCSSValue<T> =
 /**
  * @internal
  */
-// oxlint-disable-next-line typescript/no-duplicate-type-constituents typescript/no-redundant-type-constituents
+// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents, @typescript-eslint/no-duplicate-type-constituents
 type CSSSelector = AttributeSelector | PseudoClass
 
 /**
