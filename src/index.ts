@@ -28,4 +28,5 @@ export type { PseudoElementStyleConfig as '~PseudoElementStyleConfig' } from './
 export type { SourcedCSSValue as '~SourcedCSSValue' } from './types'
 export type { StyleCard as '~StyleCard' } from './types'
 export type { StyleConfig as '~StyleConfig' } from './types'
+export type { STYLE_CONFIG as '~STYLE_CONFIG' } from './types'
 export { toAttrs as '~toAttrs' } from './internals'

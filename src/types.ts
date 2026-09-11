@@ -17,6 +17,7 @@ export type { PseudoElementStyleConfig }
 export type { SourcedCSSValue }
 export type { StyleCard }
 export type { StyleConfig }
+export type { STYLE_CONFIG }
 export type { StyleDeck }
 
 /**
@@ -55,7 +56,14 @@ type StyleCard<T extends StyleConfig> = {
 /**
  * @internal
  */
-type StyleConfig = CSSProperties | PseudoElementStyleConfig
+type StyleConfig = (CSSProperties | PseudoElementStyleConfig) & {
+  [STYLE_CONFIG]?: never
+}
+
+/**
+ * @internal
+ */
+declare const STYLE_CONFIG: unique symbol
 
 /**
  * @internal
@@ -65,9 +73,7 @@ type PseudoElementStyleConfig = Partial<Record<PseudoElement, CSSProperties>>
 /**
  * @public
  */
-interface CSSProperties {
-  [CSSPropertiesKey]?: never
-}
+interface CSSProperties {}
 
 /**
  * @public
@@ -78,8 +84,6 @@ interface CSSFeatures {
   // pseudoElement: string
   // atRule: string
 }
-
-declare const CSSPropertiesKey: unique symbol
 
 /**
  * @internal
