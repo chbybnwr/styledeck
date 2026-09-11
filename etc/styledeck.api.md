@@ -23,8 +23,6 @@ export interface CSSFeatures {
 
 // @public (undocumented)
 export interface CSSProperties {
-    // (undocumented)
-    [CSSPropertiesKey]?: never;
 }
 
 // @public (undocumented)
@@ -190,12 +188,17 @@ export type ~PseudoElementStyleConfig = Partial<Record<~PseudoElement, CSSProper
 export type ~SourcedCSSValue<T> = T | readonly T[] | (() => T);
 
 // @internal (undocumented)
+export const ~STYLE_CONFIG: unique symbol;
+
+// @internal (undocumented)
 export type ~StyleCard<T extends ~StyleConfig> = {
     readonly [TKey in keyof T]: TKey extends keyof ~PseudoElementStyleConfig ? ~StyleCard<NonNullable<T[TKey]>> : null | false | ~SourcedCSSValue<T[TKey]> | ~HookedCSSValue<Exclude<T[TKey], null | undefined>> | ~CompiledCSSValue<TKey, T[TKey]>;
 };
 
 // @internal (undocumented)
-export type ~StyleConfig = CSSProperties | ~PseudoElementStyleConfig;
+export type ~StyleConfig = (CSSProperties | ~PseudoElementStyleConfig) & {
+    [~STYLE_CONFIG]?: never;
+};
 
 // @internal (undocumented)
 export function ~toAttrs(this: unknown, ...styles: any[]): Record<string, unknown>;
