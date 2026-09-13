@@ -115,7 +115,7 @@ type CSSSelector = AttributeSelector | PseudoClass
  * @internal
  */
 type AttributeSelector = CSSFeatures extends {
-  attributeSelector: infer T extends string
+  attributeSelectors: (infer T extends string)[]
 }
   ? T
   : never
@@ -124,7 +124,7 @@ type AttributeSelector = CSSFeatures extends {
  * @internal
  */
 type PseudoClass = CSSFeatures extends {
-  pseudoClass: infer T extends string
+  pseudoClasses: (infer T extends string)[]
 }
   ? T
   : never
@@ -133,16 +133,16 @@ type PseudoClass = CSSFeatures extends {
  * @internal
  */
 type PseudoElement = CSSFeatures extends {
-  pseudoElement: infer P extends string
+  pseudoElements: (infer T extends string)[]
 }
-  ? P
+  ? T
   : never
 
 /**
  * @internal
  */
 type AtRule = CSSFeatures extends {
-  atRule: infer T extends string
+  atRules: (infer T extends string)[]
 }
   ? T
   : never

@@ -69,7 +69,11 @@ Augment this package module to use it.
 ```typescript
 // styledeck.d.ts
 
-export {}
+import type * as CSS from 'csstype'
+import type { AtRules as AtRule } from 'csstype'
+import type { HtmlAttributes as AttributeSelector } from 'csstype'
+import type { Pseudos as Pseudo } from 'csstype'
+import type { StyleXVar } from '@stylexjs/stylex'
 
 declare module 'styledeck' {
   interface CSSProperties extends CSS.Properties {
@@ -77,17 +81,17 @@ declare module 'styledeck' {
   }
 
   interface CSSFeatures {
-    atRule: CSS.AtRules
-    attributeSelector: CSS.HtmlAttributes
-    pseudoClass: PseudoClass
-    pseudoElement: PseudoElement
+    atRules: AtRule[]
+    attributeSelectors: AttributeSelector[]
+    pseudoClasses: PseudoClass[]
+    pseudoElements: PseudoElement[]
   }
 }
 
-type PseudoClass = Exclude<CSS.Pseudos, PseudoElement>
+type PseudoClass = Exclude<Pseudo, PseudoElement>
 
 type PseudoElement =
-  | Extract<CSS.Pseudos, `::${string}`>
+  | Extract<Pseudo, `::${string}`>
   // one-colon pseudo-element
   | ':after'
   | ':before'
@@ -96,17 +100,14 @@ type PseudoElement =
   | ':-moz-placeholder'
   | ':-ms-input-placeholder'
 
-import type * as CSS from 'csstype'
-import type { StyleXVar } from '@stylexjs/stylex'
+export {}
 ```
 
 Finally, augment the library/framework module to add `styleDeck` attribute to HTML elements.
 
-Here is an example for React.
+Here is an example for React, add it to snippet above.
 
 ```typescript
-// styledeck.d.ts
-
 declare module 'react' {
   interface HTMLAttributes {
     styleDeck?: StyleDeck | undefined
