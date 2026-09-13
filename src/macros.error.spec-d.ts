@@ -1,4 +1,6 @@
-describe('apply', () => {
+// eslint-disable typescript/ban-ts-comment
+
+describe('typeof apply', () => {
   it('rejects unknown non-custom properties', () => {
     expect(() => {
       apply({
@@ -12,7 +14,7 @@ describe('apply', () => {
           foo: 'bar',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown pseudo-elements', () => {
@@ -23,7 +25,7 @@ describe('apply', () => {
           color: 'red',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects invalid style values', () => {
@@ -44,7 +46,7 @@ describe('apply', () => {
           default: 'foo',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects contextual styles without default value', () => {
@@ -72,7 +74,7 @@ describe('apply', () => {
           ':focus': 'red',
         }),
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown contexts', () => {
@@ -84,7 +86,7 @@ describe('apply', () => {
           foo: 'bar',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown pseudo-elements)', () => {
@@ -96,7 +98,7 @@ describe('apply', () => {
           ':foo': 'bar',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown at-rules)', () => {
@@ -108,7 +110,7 @@ describe('apply', () => {
           '@foo': 'bar',
         },
       })
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects closures as arguments', () => {
@@ -119,11 +121,11 @@ describe('apply', () => {
           color: 'red',
         }),
       )
-    }).toThrow()
+    }).toThrow(expect.any(Error))
   })
 })
 
-import { apply } from './index.ts'
+import { apply } from './macros.ts'
 import { describe } from 'vitest'
 import { expect } from 'vitest'
 import { it } from 'vitest'

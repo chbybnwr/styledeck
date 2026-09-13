@@ -1,15 +1,15 @@
 {
-  "name": "vicinage",
-  "version": "0.6.19",
+  "name": "styledeck",
+  "version": "0.9.22",
   "description": "Type-safe and zero-runtime UI styling, right in the markup.",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chbybnwr/vicinage.git"
+    "url": "git+https://github.com/chbybnwr/styledeck.git"
   },
-  "homepage": "https://github.com/chbybnwr/vicinage",
+  "homepage": "https://github.com/chbybnwr/styledeck",
   "bugs": {
-    "url": "https://github.com/chbybnwr/vicinage/issues"
+    "url": "https://github.com/chbybnwr/styledeck/issues"
   },
   "funding": "https://github.com/sponsors/chbybnwr",
   "keywords": [
@@ -17,10 +17,10 @@
     "inline",
     "jsx",
     "style",
+    "styledeck",
     "stylex",
     "styling",
-    "ui",
-    "vicinage"
+    "ui"
   ],
   "type": "module",
   "exports": {
@@ -28,52 +28,54 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "prepack": "npm run build && npm pkg delete scripts packageManager devDependencies",
-    "check": "npm run test -- --coverage && npm run lint && npm run format -- --check && npm run spellcheck",
+    "prepack": "pn run build && pn pkg delete scripts packageManager devDependencies",
+    "check": "pn run test --coverage && pn run type-check && pn run lint && pn run format --check && pn run spell-check",
     "build": "tsdown",
-    "compile": "tsc --project tsconfig.build.json",
-    "extract": "npm run compile && api-extractor run",
-    "extract:local": "shx rm -r ./lib/* && npm run extract -- --local",
+    "extract": "tsc --project tsconfig.build.json && api-extractor run",
     "test": "vitest run",
-    "lint": "eslint ./",
+    "type-check": "tsc --build",
+    "lint": "pn run oxlint && pn run eslint",
+    "eslint": "eslint ./",
+    "oxlint": "oxlint ./",
     "format": "prettier ./",
-    "spellcheck": "cspell ./"
+    "spell-check": "cspell ./"
   },
-  "packageManager": "pnpm@11.1.1",
-  "dependencies": {
-    "csstype": "^3.2.3"
-  },
+  "packageManager": "pnpm@11.10.0",
   "peerDependencies": {
-    "@stylexjs/stylex": "~0.18.3"
+    "@stylexjs/stylex": "~0.19.0"
   },
   "devDependencies": {
     "@chbybnwr/tsconfig": "github:chbybnwr/tsconfig#v0.1.1",
     "@eslint/js": "^10.0.1",
-    "@eslint/json": "^2.0.0",
-    "@eslint/markdown": "^8.0.2",
-    "@microsoft/api-extractor": "^7.58.7",
-    "@stylexjs/stylex": "~0.18.3",
+    "@eslint/json": "^2.0.1",
+    "@eslint/markdown": "^8.0.3",
+    "@faker-js/faker": "^10.6.0",
+    "@microsoft/api-extractor": "^7.59.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@txe/eslint-plugin-x": "~0.2.1",
-    "@types/node": "^25.9.1",
-    "@typescript-eslint/parser": "^8.60.1",
-    "@typescript/native-preview": "7.0.0-dev.20260601.1",
-    "@vitest/coverage-v8": "^4.1.8",
-    "@vitest/eslint-plugin": "^1.6.19",
-    "cspell": "^10.0.1",
-    "eslint": "^10.4.1",
+    "@types/node": "^26.4.0",
+    "@typescript-eslint/parser": "^8.68.0",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/eslint-plugin": "^1.6.27",
+    "cspell": "^10.1.1",
+    "csstype": "^3.2.3",
+    "dotenv": "^17.4.2",
+    "es-toolkit": "^1.52.0",
+    "eslint": "^10.9.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-typescript": "^4.4.5",
-    "eslint-plugin-import-x": "^4.16.2",
-    "eslint-plugin-n": "^18.0.1",
-    "eslint-plugin-unicorn": "^64.0.0",
-    "globals": "^17.6.0",
-    "prettier": "^3.8.3",
-    "shx": "^0.4.0",
-    "tsdown": "^0.22.1",
-    "typescript": "^6.0.3",
-    "typescript-eslint": "^8.60.1",
-    "vite": "^8.0.16",
-    "vitest": "^4.1.8"
+    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-n": "^18.3.0",
+    "eslint-plugin-unicorn": "^72.0.0",
+    "globals": "^17.11.0",
+    "oxlint": "^1.80.0",
+    "oxlint-tsgolint": "^7.0.2001",
+    "prettier": "^3.9.6",
+    "tsdown": "~0.22.14",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.68.0",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   }
 }

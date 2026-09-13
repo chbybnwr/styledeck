@@ -1,33 +1,43 @@
-/* eslint-disable vitest/expect-expect */
+// oxlint-disable vitest/no-conditional-in-test
 
 const tokens = defineVars({
-  foo: null,
+  foo: 'blue',
 })
 
-describe('apply', () => {
+describe('type StyleDeck', () => {
+  it('accepts undefined when using array', () => {
+    const props: {
+      styleDeck?: StyleDeck
+    } = {}
+
+    assertType<StyleDeck>([
+      { color: 'red' },
+      props.styleDeck,
+      //
+    ])
+  })
+
   it('accepts standard properties', () => {
-    apply({
+    assertType<StyleDeck>({
       color: 'red',
       textBoxEdge: 'cap ex',
-      cornerShape: 'squircle',
     })
   })
 
   it('accepts custom properties', () => {
-    apply({
-      '--custom': 'lorem',
+    assertType<StyleDeck>({
       [tokens.foo]: 'ipsum',
     })
-    apply({
+
+    assertType<StyleDeck>({
       '::before': {
-        '--custom': 'lorem',
         [tokens.foo]: 'ipsum',
       },
     })
   })
 
   it('accepts pseudo-elements', () => {
-    apply({
+    assertType<StyleDeck>({
       '::before': {
         color: 'red',
       },
@@ -35,7 +45,7 @@ describe('apply', () => {
   })
 
   it('accepts pseudo-elements with params', () => {
-    apply({
+    assertType<StyleDeck>({
       '::part(foo)': {
         color: 'red',
       },
@@ -43,38 +53,29 @@ describe('apply', () => {
   })
 
   it('accepts conditional styles', () => {
-    // eslint-disable-next-line no-unassigned-vars
-    let condition!: boolean
-
-    apply({
-      color: condition && 'red',
-      textBoxEdge: condition && 'cap ex',
-      cornerShape: condition && 'squircle',
-      '--custom': condition && 'lorem',
-      [tokens.foo]: condition && 'ipsum',
+    assertType<StyleDeck>({
+      color: faker.datatype.boolean() && 'red',
+      textBoxEdge: faker.datatype.boolean() && 'cap ex',
+      [tokens.foo]: faker.datatype.boolean() && 'ipsum',
       '::before': {
-        color: condition && 'red',
+        color: faker.datatype.boolean() && 'red',
       },
     })
 
-    apply({
-      color: condition ? 'red' : null,
-      textBoxEdge: condition ? 'cap ex' : null,
-      cornerShape: condition ? 'squircle' : null,
-      '--custom': condition ? 'lorem' : null,
-      [tokens.foo]: condition ? 'ipsum' : null,
+    assertType<StyleDeck>({
+      color: faker.datatype.boolean() ? 'red' : null,
+      textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
+      [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
       '::before': {
-        color: condition ? 'red' : null,
+        color: faker.datatype.boolean() ? 'red' : null,
       },
     })
   })
 
   it('accepts dynamic styles', () => {
-    apply({
+    assertType<StyleDeck>({
       color: () => 'red',
       textBoxEdge: () => 'cap ex',
-      cornerShape: () => 'squircle',
-      '--custom': () => 'lorem',
       [tokens.foo]: () => 'ipsum',
       '::before': {
         color: () => 'red',
@@ -83,23 +84,17 @@ describe('apply', () => {
   })
 
   it('accepts contextual styles', () => {
-    apply({
+    const atDark = '@media (prefers-color-scheme: dark)'
+
+    assertType<StyleDeck>({
       color: {
         default: null,
         ':focus': 'red',
-        [tokens.foo]: tokens.foo,
+        [atDark]: tokens.foo,
       },
       textBoxEdge: {
         default: null,
         ':focus': 'cap ex',
-      },
-      cornerShape: {
-        default: null,
-        ':focus': 'squircle',
-      },
-      '--custom': {
-        default: null,
-        ':focus': 'lorem',
       },
       [tokens.foo]: {
         default: null,
@@ -115,7 +110,7 @@ describe('apply', () => {
   })
 
   it('accepts combined contextual styles', () => {
-    apply({
+    assertType<StyleDeck>({
       color: {
         default: null,
         '@container (width >= 1440px)': {
@@ -128,20 +123,6 @@ describe('apply', () => {
         '@container (width >= 1440px)': {
           default: null,
           ':focus': 'cap ex',
-        },
-      },
-      cornerShape: {
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'squircle',
-        },
-      },
-      '--custom': {
-        default: null,
-        '@container (width >= 1440px)': {
-          default: null,
-          ':focus': 'lorem',
         },
       },
       [tokens.foo]: {
@@ -164,7 +145,7 @@ describe('apply', () => {
   })
 
   it('accepts deep dynamic contextual values', () => {
-    apply({
+    assertType<StyleDeck>({
       color: {
         default: () => 'red',
         '@container (width >= 1440px)': {
@@ -182,11 +163,9 @@ describe('apply', () => {
   })
 
   it('accepts variable styles', () => {
-    apply({
+    assertType<StyleDeck>({
       color: tokens.foo,
       textBoxEdge: tokens.foo,
-      cornerShape: tokens.foo,
-      '--custom': tokens.foo,
       [tokens.foo]: tokens.foo,
       '::before': {
         color: () => tokens.foo,
@@ -194,16 +173,14 @@ describe('apply', () => {
     })
   })
 
-  it('accepts typed variable styles', () => {
+  it('accepts strict-typed variable styles', () => {
     const strictTokens = defineVars({
       foo: types.angle('360deg'),
     })
 
-    apply({
+    assertType<StyleDeck>({
       color: strictTokens.foo,
       textBoxEdge: strictTokens.foo,
-      cornerShape: strictTokens.foo,
-      '--custom': strictTokens.foo,
       [strictTokens.foo]: strictTokens.foo,
       '::before': {
         color: () => strictTokens.foo,
@@ -212,7 +189,7 @@ describe('apply', () => {
   })
 
   it('accepts pseudo-classes', () => {
-    apply({
+    assertType<StyleDeck>({
       color: {
         default: null,
         ':focus': 'red',
@@ -221,7 +198,7 @@ describe('apply', () => {
   })
 
   it('accepts pseudo-classes with params', () => {
-    apply({
+    assertType<StyleDeck>({
       color: {
         default: null,
         ':dir(rtl)': 'red',
@@ -230,7 +207,7 @@ describe('apply', () => {
   })
 
   it('accepts at-rules', () => {
-    apply({
+    assertType<StyleDeck>({
       color: {
         default: null,
         '@page': 'red',
@@ -239,7 +216,7 @@ describe('apply', () => {
   })
 
   it('accepts at-rules with params', () => {
-    apply({
+    assertType<StyleDeck>({
       color: {
         default: null,
         '@container (width >= 1440)': 'red',
@@ -247,100 +224,123 @@ describe('apply', () => {
     })
   })
 
-  it('accepts StyleDeck', () => {
-    // eslint-disable-next-line no-unassigned-vars
-    let style!: StyleDeck
-
-    apply(style)
-
-    apply(style, {
-      color: 'red',
+  it('accepts attribute selectors', () => {
+    assertType<StyleDeck>({
+      color: {
+        default: null,
+        '[disabled]': 'red',
+        '[value="foo"]': 'red',
+      },
     })
   })
 
-  it('accepts stylex marker', () => {
-    apply(defaultMarker())
-  })
-
-  it('can access ancestor', () => {
-    apply({
+  it('accepts compound selectors', () => {
+    assertType<StyleDeck>({
       color: {
         default: null,
-        [when.ancestor(':hover')]: 'red',
+        [selector('[disabled]', ':invalid')]: 'red',
+        [selector('[value="foo"]', ':invalid')]: 'red',
+        [selector(':dir(rtl)', ':invalid')]: 'red',
+      },
+    })
+  })
+
+  it('accepts stylex styles', () => {
+    const { foo } = create({
+      foo: {
+        color: 'red',
+        backgroundColor: null,
+      },
+    })
+
+    assertType<StyleDeck>(foo)
+    assertType<StyleDeck>([foo, { color: 'red' }])
+  })
+
+  it('accepts stylex marker', () => {
+    assertType<StyleDeck>(defaultMarker())
+  })
+
+  it('accepts stylex theme', () => {
+    const themeVar = defineVars({ foo: 'bar' })
+
+    const theme = createTheme(themeVar, {
+      foo: 'quux',
+    })
+
+    assertType<StyleDeck>(theme)
+    assertType<StyleDeck>([theme])
+  })
+
+  it('accepts selectors', () => {
+    assertType<StyleDeck>({
+      color: {
+        default: null,
+        [selector(':focus', ':active')]: 'red',
       },
     })
   })
 
   it('accepts styles with fallback', () => {
-    apply({
+    assertType<StyleDeck>({
       position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
     })
   })
-})
 
-describe('sheet', () => {
-  it('returns StyleDeck', () => {
-    expectTypeOf(
-      sheet({
-        color: 'red',
-      }),
-    ).toExtend<
+  it('accepts defined properties', () => {
+    assertType<
+      StyleDeck<{
+        color?: string
+      }>
+    >({
+      color: 'red',
+    })
+
+    assertType<
       StyleDeck<{
         color?: 'red'
       }>
-    >()
+    >({
+      color: () => 'red',
+    })
 
-    expectTypeOf(
-      sheet({
-        color: () => 'red',
-      }),
-    ).toExtend<
-      StyleDeck<{
-        color?: 'red'
-      }>
-    >()
-
-    expectTypeOf(
-      sheet({
-        color: {
-          default: 'red',
-          ':focus': 'blue',
-        },
-      }),
-    ).toExtend<
+    assertType<
       StyleDeck<{
         color?: 'red' | 'blue'
       }>
-    >()
+    >({
+      color: {
+        default: null,
+        ':active': 'red',
+        ':focus': 'blue',
+      },
+    })
 
-    expectTypeOf(
-      sheet({
-        color: {
-          default: () => 'red',
-          ':focus': 'blue',
-        },
-      }),
-    ).toExtend<
+    assertType<
       StyleDeck<{
         color?: 'red' | 'blue'
       }>
-    >()
+    >({
+      color: {
+        default: null,
+        ':active': () => 'red',
+        ':focus': faker.datatype.boolean() ? 'blue' : 'red',
+      },
+    })
 
-    expectTypeOf(
-      sheet({
-        color: {
-          default: () => 'red',
-          '@container (width > 1440px)': {
-            default: 'green',
-            ':focus': 'blue',
-          },
-        },
-      }),
-    ).toExtend<
+    assertType<
       StyleDeck<{
         color?: 'red' | 'green' | 'blue'
       }>
-    >()
+    >({
+      color: {
+        default: null,
+        '@container (width > 1440px)': {
+          default: 'green',
+          ':focus': 'blue',
+        },
+      },
+    })
 
     const { foo } = create({
       foo: {
@@ -348,11 +348,17 @@ describe('sheet', () => {
       },
     })
 
-    expectTypeOf(sheet(foo)).toExtend<
+    assertType<
       StyleDeck<{
         color?: 'red'
       }>
-    >()
+    >(foo)
+
+    assertType<
+      StyleDeck<{
+        color?: 'red'
+      }>
+    >([foo, [foo]])
 
     const { bar } = create({
       bar: (color: string) => ({
@@ -360,56 +366,67 @@ describe('sheet', () => {
       }),
     })
 
-    expectTypeOf(sheet(bar('red'))).toExtend<
+    assertType<
       StyleDeck<{
         color?: string
       }>
-    >()
+    >(bar('red'))
+
+    assertType<
+      StyleDeck<{
+        color?: string
+      }>
+    >([bar('red'), [bar('red')]])
   })
 
   it('accepts variadic style inputs', () => {
-    apply(
-      ...sheet(
-        {
-          color: 'red',
-        },
-        {
-          backgroundColor: 'blue',
-        },
-      ),
-    )
+    assertType<StyleDeck>([
+      {
+        color: 'red',
+      },
+      {
+        backgroundColor: 'blue',
+      },
+    ])
 
-    apply(
-      ...sheet(
-        {
-          color: 'red',
-        },
-        {
-          opacity: () => '0.5',
-        },
-      ),
-    )
+    assertType<StyleDeck>([
+      {
+        color: 'red',
+      },
+      {
+        // oxlint-disable-next-line no-magic-numbers
+        opacity: () => faker.number.float(),
+      },
+    ])
   })
 
   it('keeps array values as static leaf values', () => {
-    apply(
-      ...sheet({
-        fontFamily: ['Inter', 'sans-serif'],
-      }),
-    )
+    assertType<StyleDeck>({
+      fontFamily: ['Inter', 'sans-serif'],
+    })
   })
 })
 
-import { apply } from './index.ts'
+describe('type SimpleSelector', () => {
+  it('accepts valid selector', () => {
+    assertType<CSSSelector>('[value]')
+    assertType<CSSSelector>('[value="foo"]')
+    assertType<CSSSelector>("[value='foo']")
+    assertType<CSSSelector>('[value=foo]')
+  })
+})
+
+import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
+import { createTheme } from '@stylexjs/stylex'
+import type { CSSSelector } from './types.ts'
 import { defaultMarker } from '@stylexjs/stylex'
 import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
-import { expectTypeOf } from 'vitest'
+import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
-import { sheet } from './index.ts'
-import type { StyleDeck } from './index.ts'
+import { selector } from './hooks/selector.ts'
+import type { StyleDeck } from './types.ts'
 import { types } from '@stylexjs/stylex'
-import { when } from '@stylexjs/stylex'
 //

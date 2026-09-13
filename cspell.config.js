@@ -1,5 +1,7 @@
+export { cspellConfig as default }
+
 /** @type {import("cspell").CSpellSettings} */
-export default {
+const cspellConfig = {
   version: '0.2',
   language: 'en',
   ignorePaths: ['./etc/**/*', './pnpm-lock.yaml'],

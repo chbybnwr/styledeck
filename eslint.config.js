@@ -1,4 +1,17 @@
-export default defineConfig([
+// oxlint-disable import/max-dependencies
+/* eslint-disable unicorn/no-top-level-side-effects */
+
+export { eslintConfig as default }
+
+void 0
+
+configDotenv({
+  quiet: true,
+})
+
+const isQuickMode = process.env['ESLINT_QUICK_MODE'] === 'on'
+
+const eslintConfig = defineConfig([
   globalIgnores([
     '**/coverage/**',
     '**/dist/**',
@@ -44,18 +57,14 @@ export default defineConfig([
 
   {
     name: 'ts',
-    files: ['**/*.?(c|m)ts?(x)'],
+    files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [
-      tslintConfigs.strictTypeChecked,
-      tslintConfigs.stylisticTypeChecked,
+      tslintConfigs.strict,
+      tslintConfigs.stylistic,
+      //
     ],
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-      },
-    },
     rules: {
-      '@typescript-eslint/consistent-type-exports': 'warn',
+      // '@typescript-eslint/consistent-type-exports': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
@@ -65,18 +74,49 @@ export default defineConfig([
     },
   },
 
+  isQuickMode
+    ? {}
+    : {
+        name: 'ts-checked',
+        files: ['**/*.?(c|m)[jt]s?(x)'],
+        extends: [
+          tslintConfigs.strictTypeCheckedOnly,
+          tslintConfigs.stylisticTypeCheckedOnly,
+        ],
+        languageOptions: {
+          parserOptions: {
+            projectService: true,
+          },
+        },
+        rules: {
+          '@typescript-eslint/consistent-type-exports': 'warn',
+          '@typescript-eslint/no-unused-vars': [
+            'warn',
+            {
+              argsIgnorePattern: '^_',
+            },
+          ],
+        },
+      },
+
   {
     name: 'import-x',
     files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [importXPlugin.flatConfigs.recommended],
     rules: {
       'import-x/no-duplicates': 'off',
+      ...(isQuickMode && {
+        'import-x/default': 'off',
+        'import-x/namespace': 'off',
+        'import-x/no-named-as-default-member': 'off',
+        'import-x/no-named-as-default': 'off',
+      }),
     },
   },
 
   {
     name: 'import-x-typescript',
-    files: ['**/*.?(c|m)ts?(x)'],
+    files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [importXPlugin.flatConfigs.typescript],
     languageOptions: {
       parser: tslintParser,
@@ -98,7 +138,7 @@ export default defineConfig([
     name: 'x',
     files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [
-      // @ts-ignore
+      // @ts-expect-error let me in please
       xPlugin.configs.recommended,
     ],
   },
@@ -108,14 +148,19 @@ export default defineConfig([
     files: ['**/*.?(c|m)[jt]s?(x)'],
     extends: [unicornPlugin.configs.recommended],
     rules: {
+      'unicorn/max-nested-calls': 'off',
       'unicorn/no-named-default': 'off',
       'unicorn/no-null': 'off',
-      'unicorn/prevent-abbreviations': [
+      'unicorn/name-replacements': [
         'warn',
         {
-          allowList: {
-            args: true,
-          },
+          ignore: [
+            /var(?<plural_suffix>s)?/iu,
+            /arg(?<plural_suffix>s)?/iu,
+            /attr(?<plural_suffix>s)?/iu,
+            /prop(?<plural_suffix>s)?/iu,
+            //
+          ],
         },
       ],
     },
@@ -125,9 +170,14 @@ export default defineConfig([
     name: 'vitest',
     files: ['**/*.{test,spec}*.?(c|m)[jt]s?(x)'],
     extends: [vitestPlugin.configs.recommended],
+    languageOptions: {
+      globals: {
+        ...vitestPlugin.environments.env.globals,
+      },
+    },
     settings: {
       vitest: {
-        typecheck: true,
+        typecheck: !isQuickMode,
       },
     },
     rules: {
@@ -137,6 +187,10 @@ export default defineConfig([
           pattern: '.*.spec(-d)?.ts(x)?$',
         },
       ],
+      ...(isQuickMode && {
+        'vitest/expect-expect': 'off',
+        'vitest/valid-title': 'off',
+      }),
     },
   },
 
@@ -211,7 +265,6 @@ export default defineConfig([
     language: 'markdown/gfm',
     files: ['**/*.md'],
     plugins: {
-      // @ts-ignore
       markdown: markdownPlugin,
     },
     extends: [markdownPlugin.configs.recommended],
@@ -220,6 +273,7 @@ export default defineConfig([
   prettierConfig,
 ])
 
+import { configDotenv } from 'dotenv'
 import { createNodeResolver } from 'eslint-plugin-import-x'
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
 import { defineConfig } from 'eslint/config'
@@ -233,6 +287,7 @@ import nodePlugin from 'eslint-plugin-n'
 import prettierConfig from 'eslint-config-prettier/flat'
 import stylisticPlugin from '@stylistic/eslint-plugin'
 import { configs as tslintConfigs } from 'typescript-eslint'
+// oxlint-disable-next-line import/no-namespace
 import * as tslintParser from '@typescript-eslint/parser'
 import unicornPlugin from 'eslint-plugin-unicorn'
 import vitestPlugin from '@vitest/eslint-plugin'

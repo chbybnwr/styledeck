@@ -1,131 +1,260 @@
-describe('StyleDeck', () => {
+describe('typeof defineStyleDeck', () => {
   it('rejects unknown non-custom properties', () => {
-    assertType<StyleDeck>({
-      // @ts-expect-error
-      foo: 'bar',
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          // @ts-expect-error
+          foo: 'bar',
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
 
-    assertType<StyleDeck>({
-      '::before': {
-        // @ts-expect-error
-        foo: 'bar',
-      },
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          '::before': {
+            // @ts-expect-error
+            foo: 'bar',
+          },
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown pseudo-elements', () => {
-    assertType<StyleDeck>({
-      // @ts-expect-error
-      '::foo': {
-        color: 'red',
-      },
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          // @ts-expect-error
+          '::foo': {
+            color: 'red',
+          },
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects invalid style values', () => {
-    // @ts-expect-error
-    assertType<StyleDeck>({
-      textJustify: 'foo',
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          textJustify: 'foo',
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
 
-    // @ts-expect-error
-    assertType<StyleDeck>({
-      textJustify: () => 'foo',
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          textJustify: () => 'foo',
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
 
-    // @ts-expect-error
-    assertType<StyleDeck>({
-      textJustify: {
-        default: 'foo',
-      },
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          textJustify: {
+            default: 'foo',
+          },
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects contextual styles without default value', () => {
-    // @ts-expect-error
-    assertType<StyleDeck>({
-      color: {
-        ':focus': 'red',
-      },
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            ':focus': 'red',
+          },
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
 
-    // @ts-expect-error
-    assertType<StyleDeck>({
-      color: {
-        default: null,
-        '@container (width >= 1440)': {
-          ':focus': 'red',
-        },
-      },
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            default: null,
+            '@container (width >= 1440)': {
+              ':focus': 'red',
+            },
+          },
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
+  })
+
+  it('rejects null value for non-default context', () => {
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            default: 'red',
+            ':focus': null,
+          },
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
+
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            default: 'red',
+            [selector(':focus', ':active')]: null,
+          },
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
+  })
+
+  it('rejects invalid selector', () => {
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            default: 'red',
+            [Symbol('invalid selector')]: null,
+          },
+          // @ts-expect-error
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown contexts', () => {
-    assertType<StyleDeck>({
-      color: {
-        default: null,
-        // @ts-expect-error
-        foo: 'bar',
-      },
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            default: null,
+            // @ts-expect-error
+            foo: 'bar',
+          },
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown pseudo-classes)', () => {
-    assertType<StyleDeck>({
-      color: {
-        default: null,
-        // @ts-expect-error
-        ':foo': 'bar',
-      },
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            default: null,
+            // @ts-expect-error
+            ':foo': 'bar',
+          },
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects unknown at-rules)', () => {
-    assertType<StyleDeck>({
-      color: {
-        default: null,
-        // @ts-expect-error
-        '@foo': 'bar',
-      },
-    })
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck({
+          color: {
+            default: null,
+            // @ts-expect-error
+            '@foo': 'bar',
+          },
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects closures as arguments', () => {
-    assertType<StyleDeck>(
-      // @ts-expect-error
-      () => ({
-        color: 'red',
-      }),
-    )
+    expect(() => {
+      assertType<StyleDeck>(
+        defineStyleDeck(
+          // @ts-expect-error
+          (() => ({
+            color: 'red',
+          })) satisfies StyleDeck,
+        ),
+      )
+    }).toThrow(expect.any(Error))
   })
 
   it('rejects properties outside config', () => {
-    assertType<
-      StyleDeck<{
-        color?: string
-      }>
-    >({
-      // @ts-expect-error
-      backgroundColor: 'red',
-    })
+    expect(() => {
+      assertType<
+        StyleDeck<{
+          color?: string
+        }>
+      >(
+        // @ts-expect-error
+        defineStyleDeck({
+          backgroundColor: 'red',
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
+
+    expect(() => {
+      assertType<
+        StyleDeck<{
+          color?: string
+        }>
+      >(
+        // @ts-expect-error
+        defineStyleDeck([
+          {
+            backgroundColor: 'red',
+          },
+        ] satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
 
     const styledeck: StyleDeck<{
       backgroundColor?: string
     }> = {}
 
-    assertType<
-      StyleDeck<{
-        color?: string
-      }>
-    >(
-      // @ts-expect-error
-      styledeck,
-    )
+    expect(() => {
+      assertType<
+        StyleDeck<{
+          color?: string
+        }>
+      >(
+        // @ts-expect-error
+        defineStyleDeck(styledeck satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
+
+    expect(() => {
+      assertType<
+        StyleDeck<{
+          '::before'?: {
+            color?: string
+          }
+        }>
+      >(
+        // @ts-expect-error
+        defineStyleDeck({
+          '::before': {
+            backgroundColor: 'red',
+          },
+        } satisfies StyleDeck),
+      )
+    }).toThrow(expect.any(Error))
   })
 })
 
 import { assertType } from 'vitest'
+import { defineStyleDeck } from './styledeck.ts'
 import { describe } from 'vitest'
+import { expect } from 'vitest'
 import { it } from 'vitest'
-import type { StyleDeck } from './index.ts'
+import { selector } from './hooks/selector.ts'
+import type { StyleDeck } from './types.ts'
 //

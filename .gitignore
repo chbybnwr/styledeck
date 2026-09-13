@@ -8,6 +8,7 @@
 !/cspell.config.*
 !/dictionary.txt
 !/eslint.config.*
+!/oxlint.config.*
 !/prettier.config.*
 
 !/api-extractor.json

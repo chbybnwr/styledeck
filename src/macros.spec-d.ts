@@ -1,115 +1,98 @@
 // oxlint-disable vitest/no-conditional-in-test
 
 const tokens = defineVars({
-  foo: 'blue',
+  foo: null,
 })
 
-describe('typeof defineStyleDeck', () => {
-  it('accepts undefined when using array', () => {
-    const props: {
-      styleDeck?: StyleDeck
-    } = {}
-
-    assertType<StyleDeck>(
-      defineStyleDeck([
-        { color: 'red' },
-        props.styleDeck,
-        //
-      ] satisfies StyleDeck),
-    )
-  })
-
+describe('typeof apply', () => {
   it('accepts standard properties', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: 'red',
         textBoxEdge: 'cap ex',
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts custom properties', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         [tokens.foo]: 'ipsum',
-      } satisfies StyleDeck),
+      }),
     )
 
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         '::before': {
           [tokens.foo]: 'ipsum',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts pseudo-elements', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         '::before': {
           color: 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts pseudo-elements with params', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         '::part(foo)': {
           color: 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts conditional styles', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: faker.datatype.boolean() && 'red',
         textBoxEdge: faker.datatype.boolean() && 'cap ex',
         [tokens.foo]: faker.datatype.boolean() && 'ipsum',
         '::before': {
           color: faker.datatype.boolean() && 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
 
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: faker.datatype.boolean() ? 'red' : null,
         textBoxEdge: faker.datatype.boolean() ? 'cap ex' : null,
         [tokens.foo]: faker.datatype.boolean() ? 'ipsum' : null,
         '::before': {
           color: faker.datatype.boolean() ? 'red' : null,
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts dynamic styles', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: () => 'red',
         textBoxEdge: () => 'cap ex',
         [tokens.foo]: () => 'ipsum',
         '::before': {
           color: () => 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts contextual styles', () => {
-    const atDark = '@media (prefers-color-scheme: dark)'
-
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           ':focus': 'red',
-          [atDark]: tokens.foo,
         },
         textBoxEdge: {
           default: null,
@@ -125,13 +108,13 @@ describe('typeof defineStyleDeck', () => {
             ':focus': 'red',
           },
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts combined contextual styles', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           '@container (width >= 1440px)': {
@@ -162,13 +145,13 @@ describe('typeof defineStyleDeck', () => {
             },
           },
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts deep dynamic contextual values', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: () => 'red',
           '@container (width >= 1440px)': {
@@ -182,218 +165,192 @@ describe('typeof defineStyleDeck', () => {
             ':focus': () => 'yellow',
           },
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts variable styles', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: tokens.foo,
         textBoxEdge: tokens.foo,
         [tokens.foo]: tokens.foo,
         '::before': {
           color: () => tokens.foo,
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
-  it('accepts strict-typed variable styles', () => {
+  it('accepts typed variable styles', () => {
     const strictTokens = defineVars({
       foo: types.angle('360deg'),
     })
 
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: strictTokens.foo,
         textBoxEdge: strictTokens.foo,
         [strictTokens.foo]: strictTokens.foo,
         '::before': {
           color: () => strictTokens.foo,
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts pseudo-classes', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           ':focus': 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts pseudo-classes with params', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           ':dir(rtl)': 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts at-rules', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           '@page': 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts at-rules with params', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           '@container (width >= 1440)': 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
-  it('accepts attribute selectors', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
-        color: {
-          default: null,
-          '[disabled]': 'red',
-          '[value="foo"]': 'red',
-        },
-      } satisfies StyleDeck),
-    )
-  })
+  it('accepts StyleDeck', () => {
+    const style: StyleDeck = {}
 
-  it('accepts stylex styles', () => {
-    const { foo } = create({
-      foo: {
+    assertType<StylingAttrs>(apply(style))
+
+    assertType<StylingAttrs>(
+      apply(style, {
         color: 'red',
-        backgroundColor: null,
-      },
-    })
-
-    assertType<StyleDeck>(defineStyleDeck(foo satisfies StyleDeck))
-    assertType<StyleDeck>(
-      defineStyleDeck([foo, { color: 'red' }] satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts stylex marker', () => {
-    assertType<StyleDeck>(defineStyleDeck(defaultMarker() satisfies StyleDeck))
+    assertType<StylingAttrs>(apply(defaultMarker()))
   })
 
-  it('accepts stylex theme', () => {
-    const themeVar = defineVars({ foo: 'bar' })
-
-    const theme = createTheme(themeVar, {
-      foo: 'quux',
-    })
-
-    assertType<StyleDeck>(defineStyleDeck(theme satisfies StyleDeck))
-    assertType<StyleDeck>(defineStyleDeck([theme] satisfies StyleDeck))
-  })
-
-  it('can use compound selector', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+  it('can use selector', () => {
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
           [selector(':focus', ':active')]: 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
 
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         color: {
           default: null,
-          [(ancestor(defaultMarker()), ':focus')]: 'red',
+          [ancestor(defaultMarker(), ':focus')]: 'red',
         },
-      } satisfies StyleDeck),
+      }),
     )
   })
 
   it('accepts styles with fallback', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
+    assertType<StylingAttrs>(
+      apply({
         position: firstThatWorks('sticky', '-webkit-sticky', 'fixed'),
-      } satisfies StyleDeck),
+      }),
     )
   })
+})
 
-  it('accepts defined properties', () => {
-    assertType<
-      StyleDeck<{
-        color?: string
-      }>
-    >(
-      defineStyleDeck({
+describe('typeof sheet', () => {
+  it('returns StyleDeck', () => {
+    expectTypeOf(
+      sheet({
         color: 'red',
-      } satisfies StyleDeck),
-    )
-
-    assertType<
+      }),
+    ).toExtend<
       StyleDeck<{
         color?: 'red'
       }>
-    >(
-      defineStyleDeck({
-        color: () => 'red',
-      } satisfies StyleDeck),
-    )
+    >()
 
-    assertType<
+    expectTypeOf(
+      sheet({
+        color: () => 'red',
+      }),
+    ).toExtend<
       StyleDeck<{
-        color?: 'red' | 'blue'
+        color?: 'red'
       }>
-    >(
-      defineStyleDeck({
+    >()
+
+    expectTypeOf(
+      sheet({
         color: {
-          default: null,
-          ':active': 'red',
+          default: 'red',
           ':focus': 'blue',
         },
-      } satisfies StyleDeck),
-    )
-
-    assertType<
+      }),
+    ).toExtend<
       StyleDeck<{
         color?: 'red' | 'blue'
       }>
-    >(
-      defineStyleDeck({
-        color: {
-          default: null,
-          ':active': () => 'red',
-          ':focus': faker.datatype.boolean() ? 'blue' : 'red',
-        },
-      } satisfies StyleDeck),
-    )
+    >()
 
-    assertType<
-      StyleDeck<{
-        color?: 'red' | 'green' | 'blue'
-      }>
-    >(
-      defineStyleDeck({
+    expectTypeOf(
+      sheet({
         color: {
-          default: null,
-          ':focus': 'red',
+          default: () => 'red',
+          ':focus': 'blue',
+        },
+      }),
+    ).toExtend<
+      StyleDeck<{
+        color?: 'red' | 'blue'
+      }>
+    >()
+
+    expectTypeOf(
+      sheet({
+        color: {
+          default: () => 'red',
           '@container (width > 1440px)': {
             default: 'green',
             ':focus': 'blue',
           },
         },
-      } satisfies StyleDeck),
-    )
+      }),
+    ).toExtend<
+      StyleDeck<{
+        color?: 'red' | 'green' | 'blue'
+      }>
+    >()
 
     const { foo } = create({
       foo: {
@@ -401,17 +358,11 @@ describe('typeof defineStyleDeck', () => {
       },
     })
 
-    assertType<
+    expectTypeOf(sheet(foo)).toExtend<
       StyleDeck<{
         color?: 'red'
       }>
-    >(defineStyleDeck(foo satisfies StyleDeck))
-
-    assertType<
-      StyleDeck<{
-        color?: 'red'
-      }>
-    >(defineStyleDeck([foo, [foo]] satisfies StyleDeck))
+    >()
 
     const { bar } = create({
       bar: (color: string) => ({
@@ -419,64 +370,66 @@ describe('typeof defineStyleDeck', () => {
       }),
     })
 
-    assertType<
+    expectTypeOf(sheet(bar('red'))).toExtend<
       StyleDeck<{
         color?: string
       }>
-    >(defineStyleDeck(bar('red') satisfies StyleDeck))
-
-    assertType<
-      StyleDeck<{
-        color?: string
-      }>
-    >(defineStyleDeck([bar('red'), [bar('red')]] satisfies StyleDeck))
+    >()
   })
 
   it('accepts variadic style inputs', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck([
-        {
-          color: 'red',
-        },
-        {
-          backgroundColor: 'blue',
-        },
-      ] satisfies StyleDeck),
+    assertType<StylingAttrs>(
+      apply(
+        ...sheet(
+          {
+            color: 'red',
+          },
+          {
+            backgroundColor: 'blue',
+          },
+        ),
+      ),
     )
 
-    assertType<StyleDeck>(
-      defineStyleDeck([
-        {
-          color: 'red',
-        },
-        {
-          opacity: () => faker.number.float(),
-        },
-      ] satisfies StyleDeck),
+    assertType<StylingAttrs>(
+      apply(
+        ...sheet(
+          {
+            color: 'red',
+          },
+          {
+            opacity: () => '0.5',
+          },
+        ),
+      ),
     )
   })
 
   it('keeps array values as static leaf values', () => {
-    assertType<StyleDeck>(
-      defineStyleDeck({
-        fontFamily: ['Inter', 'sans-serif'],
-      } satisfies StyleDeck),
+    assertType<StylingAttrs>(
+      apply(
+        ...sheet({
+          fontFamily: ['Inter', 'sans-serif'],
+        }),
+      ),
     )
   })
 })
 
 import { ancestor } from './hooks/ancestry.ts'
+import { apply } from './macros.ts'
 import { assertType } from 'vitest'
 import { create } from '@stylexjs/stylex'
-import { createTheme } from '@stylexjs/stylex'
 import { defaultMarker } from '@stylexjs/stylex'
-import { defineStyleDeck } from './styledeck.ts'
 import { defineVars } from '@stylexjs/stylex'
 import { describe } from 'vitest'
+import { expectTypeOf } from 'vitest'
 import { faker } from '@faker-js/faker'
 import { firstThatWorks } from '@stylexjs/stylex'
 import { it } from 'vitest'
 import { selector } from './hooks/selector.ts'
+import { sheet } from './macros.ts'
 import type { StyleDeck } from './types.ts'
+import type { StylingAttrs } from './macros.ts'
 import { types } from '@stylexjs/stylex'
 //
