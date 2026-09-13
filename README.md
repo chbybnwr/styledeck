@@ -18,7 +18,7 @@ StyleDeck lets you write strongly-typed CSS objects directly on your markup. At 
   - [Pseudo-classes](#pseudo-classes)
   - [Pseudo-elements](#pseudo-elements)
   - [Variables](#variables)
-  - [Cascade with StyleX styles](#cascade-with-stylex-styles)
+  - [Cascade with Stand-alone styles](#cascade-with-stand-alone-styles)
   - [Conditional styling](#conditional-styling)
   - [Dynamic styling](#dynamic-styling)
 
