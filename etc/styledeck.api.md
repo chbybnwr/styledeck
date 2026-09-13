@@ -50,12 +50,12 @@ export type StyleDeck<T extends ~StyleConfig = ~StyleConfig> = (StyleDeck<T> | u
 
 // @internal (undocumented)
 export type ~AtRule = CSSFeatures extends {
-    atRule: infer T extends string;
+    atRules: (infer T extends string)[];
 } ? T : never;
 
 // @internal (undocumented)
 export type ~AttributeSelector = CSSFeatures extends {
-    attributeSelector: infer T extends string;
+    attributeSelectors: (infer T extends string)[];
 } ? T : never;
 
 // @internal (undocumented)
@@ -173,13 +173,13 @@ export interface ~NonApplicableStringProperties {
 
 // @internal (undocumented)
 export type ~PseudoClass = CSSFeatures extends {
-    pseudoClass: infer T extends string;
+    pseudoClasses: (infer T extends string)[];
 } ? T : never;
 
 // @internal (undocumented)
 export type ~PseudoElement = CSSFeatures extends {
-    pseudoElement: infer P extends string;
-} ? P : never;
+    pseudoElements: (infer T extends string)[];
+} ? T : never;
 
 // @internal (undocumented)
 export type ~PseudoElementStyleConfig = Partial<Record<~PseudoElement, CSSProperties>>;

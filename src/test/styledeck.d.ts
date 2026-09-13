@@ -4,38 +4,45 @@
 
 export {}
 
+/** */
+
 declare module 'styledeck' {
-  interface CSSProperties extends CommonCSSProperties {
-    [key: CompiledCSSVar<unknown>]: NonNullable<unknown>
+  interface CSSProperties extends CommonProperties {
+    [key: StyleXVar<unknown>]: NonNullable<unknown>
   }
 
   interface CSSFeatures {
-    attributeSelector:
-      | AttributeSelector
-      | (AttributeSelector extends `[${infer Attribute}]`
-          ? `[${Attribute}=${string}]`
-          : never)
-
-    pseudoClass:
-      | Exclude<PseudoClass, ParameterizedPseudoClass>
-      | `${ParameterizedPseudoClass}(`
-      | `${ParameterizedPseudoClass}${string})`
-
-    pseudoElement:
-      | Exclude<PseudoElement, ParameterizedPseudoElement>
-      | `${ParameterizedPseudoElement}(`
-      | `${ParameterizedPseudoElement}${string})`
-      // ::cue can be used both with and without parameter
-      | '::cue'
-
-    atRule: AtRule | `${AtRule} ${string}`
+    atRules: AtRule[]
+    attributeSelectors: AttributeSelector[]
+    pseudoClasses: PseudoClass[]
+    pseudoElements: PseudoElement[]
   }
 }
 
-type PseudoClass = Exclude<CSSPseudos, PseudoElement>
+type AtRule = CommonAtRule | `${CommonAtRule} ${string}`
+
+type AttributeSelector =
+  | CommonAttributeSelector
+  | (CommonAttributeSelector extends `[${infer Attribute}]`
+      ? `[${Attribute}=${string}]`
+      : never)
+
+type PseudoClass =
+  | Exclude<CommonPseudoClass, ParameterizedPseudoClass>
+  | `${ParameterizedPseudoClass}(`
+  | `${ParameterizedPseudoClass}${string})`
 
 type PseudoElement =
-  | Extract<CSSPseudos, `::${string}`>
+  | Exclude<CommonPseudoElement, ParameterizedPseudoElement>
+  | `${ParameterizedPseudoElement}(`
+  | `${ParameterizedPseudoElement}${string})`
+  // ::cue can be used both with and without parameter
+  | '::cue'
+
+type CommonPseudoClass = Exclude<CommonPseudo, CommonPseudoElement>
+
+type CommonPseudoElement =
+  | Extract<CommonPseudo, `::${string}`>
   // one-colon pseudo-elements
   | ':after'
   | ':before'
@@ -73,9 +80,9 @@ type ParameterizedPseudoElement =
   | '::view-transition-new'
   | '::view-transition-old'
 
-import type { AtRules as AtRule } from 'csstype'
-import type { HtmlAttributes as AttributeSelector } from 'csstype'
-import type { Properties as CommonCSSProperties } from 'csstype'
-import type { StyleXVar as CompiledCSSVar } from '@stylexjs/stylex'
-import type { Pseudos as CSSPseudos } from 'csstype'
+import type { AtRules as CommonAtRule } from 'csstype'
+import type { HtmlAttributes as CommonAttributeSelector } from 'csstype'
+import type { Properties as CommonProperties } from 'csstype'
+import type { Pseudos as CommonPseudo } from 'csstype'
+import type { StyleXVar } from '@stylexjs/stylex'
 //
