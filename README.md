@@ -130,12 +130,12 @@ export {}
 
 ## Ecosystem
 
-- [Vite plugin](https://github.com/chbybnwr/styledeck-vite-plugin)
+- [Vite plugin](https://www.npmjs.com/package/@styledeck/vite-plugin)
 
-<!-- - [Babel preset](https://github.com/chbybnwr/styledeck-babel-preset) -->
-<!-- - [ESLint plugin](https://github.com/chbybnwr/styledeck-eslint-plugin) -->
+<!-- - [Babel preset](https://www.npmjs.com/package/@styledeck/babel-preset) -->
+<!-- - [ESLint plugin](https://www.npmjs.com/package/@styledeck/eslint-plugin) -->
 
-- [SolarWind CSS](https://github.com/chbybnwr/solarwindcss) - Design tokens
+- [SolarWind CSS](https://www.npmjs.com/package/solarwindcss) - Design tokens
 - [StyleX DevTools](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem) - DevTools as Chrome extension
 - [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding) - A Visual Studio Extension to help JSX markup which contains inline CSS.
 
