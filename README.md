@@ -8,7 +8,8 @@ StyleDeck lets you write strongly-typed CSS objects directly on your markup. At 
 
 <summary>Table of Contents</summary>
 
-- [Quick Start](#quick-start)
+<!-- - [Quick Start](#quick-start) -->
+
 - [Setup](#setup)
 - [Ecosystem](#ecosystem)
 - [Usage](#usage)
@@ -24,12 +25,14 @@ StyleDeck lets you write strongly-typed CSS objects directly on your markup. At 
 
 </details>
 
+<!--
 ## Quick Start
 
 - [Next.js](https://github.com/chbybnwr/styledeck-nextjs-starter)
 - [React](https://github.com/chbybnwr/styledeck-react-starter)
 - [Solid](https://github.com/chbybnwr/styledeck-solid-starter)
 - [Vue](https://github.com/chbybnwr/styledeck-vue-starter)
+-->
 
 ## Setup
 
@@ -44,7 +47,7 @@ Add the plugin to your bundler configuration.
 
 ```js
 import { defineConfig } from 'vite'
-import styledeck from '@styledeck/vite'
+import styledeck from '@styledeck/vite-plugin'
 
 export default defineConfig({
   plugins: [
@@ -130,11 +133,13 @@ declare module 'react' {
 ## Ecosystem
 
 - [Vite plugin](https://github.com/chbybnwr/styledeck-vite-plugin)
-- [Babel preset](https://github.com/chbybnwr/styledeck-babel-preset)
-- [ESLint plugin](https://github.com/chbybnwr/styledeck-eslint-plugin)
-- Design tokens from [SolarWind CSS](https://github.com/chbybnwr/solarwindcss)
-- Chrome Extension [StyleX DevTools](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem)
-- VS Code extension [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding)
+
+<!-- - [Babel preset](https://github.com/chbybnwr/styledeck-babel-preset) -->
+<!-- - [ESLint plugin](https://github.com/chbybnwr/styledeck-eslint-plugin) -->
+
+- [SolarWind CSS](https://github.com/chbybnwr/solarwindcss) - Design tokens
+- [StyleX DevTools](https://chromewebstore.google.com/detail/stylex-devtools/pfcoadoepdjlhhnchklcinajnmmninem) - DevTools as Chrome extension
+- [Explicit Folding](https://marketplace.visualstudio.com/items?itemName=zokugun.explicit-folding) - A Visual Studio Extension to help JSX markup which contains inline CSS.
 
   <details>
   <summary>Recommended settings</summary>
