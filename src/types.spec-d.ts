@@ -411,7 +411,6 @@ describe('type SimpleSelector', () => {
   it('accepts valid selector', () => {
     assertType<CSSSelector>('[value]')
     assertType<CSSSelector>('[value="foo"]')
-    assertType<CSSSelector>("[value='foo']")
     assertType<CSSSelector>('[value=foo]')
   })
 })

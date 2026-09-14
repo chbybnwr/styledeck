@@ -80,7 +80,7 @@ import type { StyleXVar } from '@stylexjs/stylex'
 
 declare module 'styledeck' {
   interface CSSProperties extends CSS.Properties {
-    [key: StyleXVar<unknown>]: NonNullable<unknown>
+    [key: StyleXVar<unknown>]: unknown
   }
 
   interface CSSFeatures {
