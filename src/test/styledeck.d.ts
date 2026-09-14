@@ -8,7 +8,7 @@ export {}
 
 declare module 'styledeck' {
   interface CSSProperties extends CommonProperties {
-    [key: StyleXVar<unknown>]: NonNullable<unknown>
+    [key: StyleXVar<unknown>]: unknown
   }
 
   interface CSSFeatures {
@@ -30,12 +30,12 @@ type AttributeSelector =
 type PseudoClass =
   | Exclude<CommonPseudoClass, ParameterizedPseudoClass>
   | `${ParameterizedPseudoClass}(`
-  | `${ParameterizedPseudoClass}${string})`
+  | `${ParameterizedPseudoClass}(${string})`
 
 type PseudoElement =
   | Exclude<CommonPseudoElement, ParameterizedPseudoElement>
   | `${ParameterizedPseudoElement}(`
-  | `${ParameterizedPseudoElement}${string})`
+  | `${ParameterizedPseudoElement}(${string})`
   // ::cue can be used both with and without parameter
   | '::cue'
 
