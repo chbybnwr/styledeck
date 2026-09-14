@@ -1,6 +1,6 @@
 {
   "name": "styledeck",
-  "version": "0.10.23",
+  "version": "0.10.24",
   "description": "Type-safe and zero-runtime UI styling, right in the markup.",
   "license": "MIT",
   "repository": {
