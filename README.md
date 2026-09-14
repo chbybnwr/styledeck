@@ -1,4 +1,4 @@
-# StyleDeck &middot; [![npm version](https://img.shields.io/npm/v/styledeck.svg?style=flat-square)](https://www.npmjs.com/package/styledeck) [![build](https://img.shields.io/github/actions/workflow/status/chbybnwr/styledeck/publish.yml?label=build&style=flat-square)](https://github.com/chbybnwr/styledeck/actions/workflows/publish.yml) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/chbybnwr/styledeck-unplugin/blob/main/LICENSE) <!-- omit in toc -->
+# StyleDeck &middot; [![npm version](https://img.shields.io/npm/v/styledeck.svg?style=flat-square)](https://www.npmjs.com/package/styledeck) [![build](https://img.shields.io/github/actions/workflow/status/chbybnwr/styledeck/publish.yml?label=build&style=flat-square)](https://github.com/chbybnwr/styledeck/actions/workflows/publish.yml) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/chbybnwr/styledeck/blob/main/LICENSE) <!-- omit in toc -->
 
 Type-safe, zero-runtime inline CSS in JSX.
 
@@ -108,9 +108,13 @@ export {}
 
 Finally, augment the library/framework module to add `styleDeck` attribute to HTML elements.
 
-Here is an example for React, add it to snippet above.
+Here is an example for React.
 
 ```typescript
+// react.d.ts
+
+import type { StyleDeck } from 'styledeck'
+
 declare module 'react' {
   interface HTMLAttributes {
     styleDeck?: StyleDeck | undefined
@@ -119,15 +123,9 @@ declare module 'react' {
      */
     style?: never
   }
-
-  interface SVGAttributes {
-    styleDeck?: StyleDeck | undefined
-    /**
-     * @deprecated
-     */
-    style?: never
-  }
 }
+
+export {}
 ```
 
 ## Ecosystem
