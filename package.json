@@ -1,6 +1,6 @@
 {
   "name": "styledeck",
-  "version": "0.10.24",
+  "version": "0.10.25",
   "description": "Type-safe, zero-runtime inline CSS in JSX",
   "license": "MIT",
   "repository": {
