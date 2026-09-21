@@ -68,6 +68,7 @@ declare const STYLE_CONFIG: unique symbol
 /**
  * @internal
  */
+// eslint-disable-next-line @typescript-eslint/no-generated-empty-object-type
 type PseudoElementStyleConfig = Partial<Record<PseudoElement, CSSProperties>>
 
 /**
