@@ -101,7 +101,6 @@ function toAttrs(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ...styles: any[]
 ): Record<string, unknown> {
-  // eslint-disable-next-line unicorn/no-this-outside-of-class
   const { className, style, ...restProps } = toProps.apply(this, styles)
 
   return {
