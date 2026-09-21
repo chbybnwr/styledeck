@@ -1,7 +1,7 @@
 {
   "name": "styledeck",
   "version": "0.10.24",
-  "description": "Type-safe and zero-runtime UI styling, right in the markup.",
+  "description": "Type-safe, zero-runtime inline CSS in JSX",
   "license": "MIT",
   "repository": {
     "type": "git",
